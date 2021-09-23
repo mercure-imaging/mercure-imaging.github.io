@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>common.constants &mdash; mercure 0.2a documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">mercure</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>common.constants</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for common.constants</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">constants.py</span>
+<span class="sd">============</span>
+<span class="sd">mercure-wide constants, used for standardizing key names and extensions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="mercure_defs"><a class="viewcode-back" href="../../common.html#common.constants.mercure_defs">[docs]</a><span class="k">class</span> <span class="nc">mercure_defs</span><span class="p">:</span>
+    <span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;0.2a&quot;</span>
+    <span class="n">SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_names"><a class="viewcode-back" href="../../common.html#common.constants.mercure_names">[docs]</a><span class="k">class</span> <span class="nc">mercure_names</span><span class="p">:</span>
+    <span class="n">LOCK</span> <span class="o">=</span> <span class="s2">&quot;.lock&quot;</span>
+    <span class="n">PROCESSING</span> <span class="o">=</span> <span class="s2">&quot;.processing&quot;</span>
+    <span class="n">RUNNING</span> <span class="o">=</span> <span class="s2">&quot;.running&quot;</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="s2">&quot;.error&quot;</span>
+    <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;.tags&quot;</span>
+    <span class="n">HALT</span> <span class="o">=</span> <span class="s2">&quot;HALT&quot;</span>
+    <span class="n">TASKFILE</span> <span class="o">=</span> <span class="s2">&quot;task.json&quot;</span>
+    <span class="n">SENDLOG</span> <span class="o">=</span> <span class="s2">&quot;sent.txt&quot;</span>
+    <span class="n">DCM</span> <span class="o">=</span> <span class="s2">&quot;.dcm&quot;</span>
+    <span class="n">DCMFILTER</span> <span class="o">=</span> <span class="s2">&quot;*.dcm&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_sections"><a class="viewcode-back" href="../../common.html#common.constants.mercure_sections">[docs]</a><span class="k">class</span> <span class="nc">mercure_sections</span><span class="p">:</span>
+    <span class="n">INFO</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
+    <span class="n">DISPATCH</span> <span class="o">=</span> <span class="s2">&quot;dispatch&quot;</span>
+    <span class="n">PROCESS</span> <span class="o">=</span> <span class="s2">&quot;process&quot;</span>
+    <span class="n">JOURNAL</span> <span class="o">=</span> <span class="s2">&quot;journal&quot;</span>
+    <span class="n">NOTIFICATION</span> <span class="o">=</span> <span class="s2">&quot;notification&quot;</span>
+    <span class="n">FILES</span> <span class="o">=</span> <span class="s2">&quot;files&quot;</span>
+    <span class="n">STUDY</span> <span class="o">=</span> <span class="s2">&quot;study&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_config"><a class="viewcode-back" href="../../common.html#common.constants.mercure_config">[docs]</a><span class="k">class</span> <span class="nc">mercure_config</span><span class="p">:</span>
+    <span class="n">RULES</span> <span class="o">=</span> <span class="s2">&quot;rules&quot;</span>
+    <span class="n">TARGETS</span> <span class="o">=</span> <span class="s2">&quot;targets&quot;</span>
+    <span class="n">MODULES</span> <span class="o">=</span> <span class="s2">&quot;modules&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_folders"><a class="viewcode-back" href="../../common.html#common.constants.mercure_folders">[docs]</a><span class="k">class</span> <span class="nc">mercure_folders</span><span class="p">:</span>
+    <span class="n">INCOMING</span> <span class="o">=</span> <span class="s2">&quot;incoming_folder&quot;</span>
+    <span class="n">STUDIES</span> <span class="o">=</span> <span class="s2">&quot;studies_folder&quot;</span>
+    <span class="n">OUTGOING</span> <span class="o">=</span> <span class="s2">&quot;outgoing_folder&quot;</span>
+    <span class="n">SUCCESS</span> <span class="o">=</span> <span class="s2">&quot;success_folder&quot;</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="s2">&quot;error_folder&quot;</span>
+    <span class="n">DISCARD</span> <span class="o">=</span> <span class="s2">&quot;discard_folder&quot;</span>
+    <span class="n">PROCESSING</span> <span class="o">=</span> <span class="s2">&quot;processing_folder&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_actions"><a class="viewcode-back" href="../../common.html#common.constants.mercure_actions">[docs]</a><span class="k">class</span> <span class="nc">mercure_actions</span><span class="p">:</span>
+    <span class="n">ROUTE</span> <span class="o">=</span> <span class="s2">&quot;route&quot;</span>
+    <span class="n">BOTH</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
+    <span class="n">PROCESS</span> <span class="o">=</span> <span class="s2">&quot;process&quot;</span>
+    <span class="n">DISCARD</span> <span class="o">=</span> <span class="s2">&quot;discard&quot;</span>
+    <span class="n">NOTIFICATION</span> <span class="o">=</span> <span class="s2">&quot;notification&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_rule"><a class="viewcode-back" href="../../common.html#common.constants.mercure_rule">[docs]</a><span class="k">class</span> <span class="nc">mercure_rule</span><span class="p">:</span>
+    <span class="n">RULE</span> <span class="o">=</span> <span class="s2">&quot;rule&quot;</span>
+    <span class="n">ACTION</span> <span class="o">=</span> <span class="s2">&quot;action&quot;</span>
+    <span class="n">ACTION_TRIGGER</span> <span class="o">=</span> <span class="s2">&quot;action_trigger&quot;</span>
+    <span class="n">STUDY_TRIGGER_CONDITION</span> <span class="o">=</span> <span class="s2">&quot;study_trigger_condition&quot;</span>
+    <span class="n">STUDY_TRIGGER_CONDITION_TIMEOUT</span> <span class="o">=</span> <span class="s2">&quot;timeout&quot;</span>
+    <span class="n">STUDY_TRIGGER_CONDITION_RECEIVED_SERIES</span> <span class="o">=</span> <span class="s2">&quot;received_series&quot;</span>
+    <span class="n">STUDY_TRIGGER</span> <span class="o">=</span> <span class="s2">&quot;study_trigger&quot;</span>
+    <span class="n">PRIORITY</span> <span class="o">=</span> <span class="s2">&quot;priority&quot;</span>
+    <span class="n">DISABLED</span> <span class="o">=</span> <span class="s2">&quot;disabled&quot;</span>
+    <span class="n">FALLBACK</span> <span class="o">=</span> <span class="s2">&quot;fallback&quot;</span>
+    <span class="n">PROCESSING_MODULE</span> <span class="o">=</span> <span class="s2">&quot;processing_module&quot;</span>
+    <span class="n">TARGET</span> <span class="o">=</span> <span class="s2">&quot;target&quot;</span>
+    <span class="n">NOTIFICATION_WEBHOOK</span> <span class="o">=</span> <span class="s2">&quot;notification_webhook&quot;</span>
+    <span class="n">NOTIFICATION_PAYLOAD</span> <span class="o">=</span> <span class="s2">&quot;notification_payload&quot;</span>
+    <span class="n">NOTIFICATION_TRIGGER_RECEPTION</span> <span class="o">=</span> <span class="s2">&quot;notification_trigger_reception&quot;</span>
+    <span class="n">NOTIFICATION_TRIGGER_COMPLETION</span> <span class="o">=</span> <span class="s2">&quot;notification_trigger_completion&quot;</span>
+    <span class="n">NOTIFICATION_TRIGGER_ERROR</span> <span class="o">=</span> <span class="s2">&quot;notification_trigger_error&quot;</span>
+    <span class="n">PROCESSING_MODULE</span> <span class="o">=</span> <span class="s2">&quot;processing_module&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_study"><a class="viewcode-back" href="../../common.html#common.constants.mercure_study">[docs]</a><span class="k">class</span> <span class="nc">mercure_study</span><span class="p">:</span>
+    <span class="n">STUDY_UID</span> <span class="o">=</span> <span class="s2">&quot;study_uid&quot;</span>
+    <span class="n">CREATION_TIME</span> <span class="o">=</span> <span class="s2">&quot;creation_time&quot;</span>
+    <span class="n">LAST_RECEIVE_TIME</span> <span class="o">=</span> <span class="s2">&quot;last_receive_time&quot;</span>
+    <span class="n">RECEIVED_SERIES</span> <span class="o">=</span> <span class="s2">&quot;received_series&quot;</span>
+    <span class="n">COMPLETE_TRIGGER</span> <span class="o">=</span> <span class="s2">&quot;complete_trigger&quot;</span>
+    <span class="n">COMPLETE_REQUIRED_SERIES</span> <span class="o">=</span> <span class="s2">&quot;complete_required_series&quot;</span>
+    <span class="n">COMPLETE_FORCE</span> <span class="o">=</span> <span class="s2">&quot;complete_force&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_info"><a class="viewcode-back" href="../../common.html#common.constants.mercure_info">[docs]</a><span class="k">class</span> <span class="nc">mercure_info</span><span class="p">:</span>
+    <span class="n">ACTION</span> <span class="o">=</span> <span class="s2">&quot;action&quot;</span>
+    <span class="n">UID</span> <span class="o">=</span> <span class="s2">&quot;uid&quot;</span>
+    <span class="n">UID_TYPE</span> <span class="o">=</span> <span class="s2">&quot;uid_type&quot;</span>
+    <span class="n">TRIGGERED_RULES</span> <span class="o">=</span> <span class="s2">&quot;triggered_rules&quot;</span>
+    <span class="n">MRN</span> <span class="o">=</span> <span class="s2">&quot;mrn&quot;</span>
+    <span class="n">ACC</span> <span class="o">=</span> <span class="s2">&quot;acc&quot;</span>
+    <span class="n">MERCURE_VERSION</span> <span class="o">=</span> <span class="s2">&quot;mercure_version&quot;</span>
+    <span class="n">MERCURE_APPLIANCE</span> <span class="o">=</span> <span class="s2">&quot;mercure_appliance&quot;</span>
+    <span class="n">MERCURE_SERVER</span> <span class="o">=</span> <span class="s2">&quot;mercure_server&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_options"><a class="viewcode-back" href="../../common.html#common.constants.mercure_options">[docs]</a><span class="k">class</span> <span class="nc">mercure_options</span><span class="p">:</span>
+    <span class="n">TRUE</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+    <span class="n">FALSE</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+    <span class="n">SERIES</span> <span class="o">=</span> <span class="s2">&quot;series&quot;</span>
+    <span class="n">STUDY</span> <span class="o">=</span> <span class="s2">&quot;study&quot;</span>
+    <span class="n">NORMAL</span> <span class="o">=</span> <span class="s2">&quot;normal&quot;</span>
+    <span class="n">URGENT</span> <span class="o">=</span> <span class="s2">&quot;urgent&quot;</span>
+    <span class="n">OFFPEAK</span> <span class="o">=</span> <span class="s2">&quot;offpeak&quot;</span>
+    <span class="n">MISSING</span> <span class="o">=</span> <span class="s2">&quot;MISSING&quot;</span>
+    <span class="n">INVALID</span> <span class="o">=</span> <span class="s2">&quot;#@INVALID@#&quot;</span></div>
+
+
+<div class="viewcode-block" id="mercure_events"><a class="viewcode-back" href="../../common.html#common.constants.mercure_events">[docs]</a><span class="k">class</span> <span class="nc">mercure_events</span><span class="p">:</span>
+    <span class="n">RECEPTION</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">COMPLETION</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">2</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'G-EHLH5W4KQW', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

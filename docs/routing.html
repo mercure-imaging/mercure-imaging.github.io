@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Package routing &mdash; mercure 0.2a documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Package webinterface" href="webinterface.html" />
+    <link rel="prev" title="Package dispatch" href="dispatch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatch.html">Package dispatch</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Package routing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-routing.route_series">routing.process_series</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#route-series-py">route_series.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">Code Documentation</a> &raquo;</li>
+      <li>Package routing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="package-routing">
+<h1>Package routing<a class="headerlink" href="#package-routing" title="Permalink to this headline"></a></h1>
+<div class="section" id="module-routing.route_series">
+<span id="routing-process-series"></span><h2>routing.process_series<a class="headerlink" href="#module-routing.route_series" title="Permalink to this headline"></a></h2>
+<div class="section" id="route-series-py">
+<h3>route_series.py<a class="headerlink" href="#route-series-py" title="Permalink to this headline"></a></h3>
+<p>Provides functions for routing/processing of series. For study-level processing, series will be pushed into study folders.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.get_triggered_rules">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">get_triggered_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagList</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple[Dict[str,</span> <span class="pre">typing_extensions.Literal[True]],</span> <span class="pre">Union[Any,</span> <span class="pre">typing_extensions.Literal['']]]</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#get_triggered_rules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.get_triggered_rules" title="Permalink to this definition"></a></dt>
+<dd><p>Evaluates the routing rules and returns a list with triggered rules.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_files">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_files</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_files" title="Permalink to this definition"></a></dt>
+<dd><p>Copies or moves the given files to the target path. If copy_files is True, files are copied, otherwise moved.
+Note that this function does not create a lock file (this needs to be done by the calling function).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_series_complete">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_series_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard_rule</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_files</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_series_complete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_series_complete" title="Permalink to this definition"></a></dt>
+<dd><p>Moves all files of the series into either the “discard” or “success” folders, which both are periodically cleared.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_series_serieslevel">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_series_serieslevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triggered_rules</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">True</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_series_serieslevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_series_serieslevel" title="Permalink to this definition"></a></dt>
+<dd><p>Prepeares all series-level routings for the current series.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_series_studylevel">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_series_studylevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triggered_rules</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">True</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_series_studylevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_series_studylevel" title="Permalink to this definition"></a></dt>
+<dd><p>Prepeares study-level routing for the current series.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_serieslevel_notification">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_serieslevel_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triggered_rules</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">True</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_serieslevel_notification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_serieslevel_notification" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_serieslevel_outgoing">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_serieslevel_outgoing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triggered_rules</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">True</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_targets</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_serieslevel_outgoing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_serieslevel_outgoing" title="Permalink to this definition"></a></dt>
+<dd><p>Move the DICOM files of the series to a separate subfolder for each target in the outgoing folder.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_serieslevel_processing">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_serieslevel_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triggered_rules</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">True</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_serieslevel_processing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_serieslevel_processing" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.push_serieslevel_routing">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">push_serieslevel_routing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triggered_rules</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">True</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#push_serieslevel_routing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.push_serieslevel_routing" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.remove_series">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">remove_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#remove_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.remove_series" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the given files from the incoming folder.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.route_error_files">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">route_error_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#route_error_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.route_error_files" title="Permalink to this definition"></a></dt>
+<dd><p>Looks for error files, moves these files and the corresponding DICOM files to the error folder,
+and sends an alert to the bookkeeper instance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.route_series">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">route_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series_UID</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#route_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.route_series" title="Permalink to this definition"></a></dt>
+<dd><p>Processes the series with the given series UID from the incoming folder.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routing.route_series.trigger_serieslevel_notification_reception">
+<span class="sig-prename descclassname"><span class="pre">routing.route_series.</span></span><span class="sig-name descname"><span class="pre">trigger_serieslevel_notification_reception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_rule</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/routing/route_series.html#trigger_serieslevel_notification_reception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#routing.route_series.trigger_serieslevel_notification_reception" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dispatch.html" class="btn btn-neutral float-left" title="Package dispatch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="webinterface.html" class="btn btn-neutral float-right" title="Package webinterface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

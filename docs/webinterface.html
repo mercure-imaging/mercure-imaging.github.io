@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Package webinterface &mdash; mercure 0.2a documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Development Roadmap" href="roadmap.html" />
+    <link rel="prev" title="Package routing" href="routing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatch.html">Package dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">Package routing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Package webinterface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.services">webinterface.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#services-py">services.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.tagslist">webinterface.tagslist</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tagslist-py">tagslist.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.users">webinterface.users</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#users-py">users.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">Code Documentation</a> &raquo;</li>
+      <li>Package webinterface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="package-webinterface">
+<h1>Package webinterface<a class="headerlink" href="#package-webinterface" title="Permalink to this headline"></a></h1>
+<div class="section" id="module-webinterface.services">
+<span id="webinterface-services"></span><h2>webinterface.services<a class="headerlink" href="#module-webinterface.services" title="Permalink to this headline"></a></h2>
+<div class="section" id="services-py">
+<h3>services.py<a class="headerlink" href="#services-py" title="Permalink to this headline"></a></h3>
+<p>Helper functions for controlling the services from the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.services.read_services">
+<span class="sig-prename descclassname"><span class="pre">webinterface.services.</span></span><span class="sig-name descname"><span class="pre">read_services</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webinterface/services.html#read_services"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.services.read_services" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the list of configured services from the configuration file. This list normally does not have to be changed, but
+can be modified if multiple instances of individual services should be used to increase performance.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-webinterface.tagslist">
+<span id="webinterface-tagslist"></span><h2>webinterface.tagslist<a class="headerlink" href="#module-webinterface.tagslist" title="Permalink to this headline"></a></h2>
+<div class="section" id="tagslist-py">
+<h3>tagslist.py<a class="headerlink" href="#tagslist-py" title="Permalink to this headline"></a></h3>
+<p>Helper functions for displaying a list of DICOM tags available for routing in the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.tagslist.read_tagslist">
+<span class="sig-prename descclassname"><span class="pre">webinterface.tagslist.</span></span><span class="sig-name descname"><span class="pre">read_tagslist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webinterface/tagslist.html#read_tagslist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.tagslist.read_tagslist" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the list of supported DICOM tags with example values. This list is parsed from the C code of the getseqparam module.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-webinterface.users">
+<span id="webinterface-users"></span><h2>webinterface.users<a class="headerlink" href="#module-webinterface.users" title="Permalink to this headline"></a></h2>
+<div class="section" id="users-py">
+<h3>users.py<a class="headerlink" href="#users-py" title="Permalink to this headline"></a></h3>
+<p>Users page and user support functions for the graphical user interface of mercure.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.users.User">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/users.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.User" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.change_password">
+<span class="sig-name descname"><span class="pre">change_password</span></span><em class="property"><span class="pre">:</span> <span class="pre">typing_extensions.Literal['True',</span> <span class="pre">'False']</span></em><a class="headerlink" href="#webinterface.users.User.change_password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.email">
+<span class="sig-name descname"><span class="pre">email</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#webinterface.users.User.email" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.is_admin">
+<span class="sig-name descname"><span class="pre">is_admin</span></span><em class="property"><span class="pre">:</span> <span class="pre">typing_extensions.Literal['True',</span> <span class="pre">'False']</span></em><a class="headerlink" href="#webinterface.users.User.is_admin" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.password">
+<span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#webinterface.users.User.password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.permissions">
+<span class="sig-name descname"><span class="pre">permissions</span></span><em class="property"><span class="pre">:</span> <span class="pre">Any</span></em><a class="headerlink" href="#webinterface.users.User.permissions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.add_new_user">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">add_new_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#add_new_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.add_new_user" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new user and redirects to the user-edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.create_users">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">create_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#webinterface.users.User" title="webinterface.users.User"><span class="pre">webinterface.users.User</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/webinterface/users.html#create_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.create_users" title="Permalink to this definition"></a></dt>
+<dd><p>Create new users file and create seed admin account with name “admin” and password “router”.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.evaluate_password">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">evaluate_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#evaluate_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.evaluate_password" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given password for the given user is correct. Hashed passwords are stored with salt.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.hash_password">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">hash_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#hash_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.hash_password" title="Permalink to this definition"></a></dt>
+<dd><p>Hash the password using the passlib library.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.is_admin">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">is_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#is_admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.is_admin" title="Permalink to this definition"></a></dt>
+<dd><p>Check in the user list if the given user has admin rights.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.needs_change_password">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">needs_change_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#needs_change_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.needs_change_password" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given user has to change his password after login.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.read_users">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">read_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#webinterface.users.User" title="webinterface.users.User"><span class="pre">webinterface.users.User</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/webinterface/users.html#read_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.read_users" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the user list from the configuration file. The file will only be read if it has been updated since the last
+function call. If the file does not exist, create a new user file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.save_users">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">save_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#save_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.save_users" title="Permalink to this definition"></a></dt>
+<dd><p>Write the users list into a file on the disk.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.show_users">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">show_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#show_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.show_users" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all available users.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.users_delete_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">users_delete_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#users_delete_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.users_delete_post" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the given users.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.users_edit">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">users_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#users_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.users_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the settings for a given user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.users_edit_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">users_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/users.html#users_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.users_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the given user with settings passed as form parameters.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="routing.html" class="btn btn-neutral float-left" title="Package routing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="roadmap.html" class="btn btn-neutral float-right" title="Development Roadmap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

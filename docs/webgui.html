@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service webgui &mdash; mercure 0.2a documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Package common" href="common.html" />
+    <link rel="prev" title="Service router" href="router.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Service webgui</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#webgui-py">webgui.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatch.html">Package dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">Package routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">Code Documentation</a> &raquo;</li>
+      <li>Service webgui</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-webgui">
+<span id="service-webgui"></span><h1>Service webgui<a class="headerlink" href="#module-webgui" title="Permalink to this headline"></a></h1>
+<div class="section" id="webgui-py">
+<h2>webgui.py<a class="headerlink" href="#webgui-py" title="Permalink to this headline"></a></h2>
+<p>The web-based graphical user interface of mercure.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webgui.ExtendedUser">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">ExtendedUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_admin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webgui.html#ExtendedUser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.ExtendedUser" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">starlette.authentication.SimpleUser</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="webgui.ExtendedUser.is_admin">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_admin</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#webgui.ExtendedUser.is_admin" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webgui.SessionAuthBackend">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">SessionAuthBackend</span></span><a class="reference internal" href="_modules/webgui.html#SessionAuthBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.SessionAuthBackend" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">starlette.authentication.AuthenticationBackend</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="webgui.SessionAuthBackend.authenticate">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webgui.html#SessionAuthBackend.authenticate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.SessionAuthBackend.authenticate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.configuration">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.configuration" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the current configuration of the mercure appliance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.configuration_edit">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">configuration_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#configuration_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.configuration_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows a configuration editor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.configuration_edit_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">configuration_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#configuration_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.configuration_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the configuration after post from editor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.control_services">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">control_services</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#control_services"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.control_services" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.emergency_response">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">emergency_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#emergency_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.emergency_response" title="Permalink to this definition"></a></dt>
+<dd><p>Shows emergency message about invalid configuration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.error">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webgui.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.error" title="Permalink to this definition"></a></dt>
+<dd><p>An example error. Switch the <cite>debug</cite> setting to see either tracebacks or 500 pages.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.get_nomad_logs">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">get_nomad_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/webgui.html#get_nomad_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.get_nomad_logs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.homepage">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">homepage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#homepage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.homepage" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the index page that shows information about the system status.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.launch_emergency_app">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">launch_emergency_app</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webgui.html#launch_emergency_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.launch_emergency_app" title="Permalink to this definition"></a></dt>
+<dd><p>Launches a minimal application to inform the user about the incorrect configuration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.login">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.login" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the login page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.login_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">login_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#login_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.login_post" title="Permalink to this definition"></a></dt>
+<dd><p>Evaluate the submitted login information. Redirects to index page if login information valid, otherwise back to login.
+On the first login, the user will be directed to the settings page and asked to change the password.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.logout">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webgui.html#logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.logout" title="Permalink to this definition"></a></dt>
+<dd><p>Logouts the users by clearing the session cookie.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.main">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['-b',</span> <span class="pre">'html',</span> <span class="pre">'-d',</span> <span class="pre">'_build/doctrees',</span> <span class="pre">'.',</span> <span class="pre">'_build/html']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webgui.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.main" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.not_found">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">not_found</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#not_found"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.not_found" title="Permalink to this definition"></a></dt>
+<dd><p>Return an HTTP 404 page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.server_error">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">server_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#server_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.server_error" title="Permalink to this definition"></a></dt>
+<dd><p>Return an HTTP 500 page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.settings_edit">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">settings_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#settings_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.settings_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the settings for the current user. Renders the same template as the normal user edit, but with parameter own_settings=True.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.show_first_log">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">show_first_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#show_first_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.show_first_log" title="Permalink to this definition"></a></dt>
+<dd><p>Get the first service entry and forward to corresponding log entry point.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.show_log">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">show_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#show_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.show_log" title="Permalink to this definition"></a></dt>
+<dd><p>Render the log for the given service. The time range can be specified via URL parameters.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="router.html" class="btn btn-neutral float-left" title="Service router" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="common.html" class="btn btn-neutral float-right" title="Package common" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

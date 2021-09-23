@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mercure DICOM Orchestrator &mdash; mercure 0.2a documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="What is mercure?" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#">
+            <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>mercure DICOM Orchestrator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="mercure-dicom-orchestrator">
+<h1>mercure DICOM Orchestrator<a class="headerlink" href="#mercure-dicom-orchestrator" title="Permalink to this headline"></a></h1>
+<a class="reference internal image-reference" href="_images/scheme.png"><img alt="_images/scheme.png" class="align-center" src="_images/scheme.png" style="width: 550px;" /></a>
+<p>mercure is a flexible open-source DICOM orchestration solution with a simple-to-use web interface and extensive monitoring options. It provides functions for routing DICOM studies as well as for running DICOM processing steps, such as executing inference of AI models and dispatching the results to the desired destinations. Processing steps can either be executed directly on the mercure server (as Docker containers) or can be executed on connected cluster nodes, typically located on-premise but potentially also running in the cloud.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#architecture">Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installing-mercure">Installing mercure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#creating-data-storage">Creating data storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installing-postgresql">Installing PostgreSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#basic-mercure-configuration">Basic mercure configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#first-start-of-mercure">First start of mercure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#completing-the-postgresql-configuration">Completing the PostgreSQL configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installing-redash">Installing Redash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#congratulations">Congratulations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#web-interface">Web interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#user-management">User management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#system-status-and-control">System status and control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#defining-targets">Defining targets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#defining-routing-rules">Defining routing rules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#log-files">Log files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#graphite">Graphite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#bookkeeper-with-redash">Bookkeeper with Redash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#alerts">Alerts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dashboards.html#router-health">Router Health</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboards.html#dispatch-explorer">Dispatch Explorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboards.html#last-series-received">Last Series Received</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboards.html#received-series">Received Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboards.html#series-events">Series Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboards.html#system-status">System Status</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#configuration-files">Configuration files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#additional-settings">Additional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#scaling-services">Scaling services</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatch.html">Package dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">Package routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#planned">Planned</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#completed">Completed</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-right" title="What is mercure?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
