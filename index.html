@@ -14,6 +14,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -119,7 +120,6 @@
         background: none;
     }
 
-
     body .typing-container {
         display: flex;
         justify-content: center;
@@ -142,6 +142,16 @@
 
     .bracket {
         color: #23d160;
+    }
+
+    .spacer {
+        margin-left: 0px;
+    }
+
+    @media (min-width: 500px) {
+        .spacer {
+            margin-left: 10px;
+        }
     }
 
     @keyframes blink {
@@ -167,6 +177,9 @@
 
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <header class="masthead mb-auto">
+            <a type="button" class="btn btn-outline-light" href="https://github.com/mercure-imaging/mercure" style="margin-bottom: 10px;"><i class="fab fa-github"></i>&nbsp; Open GitHub Project</a>
+            <span class="spacer"></span>
+            <a type="button" class="btn btn-outline-light" href="https://mercure-imaging.org/docs/index.html" style="margin-bottom: 10px;"><i class="fas fa-book-open"></i>&nbsp; Show Documentation</a>
         </header>
 
         <main role="main" class="inner cover">
@@ -199,8 +212,12 @@
         crossorigin="anonymous"></script>
     <script>
         const carouselText = [
-            { text: "mercure is launching soon...", color: "white" },
-            { text: "The open-source DICOM orchestrator", color: "white" }
+            { text: "mercure is launching soon !", color: "white" },
+            { text: "The open-source DICOM orchestrator", color: "white" },
+            { text: "Simple web-based user interface", color: "white" },
+            { text: "Flexible routing rules", color: "white" },
+            { text: "Extensive monitoring functions", color: "white" },
+            { text: "Containerized processing modules", color: "white" }
         ]
 
         $(function () {
@@ -246,6 +263,13 @@
         }
     </script>
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EHLH5W4KQW');
+</script>
 
 </body>
 
