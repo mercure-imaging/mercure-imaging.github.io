@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>webinterface.queue &mdash; mercure 0.2a documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<script>
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'mercure-imaging/Support'
+    };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>webinterface.queue</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for webinterface.queue</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">queue.py</span>
+<span class="sd">========</span>
+<span class="sd">Queue page for the graphical user interface of mercure.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Standard python includes</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">daiquiri</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="c1"># Starlette-related includes</span>
+<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span><span class="p">,</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.authentication</span> <span class="kn">import</span> <span class="n">requires</span>
+
+<span class="c1"># App-specific includes</span>
+<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span><span class="p">,</span> <span class="n">mercure_names</span><span class="p">,</span> <span class="n">mercure_options</span>
+<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">get_user_information</span>
+<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">templates</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;queue&quot;</span><span class="p">)</span>
+
+
+<span class="c1">###################################################################################</span>
+<span class="c1">## Queue endpoints</span>
+<span class="c1">###################################################################################</span>
+
+
+<span class="n">queue_app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="show_queues"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_queues">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_queues</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Shows all installed modules&quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+
+    <span class="n">processing_suspended</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">processing_halt_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">HALT</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">processing_halt_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">processing_suspended</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">routing_suspended</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">routing_halt_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">HALT</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">routing_halt_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">routing_suspended</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;queue.html&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+        <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span>
+        <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="s2">&quot;queue&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;processing_suspended&quot;</span><span class="p">:</span> <span class="n">processing_suspended</span><span class="p">,</span>
+        <span class="s2">&quot;routing_suspended&quot;</span><span class="p">:</span> <span class="n">routing_suspended</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_jobs_processing"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_processing">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/processing&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_processing</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+
+    <span class="n">job_list</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">job_module</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_acc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_mrn</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Series&quot;</span>
+            <span class="n">job_status</span> <span class="o">=</span> <span class="s2">&quot;Queued&quot;</span>
+
+            <span class="n">processing_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">PROCESSING</span>
+            <span class="n">task_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+            <span class="k">if</span> <span class="n">processing_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">job_status</span> <span class="o">=</span> <span class="s2">&quot;Processing&quot;</span>
+                <span class="n">task_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">:</span>
+                        <span class="n">job_module</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span>
+                    <span class="n">job_acc</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span>
+                    <span class="n">job_mrn</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">uid_type</span><span class="o">==</span><span class="s2">&quot;series&quot;</span><span class="p">:</span>
+                        <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Series&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Study&quot;</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">job_module</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_acc</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_mrn</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_status</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+
+            <span class="n">job_list</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;Module&quot;</span><span class="p">:</span> <span class="n">job_module</span><span class="p">,</span>
+                <span class="s2">&quot;ACC&quot;</span><span class="p">:</span> <span class="n">job_acc</span><span class="p">,</span>
+                <span class="s2">&quot;MRN&quot;</span><span class="p">:</span> <span class="n">job_mrn</span><span class="p">,</span>
+                <span class="s2">&quot;Status&quot;</span><span class="p">:</span> <span class="n">job_status</span><span class="p">,</span>
+                <span class="s2">&quot;Scope&quot;</span><span class="p">:</span> <span class="n">job_scope</span><span class="p">,</span>
+            <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_jobs_routing"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_routing">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/routing&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_routing</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+
+    <span class="n">job_list</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">job_target</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_acc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_mrn</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Series&quot;</span>
+            <span class="n">job_status</span> <span class="o">=</span> <span class="s2">&quot;Queued&quot;</span>
+
+            <span class="n">task_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">dispatch</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">dispatch</span><span class="o">.</span><span class="n">target_name</span><span class="p">:</span>
+                        <span class="n">job_target</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">dispatch</span><span class="o">.</span><span class="n">target_name</span>
+                    <span class="n">job_acc</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span>
+                    <span class="n">job_mrn</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">uid_type</span><span class="o">==</span><span class="s2">&quot;series&quot;</span><span class="p">:</span>
+                        <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Series&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Study&quot;</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">job_target</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_acc</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_mrn</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_status</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>                
+
+            <span class="n">job_list</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;Target&quot;</span><span class="p">:</span> <span class="n">job_target</span><span class="p">,</span>
+                <span class="s2">&quot;ACC&quot;</span><span class="p">:</span> <span class="n">job_acc</span><span class="p">,</span>
+                <span class="s2">&quot;MRN&quot;</span><span class="p">:</span> <span class="n">job_mrn</span><span class="p">,</span>
+                <span class="s2">&quot;Status&quot;</span><span class="p">:</span> <span class="n">job_status</span><span class="p">,</span>
+                <span class="s2">&quot;Scope&quot;</span><span class="p">:</span> <span class="n">job_scope</span><span class="p">,</span>
+            <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_jobs_studies"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_studies">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/studies&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_studies</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+
+    <span class="n">job_list</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">job_uid</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_rule</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_acc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_mrn</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_completion</span> <span class="o">=</span> <span class="s2">&quot;Timeout&quot;</span>
+            <span class="n">job_created</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">job_series</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">task_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span>
+                    <span class="n">job_uid</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">uid</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">applied_rule</span><span class="p">:</span>
+                        <span class="n">job_rule</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">applied_rule</span>
+                    <span class="n">job_acc</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span>
+                    <span class="n">job_mrn</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">complete_force</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+                        <span class="n">job_completion</span> <span class="o">=</span> <span class="s2">&quot;Force&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">complete_trigger</span> <span class="o">==</span> <span class="s2">&quot;received_series&quot;</span><span class="p">:</span>
+                            <span class="n">job_completion</span> <span class="o">=</span> <span class="s2">&quot;Series&quot;</span>
+                    <span class="n">job_created</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">creation_time</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">received_series</span><span class="p">:</span>
+                        <span class="n">job_series</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">received_series</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">job_uid</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_rule</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_acc</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_mrn</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_completion</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+                <span class="n">job_created</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+
+            <span class="n">job_list</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;UID&quot;</span><span class="p">:</span> <span class="n">job_uid</span><span class="p">,</span>
+                <span class="s2">&quot;Rule&quot;</span><span class="p">:</span> <span class="n">job_rule</span><span class="p">,</span>
+                <span class="s2">&quot;ACC&quot;</span><span class="p">:</span> <span class="n">job_acc</span><span class="p">,</span>
+                <span class="s2">&quot;MRN&quot;</span><span class="p">:</span> <span class="n">job_mrn</span><span class="p">,</span>
+                <span class="s2">&quot;Completion&quot;</span><span class="p">:</span> <span class="n">job_completion</span><span class="p">,</span>
+                <span class="s2">&quot;Created&quot;</span><span class="p">:</span> <span class="n">job_created</span><span class="p">,</span>
+                <span class="s2">&quot;Series&quot;</span><span class="p">:</span> <span class="n">job_series</span><span class="p">,</span>
+            <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_jobs_fail"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_fail">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/fail&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_fail</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+
+    <span class="n">job_list</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># TODO</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_queues_status"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_queues_status">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/status&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_queues_status</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+
+    <span class="n">processing_suspended</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">processing_halt_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">HALT</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">processing_halt_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">processing_suspended</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">routing_suspended</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">routing_halt_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">HALT</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">routing_halt_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">routing_suspended</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">processing_status</span> <span class="o">=</span> <span class="s2">&quot;Idle&quot;</span>
+    <span class="n">routing_status</span> <span class="o">=</span> <span class="s2">&quot;Idle&quot;</span>
+
+    <span class="k">if</span> <span class="n">processing_suspended</span><span class="p">:</span>
+        <span class="n">processing_status</span> <span class="o">=</span> <span class="s2">&quot;Halted&quot;</span>
+
+    <span class="k">if</span> <span class="n">routing_suspended</span><span class="p">:</span>
+        <span class="n">routing_status</span> <span class="o">=</span> <span class="s2">&quot;Halted&quot;</span>
+
+    <span class="n">queue_status</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;processing_status&quot;</span><span class="p">:</span> <span class="n">processing_status</span><span class="p">,</span>
+        <span class="s2">&quot;processing_suspended&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">processing_suspended</span><span class="p">),</span>
+        <span class="s2">&quot;routing_status&quot;</span><span class="p">:</span> <span class="n">routing_status</span><span class="p">,</span>
+        <span class="s2">&quot;routing_suspended&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">routing_suspended</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">queue_status</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="set_queues_status"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.set_queues_status">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/status&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">set_queues_status</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+
+    <span class="n">processing_halt_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">HALT</span><span class="p">)</span>
+    <span class="n">routing_halt_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">HALT</span><span class="p">)</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;suspend_processing&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+            <span class="n">processing_halt_file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">processing_halt_file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;suspend_routing&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+            <span class="n">routing_halt_file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_halt_file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;OK&quot;</span><span class="p">})</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

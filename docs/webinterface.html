@@ -70,18 +70,40 @@
 <li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processor.html">Service processor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
 <li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dispatch.html">Package dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process.html">Package process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="routing.html">Package routing</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Package webinterface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.common">webinterface.common</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-py">common.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.modules">webinterface.modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modules-py">modules.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.queue">webinterface.queue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#queue-py">queue.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.rules">webinterface.rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rules-py">rules.py</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-webinterface.services">webinterface.services</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#services-py">services.py</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-webinterface.tagslist">webinterface.tagslist</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tagslist-py">tagslist.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.targets">webinterface.targets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#targets-py">targets.py</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-webinterface.users">webinterface.users</a><ul>
@@ -121,6 +143,160 @@
              
   <div class="section" id="package-webinterface">
 <h1>Package webinterface<a class="headerlink" href="#package-webinterface" title="Permalink to this headline"></a></h1>
+<div class="section" id="module-webinterface.common">
+<span id="webinterface-common"></span><h2>webinterface.common<a class="headerlink" href="#module-webinterface.common" title="Permalink to this headline"></a></h2>
+<div class="section" id="common-py">
+<h3>common.py<a class="headerlink" href="#common-py" title="Permalink to this headline"></a></h3>
+<p>Helper functions for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.async_run">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">async_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/webinterface/common.html#async_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.async_run" title="Permalink to this definition"></a></dt>
+<dd><p>Executes the given command in a way compatible with ayncio.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.get_user_information">
+<span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">get_user_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/webinterface/common.html#get_user_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.get_user_information" title="Permalink to this definition"></a></dt>
+<dd><p>Returns dictionary of values that should always be passed to the templates when the user is logged in.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-webinterface.modules">
+<span id="webinterface-modules"></span><h2>webinterface.modules<a class="headerlink" href="#module-webinterface.modules" title="Permalink to this headline"></a></h2>
+<div class="section" id="modules-py">
+<h3>modules.py<a class="headerlink" href="#modules-py" title="Permalink to this headline"></a></h3>
+<p>Modules page for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.add_module">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">add_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#add_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.add_module" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new routing rule and forwards the user to the rule edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.delete_module">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">delete_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#delete_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.delete_module" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new routing rule and forwards the user to the rule edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.edit_module">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">edit_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#edit_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.edit_module" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all installed modules</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.edit_module_POST">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">edit_module_POST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#edit_module_POST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.edit_module_POST" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new routing rule and forwards the user to the rule edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.save_module">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">save_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/modules.html#save_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.save_module" title="Permalink to this definition"></a></dt>
+<dd><p>We already read the config by this time</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.show_modules">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">show_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#show_modules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.show_modules" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all installed modules</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-webinterface.queue">
+<span id="webinterface-queue"></span><h2>webinterface.queue<a class="headerlink" href="#module-webinterface.queue" title="Permalink to this headline"></a></h2>
+<div class="section" id="queue-py">
+<h3>queue.py<a class="headerlink" href="#queue-py" title="Permalink to this headline"></a></h3>
+<p>Queue page for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.set_queues_status">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">set_queues_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/queue.html#set_queues_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.set_queues_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_fail">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_fail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/queue.html#show_jobs_fail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_fail" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_processing">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/queue.html#show_jobs_processing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_processing" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_routing">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_routing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/queue.html#show_jobs_routing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_routing" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_studies">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_studies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/queue.html#show_jobs_studies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_studies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_queues">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_queues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/queue.html#show_queues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_queues" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all installed modules</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_queues_status">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_queues_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/queue.html#show_queues_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_queues_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-webinterface.rules">
+<span id="webinterface-rules"></span><h2>webinterface.rules<a class="headerlink" href="#module-webinterface.rules" title="Permalink to this headline"></a></h2>
+<div class="section" id="rules-py">
+<h3>rules.py<a class="headerlink" href="#rules-py" title="Permalink to this headline"></a></h3>
+<p>Rules page for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.add_rule">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">add_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/rules.html#add_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.add_rule" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new routing rule and forwards the user to the rule edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_delete_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_delete_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/rules.html#rules_delete_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_delete_post" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the given routing rule</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_edit">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/rules.html#rules_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the edit page for the given routing rule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_edit_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/rules.html#rules_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the settings for the given routing rule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_test">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/rules.html#rules_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_test" title="Permalink to this definition"></a></dt>
+<dd><p>Evalutes if a given routing rule is valid. The rule and testing dictionary have to be passed as form parameters.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_test_completionseries">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_test_completionseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/rules.html#rules_test_completionseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_test_completionseries" title="Permalink to this definition"></a></dt>
+<dd><p>Evalutes if a given value for the series list for study completion is valid.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.show_rules">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">show_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/rules.html#show_rules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.show_rules" title="Permalink to this definition"></a></dt>
+<dd><p>Show all defined routing rules. Can be executed by all logged-in users.</p>
+</dd></dl>
+
+</div>
+</div>
 <div class="section" id="module-webinterface.services">
 <span id="webinterface-services"></span><h2>webinterface.services<a class="headerlink" href="#module-webinterface.services" title="Permalink to this headline"></a></h2>
 <div class="section" id="services-py">
@@ -144,6 +320,49 @@ can be modified if multiple instances of individual services should be used to i
 <dt class="sig sig-object py" id="webinterface.tagslist.read_tagslist">
 <span class="sig-prename descclassname"><span class="pre">webinterface.tagslist.</span></span><span class="sig-name descname"><span class="pre">read_tagslist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webinterface/tagslist.html#read_tagslist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.tagslist.read_tagslist" title="Permalink to this definition"></a></dt>
 <dd><p>Reads the list of supported DICOM tags with example values. This list is parsed from the C code of the getseqparam module.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-webinterface.targets">
+<span id="webinterface-targets"></span><h2>webinterface.targets<a class="headerlink" href="#module-webinterface.targets" title="Permalink to this headline"></a></h2>
+<div class="section" id="targets-py">
+<h3>targets.py<a class="headerlink" href="#targets-py" title="Permalink to this headline"></a></h3>
+<p>Targets page for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.add_target">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/targets.html#add_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.add_target" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new target.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.show_targets">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">show_targets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/targets.html#show_targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.show_targets" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all configured targets.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_delete_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_delete_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/targets.html#targets_delete_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_delete_post" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the given target.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_edit">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/targets.html#targets_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the edit page for the given target.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_edit_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">starlette.responses.RedirectResponse</span><span class="p"><span class="pre">,</span> </span><span class="pre">starlette.responses.PlainTextResponse</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/webinterface/targets.html#targets_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the given target using the form values posted with the request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_test_post">
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_test_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webinterface/targets.html#targets_test_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_test_post" title="Permalink to this definition"></a></dt>
+<dd><p>Tests the connectivity of the given target by executing ping and c-echo requests.</p>
 </dd></dl>
 
 </div>

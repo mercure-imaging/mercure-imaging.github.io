@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>routing.route_studies &mdash; mercure 0.2a documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<script>
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'mercure-imaging/Support'
+    };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>routing.route_studies</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for routing.route_studies</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">route_studies.py</span>
+<span class="sd">================</span>
+<span class="sd">Provides functions for routing and processing of studies (consisting of multiple series). </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Standard python includes</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">daiquiri</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="c1"># App-specific includes</span>
+<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">common.rule_evaluation</span> <span class="k">as</span> <span class="nn">rule_evaluation</span>
+<span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
+<span class="kn">import</span> <span class="nn">common.notification</span> <span class="k">as</span> <span class="nn">notification</span>
+<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">EmptyDict</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskHasStudy</span><span class="p">,</span> <span class="n">TaskInfo</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">mercure_defs</span><span class="p">,</span>
+    <span class="n">mercure_names</span><span class="p">,</span>
+    <span class="n">mercure_actions</span><span class="p">,</span>
+    <span class="n">mercure_rule</span><span class="p">,</span>
+    <span class="n">mercure_config</span><span class="p">,</span>
+    <span class="n">mercure_options</span><span class="p">,</span>
+    <span class="n">mercure_folders</span><span class="p">,</span>
+    <span class="n">mercure_sections</span><span class="p">,</span>
+    <span class="n">mercure_study</span><span class="p">,</span>
+    <span class="n">mercure_info</span><span class="p">,</span>
+    <span class="n">mercure_events</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Create local logger instance</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;route_studies&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="route_studies"><a class="viewcode-back" href="../../routing.html#routing.route_studies.route_studies">[docs]</a><span class="k">def</span> <span class="nf">route_studies</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Searches for completed studies and initiates the routing of the completed studies</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: Handle studies that exceed the &quot;force completion&quot; timeout in the &quot;CONDITION_RECEIVED_SERIES&quot; mode</span>
+    <span class="n">studies_ready</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span><span class="p">)</span> <span class="k">as</span> <span class="n">it</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_study_locked</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_study_complete</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">modificationTime</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span>
+                <span class="n">studies_ready</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">modificationTime</span>
+
+    <span class="c1"># Process all complete studies</span>
+    <span class="k">for</span> <span class="n">dir_entry</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">studies_ready</span><span class="p">):</span>
+        <span class="n">study_success</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">study_success</span> <span class="o">=</span> <span class="n">route_study</span><span class="p">(</span><span class="n">dir_entry</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Problems while processing study </span><span class="si">{dir_entry}</span><span class="s2">&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+            <span class="c1"># TODO: Add study events to bookkeeper</span>
+            <span class="c1"># monitor.send_series_event(monitor.s_events.ERROR, entry, 0, &quot;&quot;, &quot;Exception while processing&quot;)</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">study_success</span><span class="p">:</span>
+            <span class="c1"># Move the study to the error folder to avoid repeated processing</span>
+            <span class="n">push_studylevel_error</span><span class="p">(</span><span class="n">dir_entry</span><span class="p">)</span>
+
+        <span class="c1"># If termination is requested, stop processing after the active study has been completed</span>
+        <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">is_terminated</span><span class="p">():</span>
+            <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="is_study_locked"><a class="viewcode-back" href="../../routing.html#routing.route_studies.is_study_locked">[docs]</a><span class="k">def</span> <span class="nf">is_study_locked</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns true if the given folder is locked, i.e. if another process is already working on the study</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+    <span class="n">folder_status</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">DCMFILTER</span><span class="p">)))</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">folder_status</span></div>
+
+
+<div class="viewcode-block" id="is_study_complete"><a class="viewcode-back" href="../../routing.html#routing.route_studies.is_study_complete">[docs]</a><span class="k">def</span> <span class="nf">is_study_complete</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns true if the study in the given folder is ready for processing, i.e. if the completeness criteria of the triggered rule has been met</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Read stored task file to determine completeness criteria</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">task</span><span class="p">:</span> <span class="n">TaskHasStudy</span> <span class="o">=</span> <span class="n">TaskHasStudy</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">))</span>
+
+        <span class="n">study</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span>
+
+        <span class="c1"># Check if processing of the study has been enforced (e.g., via UI selection)</span>
+        <span class="k">if</span> <span class="n">study</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;complete_force&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">complete_trigger</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">complete_trigger</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">complete_trigger</span><span class="p">:</span>
+            <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Missing trigger condition in task file in study folder </span><span class="si">{folder}</span><span class="s2">&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">complete_required_series</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;complete_required_series&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># If trigger condition is received series but list of required series is missing, then switch to timeout mode instead</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">complete_trigger</span> <span class="o">==</span> <span class="n">mercure_rule</span><span class="o">.</span><span class="n">STUDY_TRIGGER_CONDITION_RECEIVED_SERIES</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">complete_required_series</span>
+        <span class="p">):</span>
+            <span class="n">complete_trigger</span> <span class="o">=</span> <span class="n">mercure_rule</span><span class="o">.</span><span class="n">STUDY_TRIGGER_CONDITION_TIMEOUT</span>
+            <span class="n">warning_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Missing series for trigger condition in study folder </span><span class="si">{folder}</span><span class="s2">. Using timeout instead&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_text</span><span class="p">)</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">warning_text</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Check for trigger condition</span>
+        <span class="k">if</span> <span class="n">complete_trigger</span> <span class="o">==</span> <span class="n">mercure_rule</span><span class="o">.</span><span class="n">STUDY_TRIGGER_CONDITION_TIMEOUT</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">check_study_timeout</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">complete_trigger</span> <span class="o">==</span> <span class="n">mercure_rule</span><span class="o">.</span><span class="n">STUDY_TRIGGER_CONDITION_RECEIVED_SERIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">check_study_series</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">complete_required_series</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid trigger condition in task file in study folder </span><span class="si">{folder}</span><span class="s2">&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid task file in study folder </span><span class="si">{folder}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="check_study_timeout"><a class="viewcode-back" href="../../routing.html#routing.route_studies.check_study_timeout">[docs]</a><span class="k">def</span> <span class="nf">check_study_timeout</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">TaskHasStudy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the duration since the last series of the study was received exceeds the study completion timeout</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">study</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span>
+    <span class="n">last_received_string</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">last_receive_time</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">last_received_string</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">last_receive_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">last_received_string</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">last_receive_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">study_complete_trigger</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="check_study_series"><a class="viewcode-back" href="../../routing.html#routing.route_studies.check_study_series">[docs]</a><span class="k">def</span> <span class="nf">check_study_series</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">TaskHasStudy</span><span class="p">,</span> <span class="n">required_series</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if all series required for study completion have been received</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">received_series</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Fetch the list of received series descriptions from the task file</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">received_series</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">received_series</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="n">received_series</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">study</span><span class="o">.</span><span class="n">received_series</span>
+
+    <span class="c1"># Check if the completion criteria is fulfilled</span>
+    <span class="k">return</span> <span class="n">rule_evaluation</span><span class="o">.</span><span class="n">parse_completion_series</span><span class="p">(</span><span class="n">required_series</span><span class="p">,</span> <span class="n">received_series</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="route_study"><a class="viewcode-back" href="../../routing.html#routing.route_studies.route_study">[docs]</a><span class="k">def</span> <span class="nf">route_study</span><span class="p">(</span><span class="n">study</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processses the study in the folder &#39;study&#39;. Loads the task file and delegates the action to helper functions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">study_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study</span>
+    <span class="k">if</span> <span class="n">is_study_locked</span><span class="p">(</span><span class="n">study_folder</span><span class="p">):</span>
+        <span class="c1"># If the study folder has been locked in the meantime, then skip and proceed with the next one</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># Create lock file in the study folder and prevent other instances from working on this study</span>
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">study_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t create lock file, so something must be seriously wrong</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to create study lock file </span><span class="si">{lock_file}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Read stored task file to determine completeness criteria</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">study_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid task file in study folder </span><span class="si">{study_folder}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">action_result</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">info</span><span class="p">:</span> <span class="n">TaskInfo</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="p">:</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Missing action in study folder </span><span class="si">{study_folder}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># TODO: Clean folder for duplicate DICOMs (i.e., if series have been sent twice -- check by instance UID)</span>
+
+    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">NOTIFICATION</span><span class="p">:</span>
+        <span class="n">action_result</span> <span class="o">=</span> <span class="n">push_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">ROUTE</span><span class="p">:</span>
+        <span class="n">action_result</span> <span class="o">=</span> <span class="n">push_studylevel_dispatch</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">PROCESS</span> <span class="ow">or</span> <span class="n">action</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">BOTH</span><span class="p">:</span>
+        <span class="n">action_result</span> <span class="o">=</span> <span class="n">push_studylevel_processing</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># This point should not be reached (discard actions should be handled on the series level)</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid task action in study folder </span><span class="si">{study_folder}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">action_result</span><span class="p">:</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error during processing of study </span><span class="si">{study}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">remove_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">lock</span><span class="p">):</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error removing folder of study </span><span class="si">{study}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="push_studylevel_dispatch"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_dispatch">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_dispatch</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pushes the study folder to the dispatchter, including the generated task file containing the destination information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">move_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s2">&quot;OUTGOING&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="push_studylevel_processing"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_processing">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_processing</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pushes the study folder to the processor, including the generated task file containing the processing instructions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">move_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s2">&quot;PROCESSING&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="push_studylevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_notification">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Executes the study-level reception notification</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if the applied_rule is available</span>
+    <span class="n">current_rule</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">applied_rule</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">current_rule</span><span class="p">:</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Missing applied_rule in task file in study </span><span class="si">{study}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Check if the mercure configuration still contains that rule</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">error_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Applied rule not existing anymore in mercure configuration </span><span class="si">{study}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_text</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># OK, now fire out the webhook</span>
+    <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">move_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="push_studylevel_error"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_error">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_error</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pushes the study folder to the error folder after unsuccessful processing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">study_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study</span>
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">study_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="c1"># Study normally shouldn&#39;t be locked at this point, but since it is, just exit and wait.</span>
+        <span class="c1"># Might require manual intervention if a former process terminated without removing the lock file</span>
+        <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t create lock file, so something must be seriously wrong</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to lock study for removal </span><span class="si">{lock_file}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">move_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">):</span>
+        <span class="c1"># At this point, we can only wait for manual intervention</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to move study to ERROR folder </span><span class="si">{lock_file}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">remove_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">lock</span><span class="p">):</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to delete study folder </span><span class="si">{lock_file}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="move_study_folder"><a class="viewcode-back" href="../../routing.html#routing.route_studies.move_study_folder">[docs]</a><span class="k">def</span> <span class="nf">move_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Moves the study subfolder to the specified destination with proper locking of the folders</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">source_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study</span>
+    <span class="n">destination_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">discard_folder</span>
+    <span class="k">if</span> <span class="n">destination</span> <span class="o">==</span> <span class="s2">&quot;PROCESSING&quot;</span><span class="p">:</span>
+        <span class="n">destination_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span>
+    <span class="k">elif</span> <span class="n">destination</span> <span class="o">==</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">:</span>
+        <span class="n">destination_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">success_folder</span>
+    <span class="k">elif</span> <span class="n">destination</span> <span class="o">==</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">:</span>
+        <span class="n">destination_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">error_folder</span>
+    <span class="k">elif</span> <span class="n">destination</span> <span class="o">==</span> <span class="s2">&quot;OUTGOING&quot;</span><span class="p">:</span>
+        <span class="n">destination_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unknown destination </span><span class="si">{destination}</span><span class="s2"> requested for </span><span class="si">{study}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Create unique name of destination folder</span>
+    <span class="n">destination_folder</span> <span class="o">+=</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">())</span>
+
+    <span class="c1"># Create the destination folder and validate that is has been created</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">destination_folder</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to create study destination folder </span><span class="si">{destination_folder}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">destination_folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Creating study destination folder not possible </span><span class="si">{destination_folder}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Create lock file in destination folder (to prevent any other module to work on the folder). Note that</span>
+    <span class="c1"># the source folder has already been locked in the parent function.</span>
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destination_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t create lock file, so something must be seriously wrong</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to create lock file </span><span class="si">{destination_folder}</span><span class="s2">/</span><span class="si">{mercure_names.LOCK}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Move all files except the lock file</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">source_folder</span><span class="p">):</span>
+        <span class="c1"># Move all files but exclude the lock file in the source folder</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">source_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">destination_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Problem while pushing file </span><span class="si">{entry}</span><span class="s2"> from </span><span class="si">{source_folder}</span><span class="s2"> to </span><span class="si">{destination_folder}</span><span class="s2">&quot;</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span>
+                    <span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">,</span>
+                <span class="p">)</span>
+
+    <span class="c1"># Remove the lock file in the target folder. Would happen automatically when leaving the function,</span>
+    <span class="c1"># but better to do explicitly with error handling</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{lock_file}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="remove_study_folder"><a class="viewcode-back" href="../../routing.html#routing.route_studies.remove_study_folder">[docs]</a><span class="k">def</span> <span class="nf">remove_study_folder</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes a study folder containing nothing but the lock file (called during cleanup after all files have</span>
+<span class="sd">    been moved somewhere else already)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">study_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study</span>
+    <span class="c1"># Remove the lock file</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file while removing study folder </span><span class="si">{study}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1"># Remove the empty study folder</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">study_folder</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to delete folder </span><span class="si">{study_folder}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to delete study folder </span><span class="si">{study_folder}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
