@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monitoring &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -51,6 +52,7 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Monitoring</a><ul>
@@ -62,6 +64,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -72,8 +75,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -99,10 +103,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="monitoring">
+  <section id="monitoring">
 <h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline"></a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The information on this page is still being updated for mercure version 0.2.</p>
+</div>
 <p>mercure provides three different mechanisms for monitoring the router activity and health.</p>
-<div class="section" id="log-files">
+<section id="log-files">
 <h2>Log files<a class="headerlink" href="#log-files" title="Permalink to this headline"></a></h2>
 <p>All mercure services write detailed logging information with timestamps into system log files. The most convenient way to review these logs is to use the “Logs” page of the mercure web interface. Here you can see a separate tab for every service. The logs are updated whenever you switch between tabs and when you click the refresh button on the top-right.</p>
 <a class="border reference internal image-reference" href="_images/ui_log.png"><img alt="_images/ui_log.png" class="border align-center" src="_images/ui_log.png" style="width: 550px;" /></a>
@@ -115,8 +123,8 @@
 <p class="admonition-title">Tip</p>
 <p>The log files can also be viewed in the terminal using the journalctl command by providing the service name as argument. For example, “journalctl -u mercure_ui.service” shows the log of the webgui. You can see the names of the different services as tooltip when hovering over the tabs on the “Logs” page.</p>
 </div>
-</div>
-<div class="section" id="graphite">
+</section>
+<section id="graphite">
 <h2>Graphite<a class="headerlink" href="#graphite" title="Permalink to this headline"></a></h2>
 <p><a class="reference external" href="https://graphiteapp.org/">Graphite</a> is a very powerful tool for monitoring the health of a server. It can collect time-series data from various sources and stores the data in a database. Instead of displaying the data directly with Graphite, the collected data is often visualized using <a class="reference external" href="https://grafana.com/">Grafana</a>, which makes it very easy to create dashboards for various data sources and to setup alerts.</p>
 <p>We highly recommend that you monitor your mercure server with Graphite and Grafana. In a typical setup, Graphite and Grafana are running on a separate monitoring server. Basic health parameters like the available disk space, CPU load, and memory usage can be collected by installing the <a class="reference external" href="https://collectd.org/">collectd</a> service on your server, which will transmit the information to your Graphite instance.</p>
@@ -213,8 +221,8 @@
     <span class="n">external</span><span class="p">:</span> <span class="n">true</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="bookkeeper-with-redash">
+</section>
+<section id="bookkeeper-with-redash">
 <h2>Bookkeeper with Redash<a class="headerlink" href="#bookkeeper-with-redash" title="Permalink to this headline"></a></h2>
 <p>All mercure components transfer real-time information about their activities to mercure’ bookkeeper service, which acts as central monitoring hub. The bookkeeper service can be disabled if not needed, but it’s highly recommended to use it, as it allows analyzing which series have been processed (or discarded) and what the processing times were. Of course, it also keeps track of all errors and processing abnormalities that might occur. Moreover, because bookkeeper tracks all DICOM files that pass through the router, including series that are discarded, the bookkeeper can be used for data mining that exceeds the capabilities of many PACS systems (e.g., searching for series where a certain contrast agent has been administered).</p>
 <p>Bookkeeper is running as RESTful service on a TCP/IP port (by default 8080) and stores the received information in a PostgreSQL database, which can be queried for analytics purpose.</p>
@@ -263,8 +271,8 @@
 <li><p>A “Series Detail” dashboard that is cross-linked from the other dashboards and shows all collected information for a selected series, including all DICOM tags and processing events</p></li>
 </ul>
 <p>Instructions how to create these dashboards are provided in the <a class="reference internal" href="dashboards.html"><span class="doc">Dashboard Gallery</span></a>.</p>
-</div>
-<div class="section" id="alerts">
+</section>
+<section id="alerts">
 <h2>Alerts<a class="headerlink" href="#alerts" title="Permalink to this headline"></a></h2>
 <p>It is highly recommended to setup alerts for processing errors and server problems, so that you are automatically notified if the mercure router needs your attention. Both Grafana and Redash provide functions for automatic alerts that can be utilized. With both tools, alerts can be delivered via email. However, we recommend using a messaging tool that supports custom webhooks, such as <a class="reference external" href="https://slack.com">Slack</a>. In this way, alerts can be delivered in real-time and across multiple devices, including smartphones.</p>
 <p>Examples for useful alerts include:</p>
@@ -280,8 +288,8 @@
 <p class="admonition-title">Important</p>
 <p>If you develop your own alert scripts, make sure to NEVER post any sensitive patient information (PHI) to the messaging service</p>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

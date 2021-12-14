@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>mercure DICOM Orchestrator &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -50,11 +51,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -65,8 +68,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -92,13 +96,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="mercure-dicom-orchestrator">
+  <section id="mercure-dicom-orchestrator">
 <h1>mercure DICOM Orchestrator<a class="headerlink" href="#mercure-dicom-orchestrator" title="Permalink to this headline"></a></h1>
 <a class="reference internal image-reference" href="_images/scheme.png"><img alt="_images/scheme.png" class="align-center" src="_images/scheme.png" style="width: 550px;" /></a>
-<p>mercure is a flexible open-source DICOM orchestration solution with a simple-to-use web interface and extensive monitoring options. It provides functions for routing DICOM studies as well as for running DICOM processing steps, such as executing inference of AI models and dispatching the results to the desired destinations. Processing steps can either be executed directly on the mercure server (as Docker containers) or can be executed on connected cluster nodes, typically located on-premise but potentially also running in the cloud.</p>
+<p>mercure is a flexible open-source DICOM orchestration platform. It offers an intuitive web-based user interface as well as extensive monitoring options, making it suitable for routine applications that require high availability. It can be used for dispatching DICOM studies to different targets based on easily definable routing rules and for processing DICOM series with custom-developed algorithms, such as inference of AI models for medical imaging. Processing algorithms can either be executed directly on a mercure server (as Docker containers) or can be executed on connected cluster nodes, typically located on premise but possibly also running as cloud instances. Implemented processing modules can be shared via Docker Hub.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>This documentation needs to be updated for the new mercure version 0.2. Individual sections may be outdated.</p>
+<p>Some sections of the documentation are still being updated for mercure version 0.2. Pages with information that require modification are marked accordingly.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>
@@ -109,14 +113,15 @@
 <li class="toctree-l2"><a class="reference internal" href="intro.html#architecture">Architecture</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#including-orthanc-and-ohif">Including Orthanc and OHIF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#other-installation-modes">Other installation modes</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installation-types">Installation types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#installing-mercure">Installing mercure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#creating-data-storage">Creating data storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#installing-postgresql">Installing PostgreSQL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#basic-mercure-configuration">Basic mercure configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#first-start-of-mercure">First start of mercure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#completing-the-postgresql-configuration">Completing the PostgreSQL configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#installing-redash">Installing Redash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#locations">Locations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#congratulations">Congratulations</a></li>
 </ul>
 </li>
@@ -147,9 +152,11 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#configuration-files">Configuration files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#additional-settings">Additional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#installing-redash">Installing Redash</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#scaling-services">Scaling services</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -166,7 +173,8 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
@@ -180,14 +188,14 @@
 <li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="roadmap.html#planned">Planned</a></li>
 <li class="toctree-l2"><a class="reference internal" href="roadmap.html#completed">Completed</a></li>
 </ul>
 </li>
 </ul>
 </div>
-</div>
+</section>
 
 
            </div>

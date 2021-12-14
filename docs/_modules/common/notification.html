@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -100,56 +103,45 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Standard python includes</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 
 <span class="c1"># App-specific includes</span>
-<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
-<span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
-<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">mercure_defs</span><span class="p">,</span>
-    <span class="n">mercure_names</span><span class="p">,</span>
-    <span class="n">mercure_sections</span><span class="p">,</span>
-    <span class="n">mercure_rule</span><span class="p">,</span>
-    <span class="n">mercure_config</span><span class="p">,</span>
-    <span class="n">mercure_options</span><span class="p">,</span>
     <span class="n">mercure_events</span><span class="p">,</span>
 <span class="p">)</span>
+
 
 <span class="c1"># Create local logger instance</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;notification&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="send_webhook"><a class="viewcode-back" href="../../common.html#common.notification.send_webhook">[docs]</a><span class="k">def</span> <span class="nf">send_webhook</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+<div class="viewcode-block" id="send_webhook"><a class="viewcode-back" href="../../common.html#common.notification.send_webhook">[docs]</a><span class="k">def</span> <span class="nf">send_webhook</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">url</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">payload</span><span class="p">):</span>
         <span class="k">return</span>
 
-    <span class="c1"># TODO: Replace macros in payload</span>
+    <span class="c1"># Replace macros in payload</span>
+    <span class="n">payload_parsed</span> <span class="o">=</span> <span class="n">payload</span>
 
+    <span class="n">payload_parsed</span><span class="o">=</span><span class="n">payload_parsed</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@rule@&quot;</span><span class="p">,</span><span class="n">rule_name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">:</span>
-        <span class="k">pass</span>
+        <span class="n">payload_parsed</span><span class="o">=</span><span class="n">payload_parsed</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@event@&quot;</span><span class="p">,</span><span class="s2">&quot;RECEIVED&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">:</span>
-        <span class="k">pass</span>
+        <span class="n">payload_parsed</span><span class="o">=</span><span class="n">payload_parsed</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@event@&quot;</span><span class="p">,</span><span class="s2">&quot;COMPLETED&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span>
-        <span class="k">pass</span>
+        <span class="n">payload_parsed</span><span class="o">=</span><span class="n">payload_parsed</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@event@&quot;</span><span class="p">,</span><span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>    
 
-    <span class="c1"># TODO: Incomplete implementation</span>
-
-    <span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>         
+        <span class="n">payload_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">payload_parsed</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">payload</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span>
+            <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload_data</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: Webhook notification failed (status code </span><span class="si">{response.status_code}</span><span class="s2">)&quot;</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: </span><span class="si">{response.text}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">204</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: Webhook notification failed (status code </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: Webhook notification failed&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>

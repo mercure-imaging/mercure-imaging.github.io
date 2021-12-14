@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -102,17 +105,19 @@
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
+
+<span class="c1"># App-specific includes</span>
 <span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">config</span>
+
 
 <span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">())</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
 
 <span class="n">services_filename</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span>
-    <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/../configuration&quot;</span><span class="p">)</span>
+    <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span>
 <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/services.json&quot;</span>
 
 <span class="n">services_list</span> <span class="o">=</span> <span class="p">{}</span>
@@ -125,9 +130,9 @@
     <span class="n">services_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">services_filename</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">services_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Services file not found: </span><span class="si">{services_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Services file not found: </span><span class="si">{</span><span class="n">services_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading services from: </span><span class="si">{services_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading services from: </span><span class="si">{</span><span class="n">services_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">services_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">services_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span></div>

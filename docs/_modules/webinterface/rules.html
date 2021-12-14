@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -100,7 +103,6 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Standard python includes</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -174,7 +176,7 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write configuration. Try again.&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created rule </span><span class="si">{newrule}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created rule </span><span class="si">{</span><span class="n">newrule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_webgui_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">w_events</span><span class="o">.</span><span class="n">RULE_CREATE</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">newrule</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/rules/edit/&quot;</span> <span class="o">+</span> <span class="n">newrule</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
@@ -249,6 +251,7 @@
         <span class="n">priority</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;priority&quot;</span><span class="p">,</span> <span class="s2">&quot;normal&quot;</span><span class="p">),</span>
         <span class="n">processing_module</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processing_module&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">processing_settings</span><span class="o">=</span><span class="n">new_processing_settings</span><span class="p">,</span>
+        <span class="n">processing_retain_images</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processing_retain_images&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
         <span class="n">notification_webhook</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">notification_payload</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">notification_trigger_reception</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_trigger_reception&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
@@ -262,7 +265,7 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write configuration. Try again.&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited rule </span><span class="si">{editrule}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited rule </span><span class="si">{</span><span class="n">editrule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_webgui_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">w_events</span><span class="o">.</span><span class="n">RULE_EDIT</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">editrule</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/rules&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
@@ -286,7 +289,7 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write configuration. Try again.&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted rule </span><span class="si">{deleterule}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted rule </span><span class="si">{</span><span class="n">deleterule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_webgui_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">w_events</span><span class="o">.</span><span class="n">RULE_DELETE</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">deleterule</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/rules&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 

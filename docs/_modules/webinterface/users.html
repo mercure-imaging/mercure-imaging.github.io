@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -140,10 +143,13 @@
 <span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">())</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span>
 
+<span class="c1"># passlib is way too chatty in debug mode</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;passlib&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
 <span class="n">users_timestamp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">users_filename</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span>
-    <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/../configuration&quot;</span><span class="p">)</span>
+    <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span>
 <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/users.json&quot;</span>
 
 <span class="n">users_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">User</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -160,7 +166,7 @@
     <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">users_file</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">users_file</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Users file locked: </span><span class="si">{lock_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Users file locked: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">users_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="c1"># Get the modification date/time of the configuration file</span>
@@ -175,7 +181,7 @@
         <span class="k">if</span> <span class="n">timestamp</span> <span class="o">&lt;=</span> <span class="n">users_timestamp</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">users_list</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading users from: </span><span class="si">{users_filename}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading users from: </span><span class="si">{</span><span class="n">users_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">users_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">users_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
@@ -204,7 +210,7 @@
     <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">users_file</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">users_file</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Users file locked: </span><span class="si">{lock_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Users file locked: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">users_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">users_list</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -215,7 +221,7 @@
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="n">users_timestamp</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored user list into: </span><span class="si">{users_filename}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored user list into: </span><span class="si">{</span><span class="n">users_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="evaluate_password"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.evaluate_password">[docs]</a><span class="k">def</span> <span class="nf">evaluate_password</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -312,7 +318,7 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write user list. Try again.&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created user </span><span class="si">{newuser}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created user </span><span class="si">{</span><span class="n">newuser</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_webgui_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">w_events</span><span class="o">.</span><span class="n">USER_CREATE</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">newuser</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/users/edit/&quot;</span> <span class="o">+</span> <span class="n">newuser</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
@@ -377,7 +383,7 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write user list. Try again.&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited user </span><span class="si">{edituser}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited user </span><span class="si">{</span><span class="n">edituser</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_webgui_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">w_events</span><span class="o">.</span><span class="n">USER_EDIT</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">edituser</span><span class="p">)</span>
     <span class="k">if</span> <span class="s2">&quot;own_settings&quot;</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span>
@@ -404,7 +410,7 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write user list. Try again.&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted user </span><span class="si">{deleteuser}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted user </span><span class="si">{</span><span class="n">deleteuser</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_webgui_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">w_events</span><span class="o">.</span><span class="n">USER_DELETE</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">deleteuser</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/users&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 </pre></div>

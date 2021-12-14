@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Package process &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -51,11 +52,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -66,7 +69,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code Documentation</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="code.html">Code Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
@@ -90,7 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -107,7 +111,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">Code Documentation</a> &raquo;</li>
+          <li><a href="code.html">Code Documentation</a> &raquo;</li>
       <li>Package process</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -117,11 +121,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="package-process">
+  <section id="package-process">
 <h1>Package process<a class="headerlink" href="#package-process" title="Permalink to this headline"></a></h1>
-<div class="section" id="module-process.process_series">
+<section id="module-process.process_series">
 <span id="process-process-series"></span><h2>process.process_series<a class="headerlink" href="#module-process.process_series" title="Permalink to this headline"></a></h2>
-<div class="section" id="process-series-py">
+<section id="process-series-py">
 <h3>process_series.py<a class="headerlink" href="#process-series-py" title="Permalink to this headline"></a></h3>
 <p>Helper functions for mercure’s processor module</p>
 <dl class="py function">
@@ -149,11 +153,26 @@
 <span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">process_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/process/process_series.html#process_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.process_series" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-</div>
-</div>
-<div class="section" id="module-process.status">
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.push_input_images">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">push_input_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_folder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/process/process_series.html#push_input_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.push_input_images" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.push_input_task">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">push_input_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_folder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/process/process_series.html#push_input_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.push_input_task" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.trigger_notification">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">trigger_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_info</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="common.html#common.types.TaskInfo" title="common.types.TaskInfo"><span class="pre">common.types.TaskInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/process/process_series.html#trigger_notification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.trigger_notification" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+<section id="module-process.status">
 <span id="process-status"></span><h2>process.status<a class="headerlink" href="#module-process.status" title="Permalink to this headline"></a></h2>
-<div class="section" id="status-py">
+<section id="status-py">
 <h3>status.py<a class="headerlink" href="#status-py" title="Permalink to this headline"></a></h3>
 <p>Helper functions for mercure’s processor module</p>
 <dl class="py function">
@@ -162,9 +181,9 @@
 <dd><p>Checks if a case in the processing folder is ready for the processor.</p>
 </dd></dl>
 
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

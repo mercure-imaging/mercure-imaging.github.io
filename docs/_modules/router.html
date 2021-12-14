@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -105,11 +108,9 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">graphyte</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">import</span> <span class="nn">hupper</span>
-
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span><span class="p">,</span> <span class="n">mercure_names</span>
@@ -118,6 +119,7 @@
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">from</span> <span class="nn">routing.route_series</span> <span class="kn">import</span> <span class="n">route_series</span><span class="p">,</span> <span class="n">route_error_files</span>
 <span class="kn">from</span> <span class="nn">routing.route_studies</span> <span class="kn">import</span> <span class="n">route_studies</span>
+
 
 <span class="c1"># Setup daiquiri logger</span>
 <span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
@@ -208,7 +210,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">route_series</span><span class="p">(</span><span class="n">complete_entry</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Problems while processing series </span><span class="si">{complete_entry}</span><span class="s2">&quot;</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Problems while processing series </span><span class="si">{</span><span class="n">complete_entry</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
             <span class="n">monitor</span><span class="o">.</span><span class="n">send_series_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">complete_entry</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
             <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
@@ -237,7 +239,7 @@
         <span class="n">reloader</span> <span class="o">=</span> <span class="n">hupper</span><span class="o">.</span><span class="n">start_reloader</span><span class="p">(</span><span class="s2">&quot;router.main&quot;</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mercure DICOM Router ver </span><span class="si">{mercure_defs.VERSION}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mercure DICOM Router ver </span><span class="si">{</span><span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-----------------------------&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -260,24 +262,24 @@
 
     <span class="n">appliance_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">appliance_name</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Appliance name = </span><span class="si">{appliance_name}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  name = </span><span class="si">{instance_name}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  PID  = {os.getpid()}&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Appliance name = </span><span class="si">{</span><span class="n">appliance_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  name = </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  PID  = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
 
     <span class="n">monitor</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">bookkeeper</span><span class="p">)</span>
-    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">BOOT</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;PID = {os.getpid()}&quot;</span><span class="p">)</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">BOOT</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;PID = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending events to graphite server: </span><span class="si">{config.mercure.graphite_ip}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending events to graphite server: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">graphite_prefix</span> <span class="o">=</span> <span class="s2">&quot;mercure.&quot;</span> <span class="o">+</span> <span class="n">appliance_name</span> <span class="o">+</span> <span class="s2">&quot;.router.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span>
         <span class="n">graphyte</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_port</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">graphite_prefix</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Incoming folder: </span><span class="si">{config.mercure.incoming_folder}</span><span class="s2"></span>
-<span class="s2">        Studies folder: </span><span class="si">{config.mercure.studies_folder}</span><span class="s2"></span>
-<span class="s2">        Outgoing folder: </span><span class="si">{config.mercure.outgoing_folder}</span><span class="s2"></span>
-<span class="s2">        Processing folder: </span><span class="si">{config.mercure.processing_folder}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Incoming folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Studies folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Outgoing folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Processing folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
     <span class="p">)</span>
 
     <span class="c1"># Start the timer that will periodically trigger the scan of the incoming folder</span>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Service bookkeeper &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -19,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Service cleaner" href="cleaner.html" />
-    <link rel="prev" title="Code Documentation" href="modules.html" />
+    <link rel="prev" title="Code Documentation" href="code.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
       room: 'mercure-imaging/Support'
@@ -51,11 +52,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -66,22 +69,25 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code Documentation</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="code.html">Code Documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Service bookkeeper</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#bookkeeper-py">bookkeeper.py</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processor.html">Service processor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
 <li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dispatch.html">Package dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process.html">Package process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="routing.html">Package routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -98,7 +104,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">Code Documentation</a> &raquo;</li>
+          <li><a href="code.html">Code Documentation</a> &raquo;</li>
       <li>Service bookkeeper</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -108,9 +114,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="module-bookkeeper">
+  <section id="module-bookkeeper">
 <span id="service-bookkeeper"></span><h1>Service bookkeeper<a class="headerlink" href="#module-bookkeeper" title="Permalink to this headline"></a></h1>
-<div class="section" id="bookkeeper-py">
+<section id="bookkeeper-py">
 <h2>bookkeeper.py<a class="headerlink" href="#bookkeeper-py" title="Permalink to this headline"></a></h2>
 <p>The bookkeeper service of mercure, which receives notifications from all mercure services
 and stores the information in a Postgres database.</p>
@@ -189,14 +195,14 @@ be created.</p>
 <dd><p>Endpoint for testing that the bookkeeper is active.</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="modules.html" class="btn btn-neutral float-left" title="Code Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="code.html" class="btn btn-neutral float-left" title="Code Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="cleaner.html" class="btn btn-neutral float-right" title="Service cleaner" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

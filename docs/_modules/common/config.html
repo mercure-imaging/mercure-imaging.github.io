@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -102,17 +105,17 @@
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
-<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span><span class="p">,</span> <span class="n">mercure_folders</span>
-<span class="kn">from</span> <span class="nn">mypy_extensions</span> <span class="kn">import</span> <span class="n">TypedDict</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Config</span>
 
 <span class="c1"># Create local logger instance</span>
@@ -121,19 +124,19 @@
 <span class="n">configuration_timestamp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">configuration_filename</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span>
-    <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/../configuration&quot;</span><span class="p">)</span>
+    <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span>
 <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/mercure.json&quot;</span>
 
 <span class="n">mercure_defaults</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;appliance_name&quot;</span><span class="p">:</span> <span class="s2">&quot;master&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">104</span><span class="p">,</span>
-    <span class="s2">&quot;incoming_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;./incoming&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;studies_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;./studies&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;outgoing_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;./outgoing&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;./success&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;./error&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;discard_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;./discard&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;processing_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;./processing&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">11112</span><span class="p">,</span>
+    <span class="s2">&quot;incoming_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/incoming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;studies_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/studies&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;outgoing_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/outgoing&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/success&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/error&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;discard_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/discard&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;processing_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/processing&quot;</span><span class="p">,</span>
     <span class="s2">&quot;router_scan_interval&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># in seconds</span>
     <span class="s2">&quot;dispatcher_scan_interval&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># in seconds</span>
     <span class="s2">&quot;cleaner_scan_interval&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># in seconds</span>
@@ -158,6 +161,9 @@
 
 
 <div class="viewcode-block" id="get_loglevel"><a class="viewcode-back" href="../../common.html#common.config.get_loglevel">[docs]</a><span class="k">def</span> <span class="nf">get_loglevel</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;pytest|py.test&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
+
     <span class="n">level</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_LOG_LEVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
@@ -184,7 +190,7 @@
     <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">configuration_file</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file locked: </span><span class="si">{lock_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file locked: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">configuration_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="c1"># Get the modification date/time of the configuration file</span>
@@ -199,7 +205,7 @@
         <span class="k">if</span> <span class="n">timestamp</span> <span class="o">&lt;=</span> <span class="n">configuration_timestamp</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mercure</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading configuration from: </span><span class="si">{configuration_filename}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading configuration from: </span><span class="si">{</span><span class="n">configuration_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">loaded_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
@@ -223,7 +229,7 @@
             <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;Configuration updated&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">mercure</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file not found: </span><span class="si">{configuration_file}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file not found: </span><span class="si">{</span><span class="n">configuration_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="save_config"><a class="viewcode-back" href="../../common.html#common.config.save_config">[docs]</a><span class="k">def</span> <span class="nf">save_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -236,12 +242,12 @@
     <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">configuration_file</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file locked: </span><span class="si">{lock_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file locked: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to lock configuration file: </span><span class="si">{lock_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to lock configuration file: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">mercure</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -253,13 +259,13 @@
         <span class="n">configuration_timestamp</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;Saved new configuration.&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored configuration into: </span><span class="si">{configuration_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored configuration into: </span><span class="si">{</span><span class="n">configuration_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{lock_file}</span><span class="s2">&quot;</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
         <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
         <span class="k">return</span></div>
@@ -273,24 +279,24 @@
     <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">configuration_file</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file locked: </span><span class="si">{lock_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file locked: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to lock configuration file: </span><span class="si">{lock_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to lock configuration file: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">json_content</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;Wrote configuration file.&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wrote configuration into: </span><span class="si">{configuration_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wrote configuration into: </span><span class="si">{</span><span class="n">configuration_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{lock_file}</span><span class="s2">&quot;</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
         <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
         <span class="k">return</span></div>
@@ -322,7 +328,7 @@
             <span class="n">entry</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">mercure</span><span class="o">.</span><span class="n">dict</span><span class="p">()[</span><span class="n">entry</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Folder not found {mercure.dict()[entry]}&quot;</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Folder not found </span><span class="si">{</span><span class="n">mercure</span><span class="o">.</span><span class="n">dict</span><span class="p">()[</span><span class="n">entry</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
             <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>

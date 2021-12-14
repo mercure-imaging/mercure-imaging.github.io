@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -98,24 +101,28 @@
 <span class="sd">=============</span>
 <span class="sd">The dispatcher service of mercure that executes the DICOM transfer to the different targets.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">import</span> <span class="nn">graphyte</span>
 <span class="kn">import</span> <span class="nn">hupper</span>
 
+<span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
 <span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
 <span class="kn">from</span> <span class="nn">dispatch.status</span> <span class="kn">import</span> <span class="n">has_been_send</span><span class="p">,</span> <span class="n">is_ready_for_sending</span>
 <span class="kn">from</span> <span class="nn">dispatch.send</span> <span class="kn">import</span> <span class="n">execute</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
 
-<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span><span class="p">,</span> <span class="n">mercure_folders</span>
 
+<span class="c1"># Setup daiquiri logger</span>
 <span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
     <span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">(),</span>
     <span class="n">outputs</span><span class="o">=</span><span class="p">(</span>
@@ -126,8 +133,13 @@
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
+<span class="c1"># Create local logger instance</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;dispatcher&quot;</span><span class="p">)</span>
 <span class="n">main_loop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: helper.RepeatedTimer # type: ignore</span>
+
+
+<span class="n">dispatcher_lockfile</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">dispatcher_is_locked</span> <span class="o">=</span> <span class="kc">False</span>
 
 
 <div class="viewcode-block" id="terminate_process"><a class="viewcode-back" href="../dispatcher.html#dispatcher.terminate_process">[docs]</a><span class="k">def</span> <span class="nf">terminate_process</span><span class="p">(</span><span class="n">signalNumber</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -142,6 +154,9 @@
 
 
 <div class="viewcode-block" id="dispatch"><a class="viewcode-back" href="../dispatcher.html#dispatcher.dispatch">[docs]</a><span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">dispatcher_lockfile</span>
+    <span class="k">global</span> <span class="n">dispatcher_is_locked</span>
+
     <span class="sd">&quot;&quot;&quot;Main entry function.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">is_terminated</span><span class="p">():</span>
         <span class="k">return</span>
@@ -164,17 +179,29 @@
     <span class="n">retry_max</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">retry_max</span>
     <span class="n">retry_delay</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">retry_delay</span>
 
-    <span class="c1"># TODO: Sort list so that the oldest DICOMs get dispatched first</span>
-    <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="p">)</span> <span class="k">as</span> <span class="n">it</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_been_send</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ready_for_sending</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending folder </span><span class="si">{entry.path}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">execute</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">),</span> <span class="n">success_folder</span><span class="p">,</span> <span class="n">error_folder</span><span class="p">,</span> <span class="n">retry_max</span><span class="p">,</span> <span class="n">retry_delay</span><span class="p">)</span>
+    <span class="c1"># Obtain a sorted folder list, so that the oldest DICOMs get dispatched first</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="c1"># First, check if dispatching might have been suspended via the UI</span>
+        <span class="k">if</span> <span class="n">dispatcher_lockfile</span> <span class="ow">and</span> <span class="n">dispatcher_lockfile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dispatcher_is_locked</span><span class="p">:</span>
+                <span class="n">dispatcher_is_locked</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dispatching halted&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dispatcher_is_locked</span><span class="p">:</span>
+                <span class="n">dispatcher_is_locked</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dispatching resumed&quot;</span><span class="p">)</span>
 
-            <span class="c1"># If termination is requested, stop processing series after the</span>
-            <span class="c1"># active one has been completed</span>
-            <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">is_terminated</span><span class="p">():</span>
-                <span class="k">break</span></div>
+        <span class="c1"># Now process the folders that are ready for dispatching</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_been_send</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_ready_for_sending</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending folder </span><span class="si">{</span><span class="n">entry</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">execute</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">entry</span><span class="p">),</span> <span class="n">success_folder</span><span class="p">,</span> <span class="n">error_folder</span><span class="p">,</span> <span class="n">retry_max</span><span class="p">,</span> <span class="n">retry_delay</span><span class="p">)</span>
+
+        <span class="c1"># If termination is requested, stop processing series after the</span>
+        <span class="c1"># active one has been completed</span>
+        <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">is_terminated</span><span class="p">():</span>
+            <span class="k">break</span></div>
 
 
 <div class="viewcode-block" id="exit_dispatcher"><a class="viewcode-back" href="../dispatcher.html#dispatcher.exit_dispatcher">[docs]</a><span class="k">def</span> <span class="nf">exit_dispatcher</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -183,11 +210,13 @@
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../dispatcher.html#dispatcher.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">dispatcher_lockfile</span>
+
     <span class="k">if</span> <span class="s2">&quot;--reload&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_ENV&quot;</span><span class="p">,</span> <span class="s2">&quot;PROD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;dev&quot;</span><span class="p">:</span>
         <span class="c1"># start_reloader will only return in a monitored subprocess</span>
         <span class="n">reloader</span> <span class="o">=</span> <span class="n">hupper</span><span class="o">.</span><span class="n">start_reloader</span><span class="p">(</span><span class="s2">&quot;dispatcher.main&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mercure DICOM Dispatcher ver </span><span class="si">{mercure_defs.VERSION}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mercure DICOM Dispatcher ver </span><span class="si">{</span><span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-----------------------------&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -207,16 +236,16 @@
 
     <span class="n">appliance_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">appliance_name</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Appliance name = </span><span class="si">{appliance_name}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  name = </span><span class="si">{instance_name}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  PID  = {os.getpid()}&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Appliance name = </span><span class="si">{</span><span class="n">appliance_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  name = </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  PID  = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
 
     <span class="n">monitor</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;dispatcher&quot;</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">bookkeeper</span><span class="p">)</span>
-    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">BOOT</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;PID = {os.getpid()}&quot;</span><span class="p">)</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">BOOT</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;PID = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending events to graphite server: </span><span class="si">{config.mercure.graphite_ip}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending events to graphite server: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">graphite_prefix</span> <span class="o">=</span> <span class="s2">&quot;mercure.&quot;</span> <span class="o">+</span> <span class="n">appliance_name</span> <span class="o">+</span> <span class="s2">&quot;.dispatcher.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span>
         <span class="n">graphyte</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
             <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="p">,</span>
@@ -224,7 +253,8 @@
             <span class="n">prefix</span><span class="o">=</span><span class="n">graphite_prefix</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dispatching folder: </span><span class="si">{config.mercure.outgoing_folder}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dispatching folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">dispatcher_lockfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">HALT</span><span class="p">)</span>
 
     <span class="k">global</span> <span class="n">main_loop</span>
     <span class="n">main_loop</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">RepeatedTimer</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">dispatcher_scan_interval</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">exit_dispatcher</span><span class="p">,</span> <span class="p">{})</span>

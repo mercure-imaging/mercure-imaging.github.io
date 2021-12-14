@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQ &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -19,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Discussion Board" href="support.html" />
-    <link rel="prev" title="Advanced Topics" href="advanced.html" />
+    <link rel="prev" title="Module Development" href="modules.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
       room: 'mercure-imaging/Support'
@@ -51,11 +52,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">FAQ</a></li>
@@ -66,8 +69,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -93,7 +97,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="faq">
+  <section id="faq">
 <h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline"></a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -108,53 +112,54 @@
 </ul>
 </div>
 <hr class="docutils" />
-<div class="section" id="does-mercure-require-specific-hardware">
+<section id="does-mercure-require-specific-hardware">
 <h2><a class="toc-backref" href="#id1">Does mercure require specific hardware?</a><a class="headerlink" href="#does-mercure-require-specific-hardware" title="Permalink to this headline"></a></h2>
-<p>mercure should run on a wide range of different hardware configurations. Since the routing process is largely I/O bound, it is recommended to use SSD drives and optical network cards when choosing server specifications. However, this is just a recommendation and not required. mercure also runs on virtual servers with small foot print. However, it is required to provide sufficient disk space (ideally 500+ GB), so that mercure can buffer incoming images and keep discarded images for the desired retention period.</p>
-</div>
+<p>mercure runs on a wide range of different hardware configurations. Since the routing process is largely I/O bound, it is recommended to use SSD drives for the storage folders and optical network cards when choosing server specifications. However, this is just a recommendation and not required. mercure also runs on virtual servers with small foot print. However, it is required to provide sufficient disk space (ideally 500+ GB), so that mercure can buffer incoming images and keep discarded images for the desired retention period.</p>
+</section>
 <hr class="docutils" />
-<div class="section" id="what-is-the-purpose-of-the-retention-period">
+<section id="what-is-the-purpose-of-the-retention-period">
 <h2><a class="toc-backref" href="#id2">What is the purpose of the retention period?</a><a class="headerlink" href="#what-is-the-purpose-of-the-retention-period" title="Permalink to this headline"></a></h2>
 <p>If mercure receives images and no routing rule does apply, the images will not be deleted but instead kept in the “discard” folder for a retention period. This enables resending the images to the router again if a routing rule had not been properly configured (otherwise, the images would be lost). The retention period for which the files will be kept in the discard folder can be configured in the configuration files mercure.json.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="can-the-series-be-dispatched-in-a-certain-order">
+<section id="can-the-series-be-dispatched-in-a-certain-order">
 <h2><a class="toc-backref" href="#id3">Can the series be dispatched in a certain order?</a><a class="headerlink" href="#can-the-series-be-dispatched-in-a-certain-order" title="Permalink to this headline"></a></h2>
 <p>mercure dispatches series of a study in the order they were received. If multiple simultaneous connections are used to transmit a study (this depends on the sender), it could happen that the dispatching order is changed. At the moment, there is no mechanism for sorting the dispatching order again. However, if there is sufficient interest among mercure users, we will implement a feature to enforce sequential dispatching of all series belonging to one study.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="what-can-i-do-to-further-improve-the-performance">
+<section id="what-can-i-do-to-further-improve-the-performance">
 <h2><a class="toc-backref" href="#id4">What can I do to further improve the performance?</a><a class="headerlink" href="#what-can-i-do-to-further-improve-the-performance" title="Permalink to this headline"></a></h2>
-<p>If you should run into a situation where the default mercure setup is not able to handle the load of incoming DICOM series, then you can scale up the instances of the router and dispatcher module. By default, only one instance of each module is used (i.e., in the case of the dispatcher, only one series per time is sent outwards).</p>
-<p>All modules have been designed such that multiple module instance can be used in parallel. To enable this, you need to modify the file “services.json” in the “/configuration” folder and duplicate the entry of the module that you want to scale. You need to give the additional module instance a different name (e.g., “dispatcher2”). Moreover, you need to duplicate the corresponding .service file for systemd and rename it accordingly. Note that it is not necessary to scale the receiver module, as the receiver automatically launches a separate process for every DICOM connection.</p>
-</div>
+<p>If you should run into a situation where a default mercure setup is not able to handle the load of incoming DICOM series, then you can scale up the instances of the router and dispatcher module. By default, only one instance of each module is used (i.e., in the case of the dispatcher, only one series per time is sent outwards).</p>
+<p>All service modules have been designed such that multiple module instances can be used in parallel. The exact way of scaling up the services depends on the type of mercure installation (systemd/Docker/Nomad). For systemd installations, you need to modify the file “services.json” in the “/configuration” folder and duplicate the entry of the module that you want to scale. You need to give the additional module instance a different name (e.g., “dispatcher2”). Moreover, you need to duplicate the corresponding .service file for systemd and rename it accordingly. Note that it is not necessary to scale the receiver module, as the receiver automatically launches a separate process for every DICOM connection.</p>
+</section>
 <hr class="docutils" />
-<div class="section" id="why-has-the-getdcmtags-module-been-written-in-c">
+<section id="why-has-the-getdcmtags-module-been-written-in-c">
 <h2><a class="toc-backref" href="#id5">Why has the getdcmtags module been written in C++?</a><a class="headerlink" href="#why-has-the-getdcmtags-module-been-written-in-c" title="Permalink to this headline"></a></h2>
 <p>mercure has been written in Python, except for the getdcmtags module that is used to extract the DICOM tags from the received DICOM files. The reason is that this module is launched by the storescp receiver in a forked process whenever a new DICOM image has been received. Because launching the Python runtime environment (i.e., the Python virtual machine) for every received image would take a lot of time, the module has been written in C++ instead.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="is-mercure-fda-approved-does-it-have-a-ce-label">
+<section id="is-mercure-fda-approved-does-it-have-a-ce-label">
 <h2><a class="toc-backref" href="#id6">Is mercure FDA-approved? Does it have a CE label?</a><a class="headerlink" href="#is-mercure-fda-approved-does-it-have-a-ce-label" title="Permalink to this headline"></a></h2>
 <p>No, at this time, mercure is neither FDA-approved nor does it have a CE label. However, it uses the Offis DICOM toolkit (DCMTK) for the underlying DICOM communication, which is well-established and used in numerous research and commercial products.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="do-you-offer-professional-support-for-mercure">
+<section id="do-you-offer-professional-support-for-mercure">
 <h2><a class="toc-backref" href="#id7">Do you offer professional support for mercure?</a><a class="headerlink" href="#do-you-offer-professional-support-for-mercure" title="Permalink to this headline"></a></h2>
-<p>Not currently. But please reach out to us through the <a class="reference internal" href="support.html"><span class="doc">Discussion Board</span></a>, and please <a class="reference external" href="https://github.com/mercure-router/mercure/issues">submit an issue on Github</a> if you encounter any bug.</p>
-</div>
+<p>Not currently. Please post your questions and support requests to the <a class="reference internal" href="support.html"><span class="doc">Discussion Board</span></a>, and please <a class="reference external" href="https://github.com/mercure-imaging/mercure/issues">submit an issue on Github</a> if you encounter any bugs or if you would like to propose an enhancement.</p>
+</section>
 <hr class="docutils" />
-<div class="section" id="who-is-behind-the-project">
+<section id="who-is-behind-the-project">
 <h2><a class="toc-backref" href="#id8">Who is behind the project?</a><a class="headerlink" href="#who-is-behind-the-project" title="Permalink to this headline"></a></h2>
-<p>mercure DICOM Router has been developed by <a class="reference external" href="http://ktblock.de/">Kai Tobias Block</a>  and <a class="reference external" href="https://twitter.com/irrwitz/">Joshy Cyriac</a> due to the requirement to integrate various prototypic analysis tools into the clinical workflow without creating additional load for the PACS. The name stems from mercure, the messenger of the gods in ancient Greek mythology.</p>
-</div>
-</div>
+<p>mercure has been developed by <a class="reference external" href="http://tobias-block.net/">Kai Tobias Block</a>, <a class="reference external" href="http://roy.red/">Roy Wiggins</a>, and <a class="reference external" href="https://twitter.com/_joshycyriac_">Joshy Cyriac</a>. The development has been supported by the <a class="reference external" href="https://cai2r.net">Center for Advanced Imaging Innovation and Research (CAI2R)</a> at <a class="reference external" href="https://nyulangone.org">NYU Langone Health</a>.</p>
+<p>The name stems from the French translation of Mercury or Mercurius, the god of messages and communication in ancient Roman mythology. The project was initially called Hermes, Mercury’s counterpart in Greek mythology, but the name was changed to avoid confusion with another existing software in the medical-imaging field.</p>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="advanced.html" class="btn btn-neutral float-left" title="Advanced Topics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="Module Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="support.html" class="btn btn-neutral float-right" title="Discussion Board" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Start &mdash; mercure 0.2a documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="install.html" />
+    <link rel="prev" title="What is mercure?" href="intro.html" />
+<script>
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'mercure-imaging/Support'
+    };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#including-orthanc-and-ohif">Including Orthanc and OHIF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-installation-modes">Other installation modes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Quick Start</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+<p>If you want to try out mercure or setup a development environment, you can easily install mercure on your computer via Vagrant, which is an open-source tool for automatically creating and provisioning virtual machines. First, install <a class="reference external" href="https://virtualbox.org/">VirtualBox</a> on your computer. Afterwards, download <a class="reference external" href="https://vagrantup.org/">Vagrant</a> and install it. This should work on Windows, Mac, and Linux systems.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This way of installing mercure is only suited for testing or development purpose. If you want to install mercure for production use, follow the instructions in the Installation section.</p>
+</div>
+<p>Open a terminal shell and checkout the mercure repository by calling</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">mercure</span><span class="o">-</span><span class="n">imaging</span><span class="o">/</span><span class="n">mercure</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>and navigate to the subfolder “/mercure/addons/vagrant/systemd”.</p>
+<p>Install and start mercure by calling (will take some time and create lots of output!)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">up</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you encounter problems during the setup of the virtual machine (e.g., error messages related to the SSH keys), try opening the VirtualBox UI, select the newly created VM, and click on “Show”. In our experience, this resolves occasional problems during the boot process.</p>
+</div>
+<p>mercure should now be running inside a virtual machine and be accessible from your host computer. Open a web browser (Chrome or Firefox) and open the address 127.0.0.1:8000. You should now see the mercure login screen.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The login credentials for the first login are: Username = admin, Password = router</p>
+</div>
+<p>The DICOM receiver of mercure is listening at port 11112. If you want to send DICOM images to mercure from a folder on your host computer, you can do this with the “storescu” tool of the Offis DCMTK tookit by calling</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">storescu</span> <span class="mf">127.0.0.1</span> <span class="mi">11112</span> <span class="o">*.</span><span class="n">dcm</span>
+</pre></div>
+</div>
+<p>If you want to shutdown or destroy this installation of mercure, call “vagrant halt” or “vagrant destroy”.</p>
+<section id="including-orthanc-and-ohif">
+<h2>Including Orthanc and OHIF<a class="headerlink" href="#including-orthanc-and-ohif" title="Permalink to this headline"></a></h2>
+<p>When testing mercure or developing modules, it is helpful to use a local PACS as dummy target. Therefore, we included an option to automatically install the open-source Orthanc PACS and OHIF DICOM viewer alongside mercure if you call the Vagrant installation command with the following argument</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="o">--</span><span class="n">orthanc</span> <span class="n">up</span>
+</pre></div>
+</div>
+<p>The Orthanc PACS is now listening to DICOM connections at port 4242. You can now add Orthanc as target in mercure via the Target page. Use the IP address 127.0.0.1 and Port 4242. You can use any value for the AET and AEC settings.</p>
+<p>The user interface of Orthanc can be reached by opening 127.0.0.1:8042 in a web browser. Use the username “orthanc” and password “orthanc” if an authorization dialog appears.</p>
+<p>While Orthanc already comes with a built-in DICOM viewer, we also included the open-source OHIF viewer because it supports displaying DICOM SR annotations. It can be reached at address 127.0.0.1:8008 (username “orthanc”, password “orthanc”). The OHIF viewer connects to the Orthanc PACS and will show the same studies.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the OHIF viewer only shows “Loading…”, the authentication credentials might be missing. Try refreshing the page while precessing the SHIFT key. This will enforce that the authentication dialog gets displayed.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The Orthanc and OHIF installation described here is only intended for local testing and development purpose. Do not expose these ports to the general network, as the installation might not be fully secured.</p>
+</div>
+</section>
+<section id="other-installation-modes">
+<h2>Other installation modes<a class="headerlink" href="#other-installation-modes" title="Permalink to this headline"></a></h2>
+<p>In addition to a systemd-based installation, as described above, Vagrant can also be used for Docker-based or Nomad-based installations of mercure. To do this, navigate instead to the folder “/mercure/addons/vagrant/docker” or “/mercure/addons/vagrant/nomad” before calling the “vagrant up” command.</p>
+<p>The Nomad UI for monitoring and controlling jobs can be reached at 127.0.0.1:4646.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="What is mercure?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

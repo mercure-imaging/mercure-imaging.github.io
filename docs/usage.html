@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usage &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -51,6 +52,7 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#web-interface">Web interface</a></li>
@@ -63,6 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -73,8 +76,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -100,9 +104,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="usage">
+  <section id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h1>
-<div class="section" id="web-interface">
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The information on this page is still being updated for mercure version 0.2.</p>
+</div>
+<section id="web-interface">
 <h2>Web interface<a class="headerlink" href="#web-interface" title="Permalink to this headline"></a></h2>
 <a class="border reference internal image-reference" href="_images/ui_login.png"><img alt="_images/ui_login.png" class="border align-center" src="_images/ui_login.png" style="width: 550px;" /></a>
 <p>mercure can be conveniently configured and controlled using the web-based user interface. To access it, use a modern web browser (e.g., Chrome or Firefox) and enter the IP of your mercure server as URL. Depending on the port that you have selected during the installation (by default 8000), you need to add “:8000” to the URL.</p>
@@ -112,8 +120,8 @@
 <p>The login credentials for the first login are: Username = admin, Password = router</p>
 </div>
 <p>To end your session, use the menu on the top-right and select “Logout”.</p>
-</div>
-<div class="section" id="user-management">
+</section>
+<section id="user-management">
 <h2>User management<a class="headerlink" href="#user-management" title="Permalink to this headline"></a></h2>
 <a class="border reference internal image-reference" href="_images/ui_users.png"><img alt="_images/ui_users.png" class="border align-center" src="_images/ui_users.png" style="width: 550px;" /></a>
 <p>Users can be created, modified, and deleted on the “Users” page. There are two types of users: Normal users, who can view the router configuration and status but not change anything, and administrators, who have full access. Users with administration rights are indicated by an icon with a shield in the user list.</p>
@@ -121,8 +129,8 @@
 <p class="admonition-title">Tip</p>
 <p>You should create separate accounts for every person using the router. This will allow you to review which user made changes to the router configuration, as mercure is keeping track of all configuration changes.</p>
 </div>
-</div>
-<div class="section" id="system-status-and-control">
+</section>
+<section id="system-status-and-control">
 <h2>System status and control<a class="headerlink" href="#system-status-and-control" title="Permalink to this headline"></a></h2>
 <a class="border reference internal image-reference" href="_images/ui_status.png"><img alt="_images/ui_status.png" class="border align-center" src="_images/ui_status.png" style="width: 550px;" /></a>
 <p>You can see the status of the different mercure service components on the “Overview” page. If a service is running, it will be shown in green, otherwise in red. In normal operation, everything should be green.</p>
@@ -138,8 +146,8 @@
 <p>If you don’t want to use the web interface, you can also manually control the mercure services from the command line. This can be done with the command “systemctl start -u mercure_router.service” (in this example for the routing service). You can find the names of the individual services in the files “/configuration/services.json”.</p>
 </div>
 <p>The Overview page also shows you the disk space available in the folder for buffering the incoming DICOM files. If this bar turns yellow or red, make sure to free up disk space as the router will not be able to receiver images if the disk is completely full.</p>
-</div>
-<div class="section" id="defining-targets">
+</section>
+<section id="defining-targets">
 <h2>Defining targets<a class="headerlink" href="#defining-targets" title="Permalink to this headline"></a></h2>
 <a class="border reference internal image-reference" href="_images/ui_targets.png"><img alt="_images/ui_targets.png" class="border align-center" src="_images/ui_targets.png" style="width: 550px;" /></a>
 <p>DICOM nodes that should receive the routed series can be defined and modified on the “Targets” page. Here, you will see a list of the currently configured targets. By clicking on one item, you can see the target details (e.g., the IP address). You can also test if the target can be reached by clicking the “Test” button, which will first try to ping the server and afterwards open a C-Echo association. The target can only receive images if both tests are successful.</p>
@@ -151,8 +159,8 @@
 <p>Some DICOM nodes require that you set a specific target AET, while other systems ignore this setting. Likewise, some DICOM nodes only accept images from a sender who’s source AET is known, while others ignore the value. Please check with the vendor/operator of your DICOM node which values are required.</p>
 </div>
 <p>Finally, you can also enter a contact e-mail address. This should be done for reference purpose, so that it can be looked up at a later time who should be contacted if problems with the target exist.</p>
-</div>
-<div class="section" id="defining-routing-rules">
+</section>
+<section id="defining-routing-rules">
 <h2>Defining routing rules<a class="headerlink" href="#defining-routing-rules" title="Permalink to this headline"></a></h2>
 <a class="border reference internal image-reference" href="_images/ui_rules.png"><img alt="_images/ui_rules.png" class="border align-center" src="_images/ui_rules.png" style="width: 550px;" /></a>
 <p>When you have configured a target, you can add routing rules that define which DICOM series should be forwarded to that target. This can be done on the “Rules” page. Again, it is not necessary to stop mercure while defining new rules. The different mercure services will automatically load the new configuration once the rule has been saved. Click the “Add New” button to create a new rule, or click on any of the existing rules and select “Edit” to modify it.</p>
@@ -188,8 +196,8 @@
 </div>
 <p>If you have validated that your rule triggers as expected, select the desired target from the drop-down list. Also enter an email address into the Contact field and a description into the Comment field, so that it can be looked up at a later time why the rule was defined and who requested it.</p>
 <p>Routing rules can be temporarily disabled by setting the “Disabled” field to True. In this case, the rule appears in grayed-out color in the rule list and it will be ignored during processing.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

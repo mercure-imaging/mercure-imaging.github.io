@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -521,6 +524,8 @@
 </li>
       <li><a href="common.html#common.types.Compat.get">get() (common.types.Compat method)</a>
 </li>
+      <li><a href="webinterface.html#webinterface.queue.get_jobinfo">get_jobinfo() (in module webinterface.queue)</a>
+</li>
       <li><a href="common.html#common.config.get_loglevel">get_loglevel() (in module common.config)</a>
 </li>
       <li><a href="webgui.html#webgui.get_nomad_logs">get_nomad_logs() (in module webgui)</a>
@@ -918,12 +923,12 @@
         <li><a href="process.html#module-process.status">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Config.process_runner">process_runner (common.types.Config attribute)</a>
 </li>
       <li><a href="process.html#process.process_series.process_series">process_series() (in module process.process_series)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_folders.PROCESSING">PROCESSING (common.constants.mercure_folders attribute)</a>
 
       <ul>
@@ -938,6 +943,8 @@
 </li>
       <li><a href="common.html#common.types.Rule.processing_module">processing_module (common.types.Rule attribute)</a>
 </li>
+      <li><a href="common.html#common.types.Rule.processing_retain_images">processing_retain_images (common.types.Rule attribute)</a>
+</li>
       <li><a href="common.html#common.types.Rule.processing_settings">processing_settings (common.types.Rule attribute)</a>
 </li>
       <li>
@@ -948,6 +955,10 @@
 </li>
       </ul></li>
       <li><a href="routing.html#routing.route_series.push_files">push_files() (in module routing.route_series)</a>
+</li>
+      <li><a href="process.html#process.process_series.push_input_images">push_input_images() (in module process.process_series)</a>
+</li>
+      <li><a href="process.html#process.process_series.push_input_task">push_input_task() (in module process.process_series)</a>
 </li>
       <li><a href="routing.html#routing.route_series.push_series_complete">push_series_complete() (in module routing.route_series)</a>
 </li>
@@ -1006,6 +1017,8 @@
       <li><a href="common.html#common.rule_evaluation.replace_tags">replace_tags() (in module common.rule_evaluation)</a>
 </li>
       <li><a href="common.html#common.types.Module.resources">resources (common.types.Module attribute)</a>
+</li>
+      <li><a href="common.html#common.types.TaskProcessing.retain_input_images">retain_input_images (common.types.TaskProcessing attribute)</a>
 </li>
       <li><a href="common.html#common.types.Config.retention">retention (common.types.Config attribute)</a>
 </li>
@@ -1250,11 +1263,7 @@
       <li><a href="common.html#common.constants.mercure_rule.TARGET">TARGET (common.constants.mercure_rule attribute)</a>
 </li>
       <li><a href="common.html#common.types.Rule.target">target (common.types.Rule attribute)</a>
-
-      <ul>
-        <li><a href="common.html#common.types.TaskDispatch.target">(common.types.TaskDispatch attribute)</a>
 </li>
-      </ul></li>
       <li><a href="common.html#common.monitor.w_events.TARGET_CREATE">TARGET_CREATE (common.monitor.w_events attribute)</a>
 </li>
       <li><a href="common.html#common.monitor.w_events.TARGET_DELETE">TARGET_DELETE (common.monitor.w_events attribute)</a>
@@ -1283,10 +1292,10 @@
 </li>
       <li><a href="common.html#common.types.Task">Task (class in common.types)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Task.Config">Task.Config (class in common.types)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.TaskDispatch">TaskDispatch (class in common.types)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_names.TASKFILE">TASKFILE (common.constants.mercure_names attribute)</a>
@@ -1315,7 +1324,11 @@
 </li>
       <li><a href="common.html#common.rule_evaluation.test_rule">test_rule() (in module common.rule_evaluation)</a>
 </li>
-      <li><a href="routing.html#routing.route_series.trigger_serieslevel_notification_reception">trigger_serieslevel_notification_reception() (in module routing.route_series)</a>
+      <li><a href="process.html#process.process_series.trigger_notification">trigger_notification() (in module process.process_series)</a>
+</li>
+      <li><a href="routing.html#routing.route_series.trigger_serieslevel_notification">trigger_serieslevel_notification() (in module routing.route_series)</a>
+</li>
+      <li><a href="routing.html#routing.route_studies.trigger_studylevel_notification">trigger_studylevel_notification() (in module routing.route_studies)</a>
 </li>
       <li><a href="common.html#common.helper.trigger_terminate">trigger_terminate() (in module common.helper)</a>
 </li>

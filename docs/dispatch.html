@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Package dispatch &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -18,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Package routing" href="routing.html" />
+    <link rel="next" title="Package process" href="process.html" />
     <link rel="prev" title="Package common" href="common.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
@@ -51,11 +52,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -66,10 +69,12 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code Documentation</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="code.html">Code Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processor.html">Service processor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
 <li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
@@ -80,14 +85,18 @@
 <li class="toctree-l4"><a class="reference internal" href="#send-py">send.py</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-dispatch.status">dispatch.status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dispatch.status">dispatch.status</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#status-py">status.py</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process.html">Package process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="routing.html">Package routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -104,7 +113,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">Code Documentation</a> &raquo;</li>
+          <li><a href="code.html">Code Documentation</a> &raquo;</li>
       <li>Package dispatch</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -114,9 +123,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="package-dispatch">
+  <section id="package-dispatch">
 <h1>Package dispatch<a class="headerlink" href="#package-dispatch" title="Permalink to this headline"></a></h1>
-<div class="section" id="module-dispatch.process_dcmsend_result">
+<section id="module-dispatch.process_dcmsend_result">
 <span id="dispatch-process-dcmsend-result"></span><h2>dispatch.process_dcmsend_result<a class="headerlink" href="#module-dispatch.process_dcmsend_result" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="dispatch.process_dcmsend_result.create_arg_parser">
@@ -130,8 +139,8 @@
 <dd><p>Parses the dcmsend result file and returns a python dictionary.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="module-dispatch.retry">
+</section>
+<section id="module-dispatch.retry">
 <span id="dispatch-retry"></span><h2>dispatch.retry<a class="headerlink" href="#module-dispatch.retry" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="dispatch.retry.increase_retry">
@@ -142,10 +151,10 @@ in the future.
 has been reached</p>
 </dd></dl>
 
-</div>
-<div class="section" id="module-dispatch.send">
+</section>
+<section id="module-dispatch.send">
 <span id="dispatch-send"></span><h2>dispatch.send<a class="headerlink" href="#module-dispatch.send" title="Permalink to this headline"></a></h2>
-<div class="section" id="send-py">
+<section id="send-py">
 <h3>send.py<a class="headerlink" href="#send-py" title="Permalink to this headline"></a></h3>
 <p>The functions for sending DICOM series
 to target destinations.</p>
@@ -158,10 +167,13 @@ happens any error the .lock file is deleted and an .error file is created.
 Folder with .error files are _not_ ready for sending.</p>
 </dd></dl>
 
-</div>
-</div>
-<div class="section" id="module-dispatch.status">
+</section>
+</section>
+<section id="module-dispatch.status">
 <span id="dispatch-status"></span><h2>dispatch.status<a class="headerlink" href="#module-dispatch.status" title="Permalink to this headline"></a></h2>
+<section id="status-py">
+<h3>status.py<a class="headerlink" href="#status-py" title="Permalink to this headline"></a></h3>
+<p>Helper functions for dispatching processed cases</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dispatch.status.has_been_send">
 <span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">has_been_send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/dispatch/status.html#has_been_send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.has_been_send" title="Permalink to this definition"></a></dt>
@@ -170,7 +182,7 @@ Folder with .error files are _not_ ready for sending.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dispatch.status.is_ready_for_sending">
-<span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_ready_for_sending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">common.types.TaskDispatch</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dispatch/status.html#is_ready_for_sending"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_ready_for_sending" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_ready_for_sending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">common.types.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dispatch/status.html#is_ready_for_sending"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_ready_for_sending" title="Permalink to this definition"></a></dt>
 <dd><p>Checks if a case in the outgoing folder is ready for sending by the dispatcher.</p>
 <p>No lock file (.lock) should be in sending folder and no error file (.error),
 if there is one copy/move is not done yet. Also at least some dicom files
@@ -180,21 +192,21 @@ valid.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dispatch.status.is_target_json_valid">
-<span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_target_json_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">common.types.TaskDispatch</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dispatch/status.html#is_target_json_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_target_json_valid" title="Permalink to this definition"></a></dt>
-<dd><p>Checks if the task.json file exists and is also valid. Mandatory
-subkeys are target_ip, target_port and target_aet_target under the
-dispatch key</p>
+<span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_target_json_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">common.types.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dispatch/status.html#is_target_json_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_target_json_valid" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the task.json file exists and is valid. Returns the content 
+of the file (or None if the file is invalid)</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="common.html" class="btn btn-neutral float-left" title="Package common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="routing.html" class="btn btn-neutral float-right" title="Package routing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="process.html" class="btn btn-neutral float-right" title="Package process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

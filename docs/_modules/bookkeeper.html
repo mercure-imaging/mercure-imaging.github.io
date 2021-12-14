@@ -49,11 +49,13 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
@@ -64,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Development Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
 </ul>
 
         </div>
@@ -105,21 +108,18 @@
 <span class="kn">from</span> <span class="nn">sqlalchemy.engine.base</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="kn">import</span> <span class="nn">uvicorn</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-
-<span class="c1"># 3rd party</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
-<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
-<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span><span class="p">,</span> <span class="n">Response</span>
-<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span>
-<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
-<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">RedirectResponse</span>
-<span class="kn">from</span> <span class="nn">starlette.background</span> <span class="kn">import</span> <span class="n">BackgroundTasks</span>
-<span class="kn">from</span> <span class="nn">starlette.config</span> <span class="kn">import</span> <span class="n">Config</span>
-<span class="kn">from</span> <span class="nn">starlette.datastructures</span> <span class="kn">import</span> <span class="n">URL</span><span class="p">,</span> <span class="n">Secret</span>
 <span class="kn">import</span> <span class="nn">databases</span>
 <span class="kn">import</span> <span class="nn">sqlalchemy</span>
 <span class="kn">import</span> <span class="nn">hupper</span>
+
+<span class="c1"># Starlette-related includes</span>
+<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.background</span> <span class="kn">import</span> <span class="n">BackgroundTasks</span>
+<span class="kn">from</span> <span class="nn">starlette.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">starlette.datastructures</span> <span class="kn">import</span> <span class="n">URL</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
@@ -144,7 +144,14 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;bookkeeper&quot;</span><span class="p">)</span>
 
 
-<span class="n">bookkeeper_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s2">&quot;configuration/bookkeeper.env&quot;</span><span class="p">)</span>
+<span class="n">bookkeeper_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span>
+    <span class="p">)</span>
+    <span class="o">+</span> <span class="s2">&quot;/bookkeeper.env&quot;</span>
+<span class="p">)</span>    
+
 <span class="n">BOOKKEEPER_PORT</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;PORT&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8080</span><span class="p">)</span>
 <span class="n">BOOKKEEPER_HOST</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;HOST&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">)</span>
 <span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;DATABASE_URL&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;postgresql://mercure@localhost&quot;</span><span class="p">)</span>
@@ -265,6 +272,7 @@
     <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;uid&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">JSON</span><span class="p">),</span>
 <span class="p">)</span>
+
 
 <span class="c1">###################################################################################</span>
 <span class="c1">## Event handlers</span>
@@ -448,7 +456,7 @@
         <span class="c1"># start_reloader will only return in a monitored subprocess</span>
         <span class="n">reloader</span> <span class="o">=</span> <span class="n">hupper</span><span class="o">.</span><span class="n">start_reloader</span><span class="p">(</span><span class="s2">&quot;bookkeeper.main&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mercure Bookkeeper ver </span><span class="si">{mercure_defs.VERSION}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mercure Bookkeeper ver </span><span class="si">{</span><span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-----------------------------&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
