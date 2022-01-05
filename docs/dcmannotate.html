@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search &mdash; mercure 0.2a documentation</title>
+  <title>DCMAnnotate &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,10 +17,10 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
-    <script src="_static/searchtools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Discussion Board" href="support.html" />
+    <link rel="prev" title="Existing Modules" href="module_list.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
       room: 'mercure-imaging/Support'
@@ -39,7 +39,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -63,10 +63,10 @@
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Modules</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_list.html">Existing Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dcmannotate.html">DCMAnnotate</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DCMAnnotate</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
@@ -92,7 +92,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Search</li>
+      <li>DCMAnnotate</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -101,22 +101,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="dcmannotate">
+<h1>DCMAnnotate<a class="headerlink" href="#dcmannotate" title="Permalink to this headline"></a></h1>
+<p>DCMAnnotate is a Python support library developed by the mercure team that simplifies creating annotations on DICOM image series. Because currently no well-supported uniform standard for DICOM annotations exists, DCMAnnotate can save the annotations either as DICOM SR files in the TID-1500 format (as, e.g., supported by the OHIF viewer), as “burned in pixels” / “secondary capture” DICOMs (supported by most PACS products), or in the proprietary annotation format of the Visage PACS (for users of the PACS software by Visage Imaging).</p>
+<p>Purpose of DCMAnnotate is to make it easy for AI researchers to implement AI-based image analysis algorithms as mercure processing modules and to integrate the algorithms clinically with standard software infrastructure for reporting findings and results. DCMAnnotate can be included in processing modules written in Python. The output format for the annotations should be taken from the module settings, so that end users can configure the annotation format according to the display capabilities of their local PACS solution.</p>
+<p>The documentation and source code can be found on the <a class="reference external" href="https://github.com/mercure-imaging/dcmannotate">DCMAnnotate Github page</a></p>
+</section>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="module_list.html" class="btn btn-neutral float-left" title="Existing Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="support.html" class="btn btn-neutral float-right" title="Discussion Board" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
@@ -149,14 +147,7 @@
       gtag('config', 'G-EHLH5W4KQW', {
           'anonymize_ip': false,
       });
-    </script>
-  <script>
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script id="searchindexloader"></script>
-   
-
+    </script> 
 
 </body>
 </html>

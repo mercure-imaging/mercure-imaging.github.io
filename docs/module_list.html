@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roadmap &mdash; mercure 0.2a documentation</title>
+  <title>Existing Modules &mdash; mercure 0.2a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -19,7 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Package webinterface" href="webinterface.html" />
+    <link rel="next" title="DCMAnnotate" href="dcmannotate.html" />
+    <link rel="prev" title="Module Development" href="modules.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
       room: 'mercure-imaging/Support'
@@ -57,24 +58,24 @@
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dcmannotate.html">DCMAnnotate</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Roadmap</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#planned">Planned</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#completed">Completed</a></li>
-</ul>
-</li>
 </ul>
 
         </div>
@@ -91,7 +92,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Roadmap</li>
+      <li>Existing Modules</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -100,23 +101,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="roadmap">
-<h1>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline"></a></h1>
-<section id="planned">
-<h2>Planned<a class="headerlink" href="#planned" title="Permalink to this headline"></a></h2>
-<p>The following features are planned for implementation in the next mercure version(s).</p>
-<ul class="simple">
-<li><p>UI option for reprocessing discarded cases</p></li>
-<li><p>Processing priorities for rules (Normal, Priority, Off-Peak)</p></li>
-</ul>
-</section>
-<section id="completed">
-<h2>Completed<a class="headerlink" href="#completed" title="Permalink to this headline"></a></h2>
-<ul class="simple">
-<li><p>“Force discard” option for rules</p></li>
-<li><p>Configurable webhooks on reception/dispatch of series</p></li>
-<li><p>Optional processing modules (executed prior to dispatching), allowing mercure to be used also as DICOM processing platform</p></li>
-</ul>
+  <section id="existing-modules">
+<h1>Existing Modules<a class="headerlink" href="#existing-modules" title="Permalink to this headline"></a></h1>
+<p>The following list shows exemplary processing modules that have been developed for mercure. If you would like to see your module included in this list, please reach out to us via the <a class="reference internal" href="support.html"><span class="doc">Discussion Board</span></a>.</p>
+<section id="mercure-testmodule">
+<h2>Mercure-TestModule<a class="headerlink" href="#mercure-testmodule" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Docker Tag</p></th>
+<th class="head"><p>mercureimaging/mercure-testmodule</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Description</p></td>
+<td><p>Simple demo module that shows how processing modules can be developed for</p>
+<p>mercure. This module applies a Gaussian filter to the incoming image series.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Parameters</p></td>
+<td><p>sigma: Filter strength (default: 7)</p>
+<p>series_offset: Offset added to series number (default: 1000)</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>Code</p></td>
+<td><p><a class="reference external" href="https://github.com/mercure-imaging/mercure-testmodule">https://github.com/mercure-imaging/mercure-testmodule</a></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
@@ -124,7 +139,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="webinterface.html" class="btn btn-neutral float-left" title="Package webinterface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="Module Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dcmannotate.html" class="btn btn-neutral float-right" title="DCMAnnotate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
