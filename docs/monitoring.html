@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Dashboard Gallery" href="dashboards.html" />
-    <link rel="prev" title="Usage" href="usage.html" />
+    <link rel="prev" title="Advanced Topics" href="advanced.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
       room: 'mercure-imaging/Support'
@@ -55,15 +55,16 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Monitoring</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#log-files">Log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#graphite">Graphite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bookkeeper-with-redash">Bookkeeper with Redash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-redash">Installing Redash</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#alerts">Alerts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -113,7 +114,7 @@
 <p class="admonition-title">Important</p>
 <p>The information on this page is still being updated for mercure version 0.2.</p>
 </div>
-<p>mercure provides three different mechanisms for monitoring the router activity and health.</p>
+<p>mercure provides three different mechanisms for monitoring the server activity and health.</p>
 <section id="log-files">
 <h2>Log files<a class="headerlink" href="#log-files" title="Permalink to this headline"></a></h2>
 <p>All mercure services write detailed logging information with timestamps into system log files. The most convenient way to review these logs is to use the “Logs” page of the mercure web interface. Here you can see a separate tab for every service. The logs are updated whenever you switch between tabs and when you click the refresh button on the top-right.</p>
@@ -276,6 +277,51 @@
 </ul>
 <p>Instructions how to create these dashboards are provided in the <a class="reference internal" href="dashboards.html"><span class="doc">Dashboard Gallery</span></a>.</p>
 </section>
+<section id="installing-redash">
+<h2>Installing Redash<a class="headerlink" href="#installing-redash" title="Permalink to this headline"></a></h2>
+<p>Redash is a powerful open-source web application for analyzing and visualizing data stored in SQL databases, like the data collected by the bookkeeper service. Instead of integrating limited analysis functions into mercure’ own webgui, we decided to utilize Redash instead, which provides much greater flexibility. You can learn more about Redash at <a class="reference external" href="http://redash.io">http://redash.io</a></p>
+<p>Redash provides a convenient installation script that uses Docker for the Redash deployment. It is highly recommended to use this script, unless you are very familiar with Redash.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">getredash</span><span class="o">/</span><span class="n">setup</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">chmod</span> <span class="mi">700</span> <span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">sudo</span> <span class="o">./</span><span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>Open the Redash configuration page in a web browser</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">[</span><span class="n">server</span> <span class="n">ip</span><span class="p">]</span><span class="o">/</span><span class="n">setup</span>
+</pre></div>
+</div>
+<p>After setting up your Redash administrator password, click the top-right configuration icon and select “New Data Source”. Select a PostgreSQL database and enter the following connection settings</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Type</span><span class="p">:</span> <span class="n">Postgres</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">mercure</span>
+<span class="n">Host</span><span class="p">:</span> <span class="mf">172.17.0.1</span>
+<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
+<span class="n">User</span><span class="p">:</span> <span class="n">redash</span>
+<span class="n">Password</span><span class="p">:</span> <span class="p">[</span><span class="k">as</span> <span class="n">selected</span> <span class="n">during</span> <span class="n">mercure</span> <span class="n">installation</span><span class="p">]</span>
+<span class="n">Database</span> <span class="n">Name</span><span class="p">:</span> <span class="n">mercure</span>
+</pre></div>
+</div>
+<p>Afterwards, click “Save” and validate the database connection by clicking the button “Test Connection”. If you see a green “Success” notification on the bottom-right, everything works.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you want to run Redash on a different port than :80, then you need to edit the file “/opt/redash/docker-compose.yml” and change the value “80:80” in the nginx section to, e.g., “8888:80”. Afterwards, you need to restart the nginx container.</p>
+</div>
+<p>After the database tables have been created by the mercure bookkeeper services, you can grant read-only permissions to the user “redash”. This can be achieved by running the following commands.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">i</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span>
+<span class="n">psql</span>
+\<span class="n">c</span> <span class="n">mercure</span>
+<span class="n">GRANT</span> <span class="n">CONNECT</span> <span class="n">ON</span> <span class="n">DATABASE</span> <span class="n">mercure</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
+<span class="n">GRANT</span> <span class="n">USAGE</span> <span class="n">ON</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
+<span class="n">GRANT</span> <span class="n">SELECT</span> <span class="n">ON</span> <span class="n">ALL</span> <span class="n">TABLES</span> <span class="n">IN</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
+<span class="n">ALTER</span> <span class="n">DEFAULT</span> <span class="n">PRIVILEGES</span> <span class="n">IN</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">GRANT</span> <span class="n">SELECT</span> <span class="n">ON</span> <span class="n">TABLES</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
+\<span class="n">q</span>
+<span class="n">exit</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These commands need to be rerun whenever the database tables have been dropped (e.g., when clearing the database).</p>
+</div>
+</section>
 <section id="alerts">
 <h2>Alerts<a class="headerlink" href="#alerts" title="Permalink to this headline"></a></h2>
 <p>It is highly recommended to setup alerts for processing errors and server problems, so that you are automatically notified if the mercure router needs your attention. Both Grafana and Redash provide functions for automatic alerts that can be utilized. With both tools, alerts can be delivered via email. However, we recommend using a messaging tool that supports custom webhooks, such as <a class="reference external" href="https://slack.com">Slack</a>. In this way, alerts can be delivered in real-time and across multiple devices, including smartphones.</p>
@@ -299,7 +345,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="advanced.html" class="btn btn-neutral float-left" title="Advanced Topics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="dashboards.html" class="btn btn-neutral float-right" title="Dashboard Gallery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

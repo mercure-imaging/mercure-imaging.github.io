@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="FAQ" href="faq.html" />
-    <link rel="prev" title="Dashboard Gallery" href="dashboards.html" />
+    <link rel="next" title="Monitoring" href="monitoring.html" />
+    <link rel="prev" title="Usage" href="usage.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
       room: 'mercure-imaging/Support'
@@ -55,15 +55,14 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#scaling-services">Scaling services</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-files">Configuration files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#additional-settings">Additional settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-redash">Installing Redash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scaling-services">Scaling services</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -109,11 +108,148 @@
              
   <section id="advanced-topics">
 <h1>Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline"></a></h1>
+<section id="configuration-files">
+<h2>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this headline"></a></h2>
+<p>mercure stores the configuration in multiple files in the subfolder <strong>/opt/mercure/config</strong>. If you want to backup the configuration or install mercure on another machine, you need to copy all files inside this folder. During installation of mercure, these files are generated from template files contained in the folder <strong>/opt/mercure/app/configuration</strong>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>File</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>bookkeeper.env</p></td>
+<td><p>Contains IP, port, and DB password for the bookkeeper service</p></td>
+</tr>
+<tr class="row-odd"><td><p>mercure.json</p></td>
+<td><p>Configured rules, targets, modules, and other mercure settings</p></td>
+</tr>
+<tr class="row-even"><td><p>services.json</p></td>
+<td><p>List of configured mercure services (must be modified for scaling services)</p></td>
+</tr>
+<tr class="row-odd"><td><p>users.json</p></td>
+<td><p>User account information for the web interface</p></td>
+</tr>
+<tr class="row-even"><td><p>webgui.env</p></td>
+<td><p>Contains IP, port, and secret key for the web interface</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="additional-settings">
+<h2>Additional settings<a class="headerlink" href="#additional-settings" title="Permalink to this headline"></a></h2>
+<p>Advanced settings can be reviewed and adjusted on the Configuration page of the web interface. To change the settings, click the “Edit Settings” button at the bottom of the page. Once saved, the different service modules will automatically load the updated configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure to preserve correct JSON formatting of the settings. The web interface will automatically check the syntax before saving the file.</p>
+</div>
+<p>Alternatively to using the web interface, the changes can also be made by directly editing the file <strong>mercure.json</strong> with a Linux text editor, e.g. nano.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When editing the configuration file directly, it is required to shutdown all mercure services prior to making any changes (via the web interface or systemctl command).</p>
+</div>
+<p>The following settings can be customized (default values can be found in default_mercure.json):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>appliance_name</p></td>
+<td><p>Optional name of the mercure server (useful for multiple servers)</p></td>
+</tr>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>Port for receiving DICOMs (default: 111112). Must be &gt;1024 for non-root service user.</p></td>
+</tr>
+<tr class="row-even"><td><p>incoming_folder</p></td>
+<td><p>Buffer location for received DICOM files</p></td>
+</tr>
+<tr class="row-odd"><td><p>studies_folder</p></td>
+<td><p>Buffer location for collecting series belonging to one study</p></td>
+</tr>
+<tr class="row-even"><td><p>outgoing_folder</p></td>
+<td><p>Buffer location for series to be dispatched</p></td>
+</tr>
+<tr class="row-odd"><td><p>success_folder</p></td>
+<td><p>Storage location for completed series until retention period has passed</p></td>
+</tr>
+<tr class="row-even"><td><p>error_folder</p></td>
+<td><p>Storage location for files that could not be parsed or dispatched</p></td>
+</tr>
+<tr class="row-odd"><td><p>discard_folder</p></td>
+<td><p>Storage location for discarded series until retention period has passed</p></td>
+</tr>
+<tr class="row-even"><td><p>processing_folder</p></td>
+<td><p>Buffer location for series to be processed</p></td>
+</tr>
+<tr class="row-odd"><td><p>bookkeeper</p></td>
+<td><p>IP and port of the bookkeeper instance</p></td>
+</tr>
+<tr class="row-even"><td><p>graphite_ip</p></td>
+<td><p>IP address of the graphite server. Leave empty if none</p></td>
+</tr>
+<tr class="row-odd"><td><p>graphite_port</p></td>
+<td><p>Port of the graphite server</p></td>
+</tr>
+<tr class="row-even"><td><p>router_scan_interval</p></td>
+<td><p>Interval how often the router checks for arrived images (sec)</p></td>
+</tr>
+<tr class="row-odd"><td><p>series_complete_trigger</p></td>
+<td><p>Time after arrival of last slice when series is considered complete (sec)</p></td>
+</tr>
+<tr class="row-even"><td><p>study_complete_trigger</p></td>
+<td><p>Time after arrival of last series when study is considered complete (sec)</p></td>
+</tr>
+<tr class="row-odd"><td><p>study_forcecomplete_trigger</p></td>
+<td><p>Time after which studies are considered complete even if series are missing (sec)</p></td>
+</tr>
+<tr class="row-even"><td><p>dispatcher_scan_interval</p></td>
+<td><p>Interval how often the dispatcher checks for series to be sent (sec)</p></td>
+</tr>
+<tr class="row-odd"><td><p>retry_delay</p></td>
+<td><p>Delay before retrying to dispatch series after failure (sec)</p></td>
+</tr>
+<tr class="row-even"><td><p>retry_max</p></td>
+<td><p>Maximum number of retries when dispatching</p></td>
+</tr>
+<tr class="row-odd"><td><p>cleaner_scan_interval</p></td>
+<td><p>Interval how often the cleaner checks for files to be deleted (sec)</p></td>
+</tr>
+<tr class="row-even"><td><p>retention</p></td>
+<td><p>Duration how long files will be kept before deletion (sec)</p></td>
+</tr>
+<tr class="row-odd"><td><p>offpeak_start</p></td>
+<td><p>Start of the off-peak work hours (24h format)</p></td>
+</tr>
+<tr class="row-even"><td><p>offpeak_end</p></td>
+<td><p>End of the off-peak work hours (24h format)</p></td>
+</tr>
+<tr class="row-odd"><td><p>targets</p></td>
+<td><p>Configured targets - should be edited via web interface</p></td>
+</tr>
+<tr class="row-even"><td><p>rules</p></td>
+<td><p>Configured rules - should be edited via web interface</p></td>
+</tr>
+<tr class="row-odd"><td><p>modules</p></td>
+<td><p>Configured modules - should be edited via web interface</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="scaling-services">
 <h2>Scaling services<a class="headerlink" href="#scaling-services" title="Permalink to this headline"></a></h2>
-<p>By default, mercure uses only a single instance of each service module (i.e., in the case of the dispatcher, only one series per time is sent outwards), which provides sufficient performance for most applications. However, for very demanding applications with high volume of incoming DICOM series, it can be necessary run multiple instances of the modules (router, processor, dispatcher). All mercure modules have been written to allow for parallel execution, so that additional instances can be started.</p>
-<p>The exact way of scaling up services depends on the type of mercure installation (systemd / Docker / Nomad). The instructions below describe how services can be duplicated when using systemd (which is preferred for high-performance installations).</p>
-<p>For systemd installations, the file “services.json” in the folder “/opt/mercure/config” needs to be modified. Here, the section of each module that should be scaled needs to be duplicated. For example, for scaling the dispatcher, the “dispatcher” section needs to be duplicated and a unique name needs to be selected for the copy (for the section name and inner keys “name” and “systemd_service”, as shown below):</p>
+<p>By default, mercure uses only a single instance of each service module (i.e., in the case of the dispatcher, only one series per time is sent outwards). This provides sufficient performance for most applications. However, for demanding applications with very high volume of incoming DICOM series, it can be necessary run multiple instances of the modules (router, processor, dispatcher). All mercure modules have been written to allow for parallel execution, so that additional instances can be started.</p>
+<p>The exact procedure for scaling up services depends on the type of mercure installation (systemd / Docker / Nomad). The instructions below describe how services can be duplicated when using systemd (which is preferred for high-performance installations).</p>
+<p>For systemd installations, the file <strong>services.json</strong> in the folder <strong>/opt/mercure/config</strong> needs to be modified. Here, the section of each module that should be scaled needs to be duplicated. For example, for scaling the dispatcher, the “dispatcher” section needs to be duplicated and a unique name needs to be selected for the copy (for the section name and inner keys “name” and “systemd_service”, as shown below):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="o">...</span>
     <span class="s2">&quot;dispatcher&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -134,177 +270,12 @@
 <p class="admonition-title">Note</p>
 <p>It is not necessary to scale the receiver module, as the receiver automatically launches a separate process for every DICOM connection.</p>
 </div>
-<p>Afterwards, the .service files of the scaled service modules need to be duplicated in the folder /etc/systemd/system. For example, if duplicating the dispatcher module as shown above, copy the existing file mercure_dispatcher.service and name it mercure_dispatcher2.service (or whatever has been listed in the file services.json). Enable and start the duplicated service by calling (from an account with sudo rights):</p>
+<p>Afterwards, the .service files of the scaled service modules need to be duplicated in the folder <strong>/etc/systemd/system</strong>. For example, if duplicating the dispatcher module as shown above, copy the existing file mercure_dispatcher.service and name it mercure_dispatcher2.service (or whatever has been listed in the file services.json). Enable and start the duplicated service by calling (from an account with sudo rights):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">mercure_dispatcher2</span><span class="o">.</span><span class="n">service</span>
 <span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">mercure_dispatcher2</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
 </div>
-<p>As last step, it is necessary to authorize the mercure system user to control the duplicated services. This is done by editing the file /etc/sudoers.d/mercure (using a user account with sudo permission) and adding a line for each duplicated service (according to the name specified above). When copying an existing line from the file, make sure to change every occurrence of the service name in the line.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The following sections are still being updated for mercure version 0.2.</p>
-</div>
-</section>
-<section id="configuration-files">
-<h2>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this headline"></a></h2>
-<p>mercure stores the configuration in multiple files in the subfolder /configuration. If you want to backup the configuration or install mercure on another machine, you need to copy all files inside this folder.</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 84%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>File</p></th>
-<th class="head"><p>Meaning</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>bookkeeper.env</p></td>
-<td><p>Contains the IP, port, and DB password for the bookkeeper</p></td>
-</tr>
-<tr class="row-odd"><td><p>mercure.json</p></td>
-<td><p>Configured targets, rules, storage location, and other mercure settings</p></td>
-</tr>
-<tr class="row-even"><td><p>services.json</p></td>
-<td><p>Customizable list of used mercure services</p></td>
-</tr>
-<tr class="row-odd"><td><p>users.json</p></td>
-<td><p>User information for the webgui</p></td>
-</tr>
-<tr class="row-even"><td><p>webgui.env</p></td>
-<td><p>Contains the IP, port, and secret key for the webgui</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="additional-settings">
-<h2>Additional settings<a class="headerlink" href="#additional-settings" title="Permalink to this headline"></a></h2>
-<p>Advanced settings can be reviewed and adjusted on the Configuration page of the webgui. To change the settings, click the “Edit Settings” button at the bottom of the page. Once saved, the different service modules will automatically load the updated configuration.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Make sure to preserve correct JSON formatting of the settings. The webgui will automatically check the syntax before saving the file.</p>
-</div>
-<p>Alternatively to using the webgui, the changes can also be made by directly editing the file mercure.json with a Linux text editor, e.g. nano.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>When editing the configuration file directly, it is required to shutdown all mercure services prior to making any changes (via the webgui or systemctl command).</p>
-</div>
-<p>The following settings can be customized (default values can be found in default_mercure.json):</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 76%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Key</p></th>
-<th class="head"><p>Meaning</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>incoming_folder</p></td>
-<td><p>Buffer location for received DICOM files</p></td>
-</tr>
-<tr class="row-odd"><td><p>outgoing_folder</p></td>
-<td><p>Buffer location for series to be dispatched</p></td>
-</tr>
-<tr class="row-even"><td><p>success_folder</p></td>
-<td><p>Storage location for sent series until retention period has passed</p></td>
-</tr>
-<tr class="row-odd"><td><p>error_folder</p></td>
-<td><p>Storage location for files that could not be parsed or dispatched</p></td>
-</tr>
-<tr class="row-even"><td><p>discard_folder</p></td>
-<td><p>Storage location for discarded series until retention period has passed</p></td>
-</tr>
-<tr class="row-odd"><td><p>bookkeeper</p></td>
-<td><p>IP and port of the bookkeeper instance</p></td>
-</tr>
-<tr class="row-even"><td><p>graphite_ip</p></td>
-<td><p>IP address of the graphite server. Leave empty if none</p></td>
-</tr>
-<tr class="row-odd"><td><p>graphite_port</p></td>
-<td><p>Port of the graphite server</p></td>
-</tr>
-<tr class="row-even"><td><p>router_scan_interval</p></td>
-<td><p>Interval how often the router checks for arrived images (in sec)</p></td>
-</tr>
-<tr class="row-odd"><td><p>series_complete_trigger</p></td>
-<td><p>Time after arrival of last slice when series is considered complete (in sec)</p></td>
-</tr>
-<tr class="row-even"><td><p>dispatcher_scan_interval</p></td>
-<td><p>Interval how often the dispatcher checks for series to be sent (in sec)</p></td>
-</tr>
-<tr class="row-odd"><td><p>retry_delay</p></td>
-<td><p>Delay before retrying to dispatch series after failure (in sec)</p></td>
-</tr>
-<tr class="row-even"><td><p>retry_max</p></td>
-<td><p>Maximum number of retries when dispatching</p></td>
-</tr>
-<tr class="row-odd"><td><p>cleaner_scan_interval</p></td>
-<td><p>Interval how often the cleaner checks for files to be deleted (in sec)</p></td>
-</tr>
-<tr class="row-even"><td><p>retention</p></td>
-<td><p>Duration how long files will be kept before deletion (in sec)</p></td>
-</tr>
-<tr class="row-odd"><td><p>offpeak_start</p></td>
-<td><p>Start of the off-peak work hours (in 24h format)</p></td>
-</tr>
-<tr class="row-even"><td><p>offpeak_end</p></td>
-<td><p>End of the off-peak work hours (in 24h format)</p></td>
-</tr>
-<tr class="row-odd"><td><p>targets</p></td>
-<td><p>Configured targets - should be edited via webgui</p></td>
-</tr>
-<tr class="row-even"><td><p>rules</p></td>
-<td><p>Configured rules - should be edited via webgui</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="installing-redash">
-<h2>Installing Redash<a class="headerlink" href="#installing-redash" title="Permalink to this headline"></a></h2>
-<p>Redash is a powerful open-source web application for analyzing and visualizing data stored in SQL databases, like the data collected by the bookkeeper service. Instead of integrating limited analysis functions into mercure’ own webgui, we decided to utilize Redash instead, which provides much greater flexibility. You can learn more about Redash at <a class="reference external" href="http://redash.io">http://redash.io</a></p>
-<p>Redash provides a convenient installation script that uses Docker for the Redash deployment. It is highly recommended to use this script, unless you are very familiar with Redash.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">getredash</span><span class="o">/</span><span class="n">setup</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
-<span class="n">chmod</span> <span class="mi">700</span> <span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
-<span class="n">sudo</span> <span class="o">./</span><span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
-</pre></div>
-</div>
-<p>Open the Redash configuration page in a web browser</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">[</span><span class="n">server</span> <span class="n">ip</span><span class="p">]</span><span class="o">/</span><span class="n">setup</span>
-</pre></div>
-</div>
-<p>After setting up your Redash administrator password, click the top-right configuration icon and select “New Data Source”. Select a PostgreSQL database and enter the following connection settings</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Type</span><span class="p">:</span> <span class="n">Postgres</span>
-<span class="n">Name</span><span class="p">:</span> <span class="n">mercure</span>
-<span class="n">Host</span><span class="p">:</span> <span class="mf">172.17.0.1</span>
-<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
-<span class="n">User</span><span class="p">:</span> <span class="n">redash</span>
-<span class="n">Password</span><span class="p">:</span> <span class="p">[</span><span class="k">as</span> <span class="n">selected</span> <span class="n">above</span><span class="p">]</span>
-<span class="n">Database</span> <span class="n">Name</span><span class="p">:</span> <span class="n">mercure</span>
-</pre></div>
-</div>
-<p>Afterwards, click “Save” and validate the database connection by clicking the button “Test Connection”. If you see a green “Success” notification on the bottom-right, everything works.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If you want to run Redash on a different port than :80 (e.g., webgui on :80 and redash on :81), then you need to edit the file “/opt/redash/docker-compose.yml” and change the value “80:80” in the nginx section to, e.g., “81:80”. Afterwards, you need to restart the  nginx container.</p>
-</div>
-<p>Now that the database tables have been created by the bookkeeper, you can grant read-only permissions to the user “redash”. This can be achieved by running the following commands.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">i</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span>
-<span class="n">psql</span>
-\<span class="n">c</span> <span class="n">mercure</span>
-<span class="n">GRANT</span> <span class="n">CONNECT</span> <span class="n">ON</span> <span class="n">DATABASE</span> <span class="n">mercure</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
-<span class="n">GRANT</span> <span class="n">USAGE</span> <span class="n">ON</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
-<span class="n">GRANT</span> <span class="n">SELECT</span> <span class="n">ON</span> <span class="n">ALL</span> <span class="n">TABLES</span> <span class="n">IN</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
-<span class="n">ALTER</span> <span class="n">DEFAULT</span> <span class="n">PRIVILEGES</span> <span class="n">IN</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">GRANT</span> <span class="n">SELECT</span> <span class="n">ON</span> <span class="n">TABLES</span> <span class="n">TO</span> <span class="n">redash</span><span class="p">;</span>
-\<span class="n">q</span>
-<span class="n">exit</span>
-</pre></div>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>These commands need to be rerun whenever the database tables have been dropped (e.g., when clearing the database).</p>
-</div>
+<p>As last step, it is necessary to authorize the mercure system user to control the duplicated services. This is done by editing the file <strong>/etc/sudoers.d/mercure</strong> (using a user account with sudo permission) and adding a line for each duplicated service (according to the name specified above). When copying an existing line from the file, make sure to change every occurrence of the service name in the line.</p>
 </section>
 </section>
 
@@ -312,8 +283,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="dashboards.html" class="btn btn-neutral float-left" title="Dashboard Gallery" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="monitoring.html" class="btn btn-neutral float-right" title="Monitoring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
