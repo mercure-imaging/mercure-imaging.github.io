@@ -110,29 +110,26 @@
              
   <section id="monitoring">
 <h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline"></a></h1>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The information on this page is still being updated for mercure version 0.2.</p>
-</div>
 <p>mercure provides three different mechanisms for monitoring the server activity and health.</p>
 <section id="log-files">
 <h2>Log files<a class="headerlink" href="#log-files" title="Permalink to this headline"></a></h2>
-<p>All mercure services write detailed logging information with timestamps into system log files. The most convenient way to review these logs is to use the “Logs” page of the mercure web interface. Here you can see a separate tab for every service. The logs are updated whenever you switch between tabs and when you click the refresh button on the top-right.</p>
+<p>All mercure services write detailed logging information into system log files. The most convenient way to review these logs is to use the “Logs” page of the mercure web interface. It shows a separate tab for every mercure service. The log display is updated whenever you switch between tabs or when you click the refresh button on the top-right.</p>
 <a class="border reference internal image-reference" href="_images/ui_log.png"><img alt="_images/ui_log.png" class="border align-center" src="_images/ui_log.png" style="width: 550px;" /></a>
-<p>Using the From/To controls, you can limit the time span that is shown in the log viewer.</p>
+<p>Depending on your mercure installation type, you can restrict the time span shown in the log viewer
+using the From/To controls (systemd-type installations allow providing start &amp; end time, Docker-type installations allow providing a start time, Nomad-type installations don’t allow selecting the time span).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Only the last 1000 lines of each log are displayed to keep the user interface responsive. If you are looking for an older event, use the From/To fields to narrow down the time span.</p>
+<p>In systemd-mode, only the last 1000 lines of each log are displayed to keep the user interface responsive. If you are looking for an older event, use the From/To fields to narrow down the time span.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The log files can also be viewed in the terminal using the journalctl command by providing the service name as argument. For example, “journalctl -u mercure_ui.service” shows the log of the webgui. You can see the names of the different services as tooltip when hovering over the tabs on the “Logs” page.</p>
+<p>In systemd-mode, the log files can also be viewed in a terminal shell using the journalctl command by providing the service name as argument. For example, “journalctl -u mercure_ui.service” shows the log of the webgui. You can see the names of the different services as tooltip when hovering over the tabs on the “Logs” page.</p>
 </div>
 </section>
 <section id="graphite">
 <h2>Graphite<a class="headerlink" href="#graphite" title="Permalink to this headline"></a></h2>
 <p><a class="reference external" href="https://graphiteapp.org/">Graphite</a> is a very powerful tool for monitoring the health of a server. It can collect time-series data from various sources and stores the data in a database. Instead of displaying the data directly with Graphite, the collected data is often visualized using <a class="reference external" href="https://grafana.com/">Grafana</a>, which makes it very easy to create dashboards for various data sources and to setup alerts.</p>
-<p>We highly recommend that you monitor your mercure server with Graphite and Grafana. In a typical setup, Graphite and Grafana are running on a separate monitoring server. Basic health parameters like the available disk space, CPU load, and memory usage can be collected by installing the <a class="reference external" href="https://collectd.org/">collectd</a> service on your server, which will transmit the information to your Graphite instance.</p>
+<p>We highly recommend that you monitor your mercure server with Graphite and Grafana. In a typical setup, Graphite and Grafana are running on a separate monitoring server. Basic health parameters such as the available disk space, CPU load, and memory usage can be collected by installing the <a class="reference external" href="https://collectd.org/">collectd</a> service on your server, which will transmit the information to your Graphite instance.</p>
 <p>mercure can transmit additional information about its activities to Graphite. To enable it, shutdown all mercure services and edit the keys graphite_ip and graphite_port in the file mercure.json (here you need to enter the IP and port of your Graphite instance). Afterwards, restart the mercure services.</p>
 <p>mercure transmits the following information to Graphite:</p>
 <table class="docutils align-default">
@@ -229,7 +226,7 @@
 </section>
 <section id="bookkeeper-with-redash">
 <h2>Bookkeeper with Redash<a class="headerlink" href="#bookkeeper-with-redash" title="Permalink to this headline"></a></h2>
-<p>All mercure components transfer real-time information about their activities to mercure’ bookkeeper service, which acts as central monitoring hub. The bookkeeper service can be disabled if not needed, but it’s highly recommended to use it, as it allows analyzing which series have been processed (or discarded) and what the processing times were. Of course, it also keeps track of all errors and processing abnormalities that might occur. Moreover, because bookkeeper tracks all DICOM files that pass through the router, including series that are discarded, the bookkeeper can be used for data mining that exceeds the capabilities of many PACS systems (e.g., searching for series where a certain contrast agent has been administered).</p>
+<p>All mercure components transfer real-time information about their activities to mercure’s bookkeeper service, which acts as central monitoring hub. The bookkeeper service can be disabled if not needed, but it is recommended to use it because it allows answering questions such as which series have been processed (or discarded) or how long average processing times were. It also keeps track of all errors and processing abnormalities that might occur. Moreover, because the bookkeeper tracks all DICOM files that pass through the server, including series that are discarded, it can be used for data mining tasks that exceed the capabilities of many PACS systems (e.g., searching for series where a certain contrast agent has been administered).</p>
 <p>Bookkeeper is running as RESTful service on a TCP/IP port (by default 8080) and stores the received information in a PostgreSQL database, which can be queried for analytics purpose.</p>
 <p>The following information is stored in the database:</p>
 <table class="docutils align-default">
@@ -247,13 +244,13 @@
 <td><p>General events of mercure modules, e.g. startup or detected errors</p></td>
 </tr>
 <tr class="row-odd"><td><p>webgui_events</p></td>
-<td><p>Activities of webgui, e.g. login attempts or configuration changes</p></td>
+<td><p>Activities in the webgui, e.g. login attempts or configuration changes</p></td>
 </tr>
 <tr class="row-even"><td><p>dicom_files</p></td>
 <td><p>All received DICOM files with file name, file UID, and series UID</p></td>
 </tr>
 <tr class="row-odd"><td><p>dicom_series</p></td>
-<td><p>Information on all received series, incl relevant tag information</p></td>
+<td><p>Information on all received series, including relevant tag information</p></td>
 </tr>
 <tr class="row-even"><td><p>series_events</p></td>
 <td><p>All processing events related to one series, e.g. dispatch or discard</p></td>
@@ -267,7 +264,7 @@
 </tbody>
 </table>
 <p>The tables dicom_series, series_events, and dicom_files can be joined using series_uid as common column, allowing to query the events associated with one series and the names of the individual DICOM files.</p>
-<p>A very convenient and powerful tool for working with the collected PostgreSQL data is the <a class="reference external" href="http://redash.io">Redash</a> web application, which has already been described in the installation section. Redash allows prototyping SQL queries right in the browser and provides a navigator for the database keys. The query results can be displayed as tables or graphically using various visualization options. The visualizations can then be embedded into dashboards, allowing to rapidly create custom dashboards for various applications without need for any programming besides formulating the SQL queries. The dashboards can even be made interactive using a set of available user controls that can be integrated into the SQL queries. Redash is equipped with a multi-user authorization system and can be used simultaneously by different users.</p>
+<p>A very convenient and powerful tool for working with the collected PostgreSQL data is the <a class="reference external" href="http://redash.io">Redash</a> web application. Redash allows prototyping SQL queries right in the browser and provides a navigator for the database keys. The query results can be displayed as tables or graphically using various visualization options. The visualizations can then be embedded into dashboards, allowing to rapidly create custom dashboards for various applications without need for any programming besides formulating the SQL queries. The dashboards can even be made interactive using a set of available user controls that can be integrated into the SQL queries. Redash is equipped with a multi-user authorization system and can be used simultaneously by different users.</p>
 <p>Dashboards that we created for our own mercure installation include:</p>
 <ul class="simple">
 <li><p>A dashboard to display all mercure events in chronological order, with separate display of ERROR events and separate display of the web activity (“System Status”)</p></li>
@@ -279,7 +276,7 @@
 </section>
 <section id="installing-redash">
 <h2>Installing Redash<a class="headerlink" href="#installing-redash" title="Permalink to this headline"></a></h2>
-<p>Redash is a powerful open-source web application for analyzing and visualizing data stored in SQL databases, like the data collected by the bookkeeper service. Instead of integrating limited analysis functions into mercure’ own webgui, we decided to utilize Redash instead, which provides much greater flexibility. You can learn more about Redash at <a class="reference external" href="http://redash.io">http://redash.io</a></p>
+<p>Redash is a powerful open-source web application for analyzing and visualizing data stored in SQL databases, such as the data collected by the bookkeeper service. Instead of integrating limited analysis functions into mercure’s own webgui, we decided to utilize Redash instead, which provides much greater flexibility. You can learn more about Redash at <a class="reference external" href="http://redash.io">http://redash.io</a></p>
 <p>Redash provides a convenient installation script that uses Docker for the Redash deployment. It is highly recommended to use this script, unless you are very familiar with Redash.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">getredash</span><span class="o">/</span><span class="n">setup</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
 <span class="n">chmod</span> <span class="mi">700</span> <span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
@@ -305,7 +302,7 @@
 <p class="admonition-title">Tip</p>
 <p>If you want to run Redash on a different port than :80, then you need to edit the file “/opt/redash/docker-compose.yml” and change the value “80:80” in the nginx section to, e.g., “8888:80”. Afterwards, you need to restart the nginx container.</p>
 </div>
-<p>After the database tables have been created by the mercure bookkeeper services, you can grant read-only permissions to the user “redash”. This can be achieved by running the following commands.</p>
+<p>Database tables are automatically created by the bookkeeper service during the mercure installation. It is recommended to grant read-only permissions for these tables, e.g. to the user “redash”. This can be achieved by running the following commands.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">i</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span>
 <span class="n">psql</span>
 \<span class="n">c</span> <span class="n">mercure</span>
@@ -327,11 +324,11 @@
 <p>It is highly recommended to setup alerts for processing errors and server problems, so that you are automatically notified if the mercure router needs your attention. Both Grafana and Redash provide functions for automatic alerts that can be utilized. With both tools, alerts can be delivered via email. However, we recommend using a messaging tool that supports custom webhooks, such as <a class="reference external" href="https://slack.com">Slack</a>. In this way, alerts can be delivered in real-time and across multiple devices, including smartphones.</p>
 <p>Examples for useful alerts include:</p>
 <ul class="simple">
-<li><p>If the disk space on the server drops below a certain threshold [alert via Grafana]</p></li>
-<li><p>If the server cannot be reached (“pinged”) over the network [alert via Grafana]</p></li>
-<li><p>If the mercure services (router, dispatcher, cleaner) have not notified Graphite for a longer period [alert via Grafana]</p></li>
-<li><p>If bookkeeper has received any error notifications [alert via Redash]</p></li>
-<li><p>If the number of series dispatched to a certain target falls below the expected value [alert via Redash]</p></li>
+<li><p>The disk space on the server has dropped below a certain threshold [alert via Grafana]</p></li>
+<li><p>The server cannot be reached (“pinged”) over the network [alert via Grafana]</p></li>
+<li><p>The mercure services (router, dispatcher, cleaner) have not notified Graphite for a longer period [alert via Grafana]</p></li>
+<li><p>The bookkeeper has received any error notification [alert via Redash]</p></li>
+<li><p>The number of series dispatched to a certain target fell below the expected value [alert via Redash]</p></li>
 </ul>
 <p>In addition to the alerting options provided by Grafana and Redash, it is also possible setup custom notifications via a small Python script that is periodically executed and that calls the webhooks of your messaging service.</p>
 <div class="admonition important">
@@ -352,7 +349,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

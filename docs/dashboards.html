@@ -111,11 +111,7 @@
              
   <section id="dashboard-gallery">
 <h1>Dashboard Gallery<a class="headerlink" href="#dashboard-gallery" title="Permalink to this headline"></a></h1>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The information on this page is still being updated for mercure version 0.2.</p>
-</div>
-<p>Using Redash and Graphite, various custom dashboards can be created that visualize and analyze the data collected by the mercure router. Below are examples for dashboards that we created for our installation (the corresponding Redash queries are shown in SQL syntax, so that the dashboards can be reproduced).</p>
+<p>Using Redash and Graphite, various custom dashboards can be created that visualize and analyze the data collected by mercure. Below are examples for dashboards that we created for our installation (the corresponding Redash queries are shown in SQL syntax, so that the dashboards can be reproduced).</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#router-health" id="id1">Router Health</a></p></li>
@@ -133,7 +129,7 @@
 <hr class="docutils" />
 <section id="router-health">
 <h2><a class="toc-backref" href="#id1">Router Health</a><a class="headerlink" href="#router-health" title="Permalink to this headline"></a></h2>
-<p>The health of the mercure router can be monitored using Graphite for data collection and Grafana for dashboard creation and alerting. Shown below is an exemplary dashboard that we are using to monitor our router, which combines data provided by the collectd service running on the server, by the collectd service running on a different server (for measuring the ping response), and directly by the different mercure services.</p>
+<p>The health of a mercure server can be monitored using Graphite for data collection and Grafana for dashboard creation and alerting. Shown below is an exemplary dashboard that we are using to monitor our server, which combines data provided by the collectd service running on the server, by the collectd service running on a different server (for measuring the ping response), and directly by the different mercure services.</p>
 <p>The diagram shown in the top-left utilizes the data transmitted by the mercure services during each run. If one of the colored blocks disappears for a longer period of time, it indicates that the process might be hanging. Useful are also the other diagrams in the top row, showing pending files and series in the incoming folder as reported by the router module, which can indicate if the server is not able to keep up with the load created by the scanners.</p>
 <a class="border reference internal image-reference" href="_images/dashboards_graphite.png"><img alt="_images/dashboards_graphite.png" class="border align-center" src="_images/dashboards_graphite.png" style="width: 550px;" /></a>
 </section>
@@ -380,7 +376,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -110,10 +110,11 @@
 <li><p><a class="reference internal" href="#can-the-series-be-dispatched-in-a-certain-order" id="id3">Can the series be dispatched in a certain order?</a></p></li>
 <li><p><a class="reference internal" href="#what-can-i-do-to-further-improve-the-performance" id="id4">What can I do to further improve the performance?</a></p></li>
 <li><p><a class="reference internal" href="#why-has-the-getdcmtags-module-been-written-in-c" id="id5">Why has the getdcmtags module been written in C++?</a></p></li>
-<li><p><a class="reference internal" href="#is-mercure-fda-approved-does-it-have-a-ce-label" id="id6">Is mercure FDA-approved? Does it have a CE label?</a></p></li>
-<li><p><a class="reference internal" href="#do-you-offer-professional-support-for-mercure" id="id7">Do you offer professional support for mercure?</a></p></li>
-<li><p><a class="reference internal" href="#can-mercure-be-used-for-commercial-purpose" id="id8">Can mercure be used for commercial purpose?</a></p></li>
-<li><p><a class="reference internal" href="#who-is-behind-the-project" id="id9">Who is behind the project?</a></p></li>
+<li><p><a class="reference internal" href="#does-mercure-use-log4j" id="id6">Does mercure use Log4j?</a></p></li>
+<li><p><a class="reference internal" href="#is-mercure-fda-approved-does-it-have-a-ce-label" id="id7">Is mercure FDA-approved? Does it have a CE label?</a></p></li>
+<li><p><a class="reference internal" href="#do-you-offer-professional-support-for-mercure" id="id8">Do you offer professional support for mercure?</a></p></li>
+<li><p><a class="reference internal" href="#can-mercure-be-used-for-commercial-purpose" id="id9">Can mercure be used for commercial purpose?</a></p></li>
+<li><p><a class="reference internal" href="#who-is-behind-the-project" id="id10">Who is behind the project?</a></p></li>
 </ul>
 </div>
 <hr class="docutils" />
@@ -143,23 +144,28 @@
 <p>mercure has been written in Python, except for the getdcmtags module that is used to extract the DICOM tags from the received DICOM files. The reason is that this module is launched by the storescp receiver in a forked process whenever a new DICOM image has been received. Because launching the Python runtime environment (i.e., the Python virtual machine) for every received image would take a lot of time, the module has been written in C++ instead.</p>
 </section>
 <hr class="docutils" />
+<section id="does-mercure-use-log4j">
+<h2><a class="toc-backref" href="#id6">Does mercure use Log4j?</a><a class="headerlink" href="#does-mercure-use-log4j" title="Permalink to this headline"></a></h2>
+<p>No, mercure has not been written in Java, and it does not use the Log4j logging software.</p>
+</section>
+<hr class="docutils" />
 <section id="is-mercure-fda-approved-does-it-have-a-ce-label">
-<h2><a class="toc-backref" href="#id6">Is mercure FDA-approved? Does it have a CE label?</a><a class="headerlink" href="#is-mercure-fda-approved-does-it-have-a-ce-label" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id7">Is mercure FDA-approved? Does it have a CE label?</a><a class="headerlink" href="#is-mercure-fda-approved-does-it-have-a-ce-label" title="Permalink to this headline"></a></h2>
 <p>No, at this time, mercure is neither FDA-approved nor does it have a CE label. However, it uses the Offis DICOM toolkit (DCMTK) for the underlying DICOM communication, which is well-established and used in numerous research and commercial products.</p>
 </section>
 <hr class="docutils" />
 <section id="do-you-offer-professional-support-for-mercure">
-<h2><a class="toc-backref" href="#id7">Do you offer professional support for mercure?</a><a class="headerlink" href="#do-you-offer-professional-support-for-mercure" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id8">Do you offer professional support for mercure?</a><a class="headerlink" href="#do-you-offer-professional-support-for-mercure" title="Permalink to this headline"></a></h2>
 <p>Not currently. Please post your questions and support requests to the <a class="reference internal" href="support.html"><span class="doc">Discussion Board</span></a>, and please <a class="reference external" href="https://github.com/mercure-imaging/mercure/issues">submit an issue on Github</a> if you encounter any bugs or if you would like to propose an enhancement.</p>
 </section>
 <hr class="docutils" />
 <section id="can-mercure-be-used-for-commercial-purpose">
-<h2><a class="toc-backref" href="#id8">Can mercure be used for commercial purpose?</a><a class="headerlink" href="#can-mercure-be-used-for-commercial-purpose" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id9">Can mercure be used for commercial purpose?</a><a class="headerlink" href="#can-mercure-be-used-for-commercial-purpose" title="Permalink to this headline"></a></h2>
 <p>Yes, commercial use of mercure is generally possible, but it must adhere to the policies defined by the GNU GPLv3 open-source license. <a class="reference external" href="https://choosealicense.com/licenses/gpl-3.0/">Click here</a> to learn more about the permissions, conditions, and limitations of the license.</p>
 </section>
 <hr class="docutils" />
 <section id="who-is-behind-the-project">
-<h2><a class="toc-backref" href="#id9">Who is behind the project?</a><a class="headerlink" href="#who-is-behind-the-project" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id10">Who is behind the project?</a><a class="headerlink" href="#who-is-behind-the-project" title="Permalink to this headline"></a></h2>
 <p>mercure has been developed by <a class="reference external" href="http://tobias-block.net/">Kai Tobias Block</a>, <a class="reference external" href="http://roy.red/">Roy Wiggins</a>, and <a class="reference external" href="https://twitter.com/_joshycyriac_">Joshy Cyriac</a>. The development has been supported by the <a class="reference external" href="https://cai2r.net">Center for Advanced Imaging Innovation and Research (CAI2R)</a> at <a class="reference external" href="https://nyulangone.org">NYU Langone Health</a>.</p>
 <p>The name stems from the French translation of Mercury or Mercurius, the god of messages and communication in ancient Roman mythology. The project was initially called Hermes, Mercury’s counterpart in Greek mythology, but the name was changed to avoid confusion with another existing software in the medical-imaging field.</p>
 </section>
@@ -176,7 +182,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2021, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
