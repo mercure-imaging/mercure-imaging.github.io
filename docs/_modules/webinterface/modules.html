@@ -129,10 +129,9 @@
 
 
 <div class="viewcode-block" id="save_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.save_module">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">save_module</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;We already read the config by this time&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Save the settings for the module with the given name.&quot;&quot;&quot;</span>
 
-    <span class="c1"># Ensure that the processing settings are valid. Should happen on the client side too, but can&#39;t hurt</span>
-    <span class="c1"># to check again</span>
+    <span class="c1"># Ensure that the module settings are valid. Should happen on the client side too, but can&#39;t hurt to check again.</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">new_settings</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;settings&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">))</span>
     <span class="k">except</span><span class="p">:</span>
@@ -144,6 +143,7 @@
         <span class="n">environment</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;environment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">docker_arguments</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;docker_arguments&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">new_settings</span><span class="p">,</span>
+        <span class="n">contact</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">comment</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">constraints</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;constraints&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">resources</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resources&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
@@ -194,7 +194,7 @@
 <div class="viewcode-block" id="add_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.add_module">[docs]</a><span class="nd">@modules_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">add_module</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Creates a new routing rule and forwards the user to the rule edit page.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Creates a new module and forwards the user to the module edit page.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -215,7 +215,7 @@
 <div class="viewcode-block" id="edit_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.edit_module">[docs]</a><span class="nd">@modules_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">edit_module</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Shows all installed modules&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Show the module edit page for the given module name.&quot;&quot;&quot;</span>
     <span class="n">module</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s2">&quot;module&quot;</span><span class="p">]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
@@ -245,7 +245,7 @@
 <div class="viewcode-block" id="edit_module_POST"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.edit_module_POST">[docs]</a><span class="nd">@modules_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">edit_module_POST</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Creates a new routing rule and forwards the user to the rule edit page.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Save the settings for the given module name.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -263,7 +263,7 @@
 <div class="viewcode-block" id="delete_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.delete_module">[docs]</a><span class="nd">@modules_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_module</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Creates a new routing rule and forwards the user to the rule edit page.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Deletes the module with the given module name.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
