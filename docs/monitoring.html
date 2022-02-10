@@ -294,7 +294,7 @@ using the From/To controls (systemd-type installations allow providing start &am
 <span class="n">exit</span>
 </pre></div>
 </div>
-<p>For <strong>Docker-type</strong> installations, it is necessary to open a shall in the Docker container running the postgres database. You can find the contained ID by entering “docker ps” and looking for the container running the image “postgres:alpine”. Then, type the following commands:</p>
+<p>For <strong>Docker-type</strong> installations, it is necessary to open a shell in the Docker container running the postgres database. You can find the contained ID by entering “docker ps” and looking for the container running the image “postgres:alpine”. Then, type the following commands:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="p">[</span><span class="n">container</span> <span class="n">ID</span><span class="p">]</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
 <span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">mercure</span>
 \<span class="n">c</span> <span class="n">mercure</span>
