@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>webinterface.queue &mdash; mercure 0.2a documentation</title>
+  <title>webinterface.queue &mdash; mercure Version 0.2.0-beta.2 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -35,6 +35,9 @@
             <a href="../../index.html">
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                Version 0.2.0-beta.2
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -520,6 +523,9 @@
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Invalid request&quot;</span><span class="p">)</span>
 
     <span class="n">job_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">job_pathstr</span> <span class="o">+</span> <span class="s2">&quot;/task.json&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_category</span> <span class="o">==</span> <span class="s2">&quot;processing&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">job_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()):</span>
+        <span class="n">job_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">job_pathstr</span> <span class="o">+</span> <span class="s2">&quot;/in/task.json&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">job_category</span> <span class="o">==</span> <span class="s2">&quot;failure&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">job_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()):</span>
         <span class="n">job_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">job_pathstr</span> <span class="o">+</span> <span class="s2">&quot;/in/task.json&quot;</span><span class="p">)</span>

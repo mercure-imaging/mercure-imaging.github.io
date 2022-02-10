@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quick Start &mdash; mercure 0.2a documentation</title>
+  <title>Quick Start &mdash; mercure Version 0.2.0-beta.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -38,6 +38,9 @@
             <a href="index.html">
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                Version 0.2.0-beta.2
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -130,8 +133,8 @@
 <p class="admonition-title">Note</p>
 <p>The login credentials for the first login are: Username = admin, Password = router</p>
 </div>
-<p>The DICOM receiver of mercure is listening at port 11112. If you want to send DICOM images to mercure from a folder on your host computer, you can do this with the “storescu” tool of the Offis DCMTK tookit by calling</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">storescu</span> <span class="mf">127.0.0.1</span> <span class="mi">11112</span> <span class="o">*.</span><span class="n">dcm</span>
+<p>The DICOM receiver of mercure is listening at port 11112. If you want to send DICOM images to mercure from a folder on your host computer, you can do this with the “dcmsend” tool of the Offis DCMTK tookit by calling</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dcmsend</span> <span class="mf">127.0.0.1</span> <span class="mi">11112</span> <span class="o">*.</span><span class="n">dcm</span>
 </pre></div>
 </div>
 <p>If you want to shutdown or destroy this installation of mercure, call “vagrant halt” or “vagrant destroy”.</p>

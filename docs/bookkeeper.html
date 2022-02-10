@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Service bookkeeper &mdash; mercure 0.2a documentation</title>
+  <title>Service bookkeeper &mdash; mercure Version 0.2.0-beta.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -38,6 +38,9 @@
             <a href="index.html">
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                Version 0.2.0-beta.2
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -123,7 +126,7 @@
 and stores the information in a Postgres database.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bookkeeper.connection">
-<span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">connection</span></span><em class="property"><span class="pre">:</span> <span class="pre">sqlalchemy.engine.base.Connection</span></em><a class="headerlink" href="#bookkeeper.connection" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">connection</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">sqlalchemy.engine.base.Connection</span></em><a class="headerlink" href="#bookkeeper.connection" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -134,7 +137,7 @@ and stores the information in a Postgres database.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.execute_db_operation">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">execute_db_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#execute_db_operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.execute_db_operation" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">execute_db_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#execute_db_operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.execute_db_operation" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -144,55 +147,55 @@ and stores the information in a Postgres database.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.parse_and_submit_tags">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">parse_and_submit_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#parse_and_submit_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.parse_and_submit_tags" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">parse_and_submit_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#parse_and_submit_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.parse_and_submit_tags" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.post_mercure_event">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_mercure_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#post_mercure_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.post_mercure_event" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_mercure_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#post_mercure_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.post_mercure_event" title="Permalink to this definition"></a></dt>
 <dd><p>Endpoint for receiving mercure system events.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.post_series_event">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_series_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#post_series_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.post_series_event" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_series_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#post_series_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.post_series_event" title="Permalink to this definition"></a></dt>
 <dd><p>Endpoint for logging all events related to one series.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.post_webgui_event">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_webgui_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#post_webgui_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.post_webgui_event" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_webgui_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#post_webgui_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.post_webgui_event" title="Permalink to this definition"></a></dt>
 <dd><p>Endpoint for logging relevant events of the webgui.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.register_dicom">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_dicom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#register_dicom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.register_dicom" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_dicom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#register_dicom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.register_dicom" title="Permalink to this definition"></a></dt>
 <dd><p>Endpoint for registering newly received DICOM files. Called by the getdcmtags module.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.register_series">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#register_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.register_series" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#register_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.register_series" title="Permalink to this definition"></a></dt>
 <dd><p>Endpoint that is called by the router whenever a new series arrives.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.shutdown">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.shutdown" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.shutdown" title="Permalink to this definition"></a></dt>
 <dd><p>Disconnect from database on shutdown.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.startup">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">startup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#startup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.startup" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">startup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#startup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.startup" title="Permalink to this definition"></a></dt>
 <dd><p>Connects to database on startup. If the database does not exist, it will
 be created.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.test_endpoint">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">test_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#test_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.test_endpoint" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">test_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#test_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.test_endpoint" title="Permalink to this definition"></a></dt>
 <dd><p>Endpoint for testing that the bookkeeper is active.</p>
 </dd></dl>
 

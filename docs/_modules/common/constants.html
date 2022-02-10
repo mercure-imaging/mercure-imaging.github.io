@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.constants &mdash; mercure 0.2a documentation</title>
+  <title>common.constants &mdash; mercure Version 0.2.0-beta.2 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -35,6 +35,9 @@
             <a href="../../index.html">
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                Version 0.2.0-beta.2
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -106,9 +109,12 @@
 <span class="sd">mercure-wide constants, used for standardizing key names and extensions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="c1"># App-specific includes</span>
+<span class="kn">from</span> <span class="nn">common.version</span> <span class="kn">import</span> <span class="n">mercure_version</span>
+
 
 <div class="viewcode-block" id="mercure_defs"><a class="viewcode-back" href="../../common.html#common.constants.mercure_defs">[docs]</a><span class="k">class</span> <span class="nc">mercure_defs</span><span class="p">:</span>
-    <span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;0.2a&quot;</span>
+    <span class="n">VERSION</span> <span class="o">=</span> <span class="n">mercure_version</span><span class="o">.</span><span class="n">get_version_string</span><span class="p">()</span>
     <span class="n">SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span></div>
 
 
