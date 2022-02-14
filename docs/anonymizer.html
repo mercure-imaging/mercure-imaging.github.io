@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anonymizer &mdash; mercure Version 0.2.0-beta.3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DCMAnnotate" href="dcmannotate.html" />
+    <link rel="prev" title="Existing Modules" href="module_list.html" />
+<script>
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'mercure-imaging/Support'
+    };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.2.0-beta.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_list.html">Existing Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Discussion Board</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Anonymizer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="anonymizer">
+<h1>Anonymizer<a class="headerlink" href="#anonymizer" title="Permalink to this headline"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The anonymization module comes <strong>without any warranties</strong>. Operation of the software is <strong>solely at the user’s own risk</strong>. The authors take no responsibility for damages of any kind that may arise from usage of the software and distribution of data processed with the software.</p>
+</div>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<p>The anonymizer module can be installed on a mercure server using the Modules page of the mercure web interface. Enter the following line into the “Docker tag” field. mercure will automatically download and install the module, and it will automatically install updates when they get published on Docker Hub:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mercureimaging</span><span class="o">/</span><span class="n">mercure</span><span class="o">-</span><span class="n">anonymizer</span>
+</pre></div>
+</div>
+<p>Alternatively, clone the GitHub repository of the anonymizer and build the Docker container locally on your server. It is recommended to append a distinct version tag to the name of the container image (e.g., mercureimaging/mercure-anonymizer:dev) because otherwise the local version will get replaced if a newer module version gets published on Docker Hub.</p>
+<p>If you need to modify the source code, compile the code with Qt Creator for Qt version 5.12 under Ubuntu Linux 20.04 and copy the compiled binary file into the folder /bin. Afterwards, build the Docker container using the make command.</p>
+</section>
+<section id="module-configuration">
+<h2>Module Configuration<a class="headerlink" href="#module-configuration" title="Permalink to this headline"></a></h2>
+<p>Settings for the anonymizer module can be defined either on the Module page (global module settings) or on the Rule page (rule-dependent processing settings). Both settings are merged prior to the processing. Rule-dependent settings will overrule global module settings if identical settings are defined in both places.</p>
+<p>Settings need to be entered in the JSON format.</p>
+</section>
+<section id="general-and-project-specific-settings">
+<h2>General and Project-Specific Settings<a class="headerlink" href="#general-and-project-specific-settings" title="Permalink to this headline"></a></h2>
+<p>General settings, which are applied to all anonymization steps, as well as project-specific settings can be defined. Project-specific settings are applied when a series (or study) has been sent to mercure with a certain Application Entity Title (AET). For example, if a series has been sent to mercure using the (receiver) AET “myproject”, the “general” settings are applied and, in addition, the settings defined in the section “myproject” are applied (if settings are defined in both sections, project settings overrule the duplicate general settings).</p>
+<p>The prefix “AZ_” can be added to the AET and will be ignored for the project assignment (i.e., both AETs “myproject” and “AZ_myproject” will be assigned to project “myproject”). This allows defining one global rule for all anonymization tasks by testing in the Selection Rule if “AZ_” is contained in the ReceiverAET (i.e., ‘AZ_’ in &#64;ReceiverAET&#64;).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;general&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">...</span> <span class="n">define</span> <span class="n">general</span> <span class="n">settings</span> <span class="n">here</span> <span class="o">...</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;myproject&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">...</span> <span class="n">define</span> <span class="n">project</span> <span class="n">specific</span> <span class="n">settings</span> <span class="n">here</span> <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The following entries should be added to each project section for documentation purpose. The corresponding values can be accessed through macros (see section below) and can be referenced when modifying tags.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Entry</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>Name of the project</p></td>
+</tr>
+<tr class="row-odd"><td><p>owner</p></td>
+<td><p>Owner of the project (e.g., Kerberos ID)</p></td>
+</tr>
+<tr class="row-even"><td><p>prefix</p></td>
+<td><p>Project prefix</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tag-assignment">
+<h2>Tag Assignment<a class="headerlink" href="#tag-assignment" title="Permalink to this headline"></a></h2>
+<p>You can specify how each DICOM tag should be processed during the anonymization by adding entries to the configuration sections (either “general” or the project-specific section) with the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Format</span><span class="p">:</span>  <span class="s2">&quot;([group],[element])&quot;</span><span class="p">:</span> <span class="s2">&quot;[command]&quot;</span>
+<span class="n">Example</span><span class="p">:</span> <span class="s2">&quot;(0010,1001)&quot;</span><span class="p">:</span> <span class="s2">&quot;remove&quot;</span>
+<span class="n">Example</span><span class="p">:</span> <span class="s2">&quot;(0010,0010)&quot;</span><span class="p">:</span> <span class="s2">&quot;set(@fake_name@)&quot;</span>
+</pre></div>
+</div>
+<p>The following commands are available:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>keep</p></td>
+<td><p>Keep the tag value as is in the processed file</p></td>
+</tr>
+<tr class="row-odd"><td><p>safe</p></td>
+<td><p>Mark the tag as known and safe, indicating that it does not contain PHI and is non-essential</p></td>
+</tr>
+<tr class="row-even"><td><p>remove</p></td>
+<td><p>Remove the tag completely from the file</p></td>
+</tr>
+<tr class="row-odd"><td><p>clear</p></td>
+<td><p>Clear the tag value but keep the tag as empty value in the file</p></td>
+</tr>
+<tr class="row-even"><td><p>set(value)</p></td>
+<td><p>Set the tag to the value provided as parameter (often used with helper macros listed below)</p></td>
+</tr>
+<tr class="row-odd"><td><p>truncdate</p></td>
+<td><p>Take the existing date value and change month and day to January 1st of the year</p></td>
+</tr>
+</tbody>
+</table>
+<p>Additional options exist that affect the processing of the tags. These options can be selected in the general section or in project-specific sections (note that values need to be provided as string, i.e. “true”).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Values</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>remove_unknown_tags</p></td>
+<td><p>true / false</p></td>
+<td><p>true</p></td>
+<td><p>Remove all tags for which no assignment has been defined</p></td>
+</tr>
+<tr class="row-odd"><td><p>remove_safe_tags</p></td>
+<td><p>true / false</p></td>
+<td><p>false</p></td>
+<td><p>Remove all tags that have been marked as “safe” (but not with “keep”)</p></td>
+</tr>
+<tr class="row-even"><td><p>remove_curves</p></td>
+<td><p>true / false</p></td>
+<td><p>true</p></td>
+<td><p>Remove all tags associated with embedded curves (groups 5000-501E)</p></td>
+</tr>
+<tr class="row-odd"><td><p>remove_overlays</p></td>
+<td><p>true / false</p></td>
+<td><p>true</p></td>
+<td><p>Remove all tags associated with embedded overlays (groups 6000-601E)</p></td>
+</tr>
+<tr class="row-even"><td><p>print_assignment</p></td>
+<td><p>true / false</p></td>
+<td><p>false</p></td>
+<td><p>Print the final tag assignment as log output (“general” section only)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="helper-macros">
+<h2>Helper Macros<a class="headerlink" href="#helper-macros" title="Permalink to this headline"></a></h2>
+<p>The following helper macros can be used in combination with the set() command. They need to be used inside the parameter of the set command (e.g., “set(&#64;random_uid&#64;)”):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Macro</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>&#64;project_name&#64;</p></td>
+<td><p>Inserts the project name (as specified in the project section)</p></td>
+</tr>
+<tr class="row-odd"><td><p>&#64;project_owner&#64;</p></td>
+<td><p>Inserts the project owner (as specified in the project section)</p></td>
+</tr>
+<tr class="row-even"><td><p>&#64;project_prefix&#64;</p></td>
+<td><p>Inserts the project prefix (as specified in the project section)</p></td>
+</tr>
+<tr class="row-odd"><td><p>&#64;process_date&#64;</p></td>
+<td><p>Inserts the processing date in format MMddyyyy</p></td>
+</tr>
+<tr class="row-even"><td><p>&#64;process_time&#64;</p></td>
+<td><p>Inserts the processing time in format hhmmsszzz (i.e., start time of the module)</p></td>
+</tr>
+<tr class="row-odd"><td><p>&#64;random_uid&#64;</p></td>
+<td><p>Inserts a randomly generated UID (without any meaning)</p></td>
+</tr>
+<tr class="row-even"><td><p>&#64;fake_name&#64;</p></td>
+<td><p>Inserts a fake name, randomly generated from names of greek letters</p></td>
+</tr>
+<tr class="row-odd"><td><p>&#64;fake_mrn&#64;</p></td>
+<td><p>Inserts a fake MRN, generated from a time stamp (unique when using one server)</p></td>
+</tr>
+<tr class="row-even"><td><p>&#64;fake_acc&#64;</p></td>
+<td><p>Inserts a fake ACC number, generated from a time stamp (unique when using one server)</p></td>
+</tr>
+<tr class="row-odd"><td><p>&#64;value&#64;</p></td>
+<td><p>Inserts the current value of the tag</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="presets">
+<h2>Presets<a class="headerlink" href="#presets" title="Permalink to this headline"></a></h2>
+<p>To avoid extensive lists of tag assignments in the configuration, the anonymizer provides presets that can be selected in the general or project-specific sections. The preset initializes the tag assignment prior to evaluating the configuration sections. Individual tags can still be added or modified by writing tag-assignment entries into the general or project sections. Use the “print_assignment” option to review the assignment created by the different presets (see above).</p>
+<p>Currently, the following presets exist (please reach out to the authors if you think that the preset assignments are incomplete or if additional specific presets would be useful):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Preset</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>Complete removal of all tags known to contain PHI and removal of unknown (e.g., private) tags</p></td>
+</tr>
+<tr class="row-odd"><td><p>none</p></td>
+<td><p>Empty assignment that keeps all tags as set</p></td>
+</tr>
+</tbody>
+</table>
+<p>Presets can be selected globally or individually for each project by adding a “preset” entry to the general or project-specific section of the configuration (a project-specific setting overrules the general setting):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;general&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;preset&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;project1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;preset&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="module_list.html" class="btn btn-neutral float-left" title="Existing Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dcmannotate.html" class="btn btn-neutral float-right" title="DCMAnnotate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
