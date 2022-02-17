@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Development Environment &mdash; mercure Version 0.2.0-beta.3 documentation</title>
+  <title>Roadmap &mdash; mercure Version 0.2.0-beta.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -19,8 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Code Documentation" href="code.html" />
-    <link rel="prev" title="Discussion Board" href="support.html" />
+    <link rel="prev" title="Package webinterface" href="webinterface.html" />
 <script>
     ((window.gitter = {}).chat = {}).options = {
       room: 'mercure-imaging/Support'
@@ -78,9 +77,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Roadmap</a></li>
 </ul>
 
         </div>
@@ -97,7 +96,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Development Environment</li>
+      <li>Roadmap</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -106,25 +105,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="development-environment">
-<h1>Development Environment<a class="headerlink" href="#development-environment" title="Permalink to this headline"></a></h1>
-<p>mercure has been developed using Python (and C++ for the getdcmtags module). It depends on various Python packages that are listed in the file requirements.txt.</p>
-<p>A development environment can be easily created using Vagrant, as described in the
-<a class="reference internal" href="quickstart.html"><span class="doc">Quick Start</span></a> section. When working under Windows, it is alternatively possible to use the Windows Subsystem for Linux (WSL2). It is recommended to use a systemd-type installation of mercure for development work because in this case the code is not distributed across multiple containers.</p>
-<p>We highly recommend using Visual Studio Code as code editor. Depending on your individual setup, the code inside your mercure development environment can be edited from your host operating system using the Remote - SSH or Remote - WSL extensions for VS Code.</p>
-<p>For building the getdcmtags C++ module, we recommend using the Qt5 SDK with QtCreator. A project file for QtCreator is included in the repository (getdcmtags.pro). Make sure to copy the compiled binary (i.e., the Release build) into the subfolder for the correct Ubuntu version inside the /bin folder.</p>
-<p>getdcmtags depends on the development version of DCMTK, which can be installed with</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libdcmtk</span><span class="o">-</span><span class="n">dev</span>
-</pre></div>
-</div>
+  <section id="roadmap">
+<h1>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline"></a></h1>
+<p>The link below opens the Kanban board with the features that we plan to implement for the upcoming releases of mercure. If you have additional ideas or feature requests, please open an issue in the <a class="reference external" href="https://github.com/mercure-imaging/mercure/issues">issue tracker on Github</a> and mark it as <strong>Enhancement</strong>.</p>
+<p><a class="reference external" href="https://github.com/mercure-imaging/mercure/projects/2?fullscreen=true">mercure Development Roadmap</a></p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="support.html" class="btn btn-neutral float-left" title="Discussion Board" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="code.html" class="btn btn-neutral float-right" title="Code Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="webinterface.html" class="btn btn-neutral float-left" title="Package webinterface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
