@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced Topics &mdash; mercure Version 0.2.0-beta.4 documentation</title>
+  <title>Advanced Topics &mdash; mercure Version 0.2.0-beta.5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -39,7 +39,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.4
+                Version 0.2.0-beta.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -160,8 +160,8 @@
 <p>The following settings can be customized (default values can be found in default_mercure.json):</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 24%" />
-<col style="width: 76%" />
+<col style="width: 17%" />
+<col style="width: 83%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Key</p></th>
@@ -173,82 +173,89 @@
 <td><p>Optional name of the mercure server (useful for multiple servers)</p></td>
 </tr>
 <tr class="row-odd"><td><p>port</p></td>
-<td><p>Port for receiving DICOMs (default: 111112). Must be &gt;1024 for non-root service user.</p></td>
+<td><p>Port for receiving DICOMs (default: 11112). Must be &gt;1024 for non-root service user.</p></td>
 </tr>
-<tr class="row-even"><td><p>incoming_folder</p></td>
+<tr class="row-even"><td><p>accept_compressed_images</p></td>
+<td><p>Enable reception of compressed DICOMs. Use with care (see below). Requires that all processing modules can handle compressed images.</p></td>
+</tr>
+<tr class="row-odd"><td><p>incoming_folder</p></td>
 <td><p>Buffer location for received DICOM files</p></td>
 </tr>
-<tr class="row-odd"><td><p>studies_folder</p></td>
+<tr class="row-even"><td><p>studies_folder</p></td>
 <td><p>Buffer location for collecting series belonging to one study</p></td>
 </tr>
-<tr class="row-even"><td><p>outgoing_folder</p></td>
+<tr class="row-odd"><td><p>outgoing_folder</p></td>
 <td><p>Buffer location for series to be dispatched</p></td>
 </tr>
-<tr class="row-odd"><td><p>success_folder</p></td>
+<tr class="row-even"><td><p>success_folder</p></td>
 <td><p>Storage location for completed series until retention period has passed</p></td>
 </tr>
-<tr class="row-even"><td><p>error_folder</p></td>
+<tr class="row-odd"><td><p>error_folder</p></td>
 <td><p>Storage location for files that could not be parsed or dispatched</p></td>
 </tr>
-<tr class="row-odd"><td><p>discard_folder</p></td>
+<tr class="row-even"><td><p>discard_folder</p></td>
 <td><p>Storage location for discarded series until retention period has passed</p></td>
 </tr>
-<tr class="row-even"><td><p>processing_folder</p></td>
+<tr class="row-odd"><td><p>processing_folder</p></td>
 <td><p>Buffer location for series to be processed</p></td>
 </tr>
-<tr class="row-odd"><td><p>bookkeeper</p></td>
+<tr class="row-even"><td><p>bookkeeper</p></td>
 <td><p>IP and port of the bookkeeper instance</p></td>
 </tr>
-<tr class="row-even"><td><p>graphite_ip</p></td>
+<tr class="row-odd"><td><p>graphite_ip</p></td>
 <td><p>IP address of the graphite server. Leave empty if none</p></td>
 </tr>
-<tr class="row-odd"><td><p>graphite_port</p></td>
+<tr class="row-even"><td><p>graphite_port</p></td>
 <td><p>Port of the graphite server</p></td>
 </tr>
-<tr class="row-even"><td><p>router_scan_interval</p></td>
+<tr class="row-odd"><td><p>router_scan_interval</p></td>
 <td><p>Interval how often the router checks for arrived images (sec)</p></td>
 </tr>
-<tr class="row-odd"><td><p>series_complete_trigger</p></td>
+<tr class="row-even"><td><p>series_complete_trigger</p></td>
 <td><p>Time after arrival of last slice when series is considered complete (sec)</p></td>
 </tr>
-<tr class="row-even"><td><p>study_complete_trigger</p></td>
+<tr class="row-odd"><td><p>study_complete_trigger</p></td>
 <td><p>Time after arrival of last series when study is considered complete (sec)</p></td>
 </tr>
-<tr class="row-odd"><td><p>study_forcecomplete_trigger</p></td>
+<tr class="row-even"><td><p>study_forcecomplete_trigger</p></td>
 <td><p>Time after which studies are considered complete even if series are missing (sec)</p></td>
 </tr>
-<tr class="row-even"><td><p>dispatcher_scan_interval</p></td>
+<tr class="row-odd"><td><p>dispatcher_scan_interval</p></td>
 <td><p>Interval how often the dispatcher checks for series to be sent (sec)</p></td>
 </tr>
-<tr class="row-odd"><td><p>retry_delay</p></td>
+<tr class="row-even"><td><p>retry_delay</p></td>
 <td><p>Delay before retrying to dispatch series after failure (sec)</p></td>
 </tr>
-<tr class="row-even"><td><p>retry_max</p></td>
+<tr class="row-odd"><td><p>retry_max</p></td>
 <td><p>Maximum number of retries when dispatching</p></td>
 </tr>
-<tr class="row-odd"><td><p>cleaner_scan_interval</p></td>
+<tr class="row-even"><td><p>cleaner_scan_interval</p></td>
 <td><p>Interval how often the cleaner checks for files to be deleted (sec)</p></td>
 </tr>
-<tr class="row-even"><td><p>retention</p></td>
+<tr class="row-odd"><td><p>retention</p></td>
 <td><p>Duration how long files will be kept before deletion (sec)</p></td>
 </tr>
-<tr class="row-odd"><td><p>offpeak_start</p></td>
+<tr class="row-even"><td><p>offpeak_start</p></td>
 <td><p>Start of the off-peak work hours (24h format)</p></td>
 </tr>
-<tr class="row-even"><td><p>offpeak_end</p></td>
+<tr class="row-odd"><td><p>offpeak_end</p></td>
 <td><p>End of the off-peak work hours (24h format)</p></td>
 </tr>
-<tr class="row-odd"><td><p>targets</p></td>
+<tr class="row-even"><td><p>targets</p></td>
 <td><p>Configured targets - should be edited via web interface</p></td>
 </tr>
-<tr class="row-even"><td><p>rules</p></td>
+<tr class="row-odd"><td><p>rules</p></td>
 <td><p>Configured rules - should be edited via web interface</p></td>
 </tr>
-<tr class="row-odd"><td><p>modules</p></td>
+<tr class="row-even"><td><p>modules</p></td>
 <td><p>Configured modules - should be edited via web interface</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>By default, the mercure DICOM receiver requests incoming DICOM images in uncompressed format. Thus, compressed images need to be decompressed by the sender prior to the transfer (e.g., if sending cases from a PACS that stores images in compressed form). This avoids potential incompatibilities between different implementations of the compression algorithms and ensures best compatibility. If using mercure solely for routing purpose, it can be more efficient to accept images also in compressed form. This can be enabled by setting accept_compressed_images to “True”. However, this setting requires that all processing modules that are installed on the mercure server need to be able to handle compressed images (this might not be the case for many modules, including the demo modules). Also, if accepting compressed images, it can happen that the images will still be decompressed during dispatching if the target DICOM node indicates preference for uncompressed images.</p>
+</div>
 </section>
 <section id="scaling-services">
 <h2>Scaling services<a class="headerlink" href="#scaling-services" title="Permalink to this headline"></a></h2>
