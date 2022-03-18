@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Package dispatch &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>Package dispatch &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -39,7 +39,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -172,12 +172,6 @@ Folder with .error files are _not_ ready for sending.</p>
 <h3>status.py<a class="headerlink" href="#status-py" title="Permalink to this headline"></a></h3>
 <p>Helper functions for dispatching processed cases</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="dispatch.status.has_been_send">
-<span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">has_been_send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/dispatch/status.html#has_been_send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.has_been_send" title="Permalink to this definition"></a></dt>
-<dd><p>Checks if the given folder has already been sent.</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="dispatch.status.is_ready_for_sending">
 <span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_ready_for_sending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">common.types.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dispatch/status.html#is_ready_for_sending"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_ready_for_sending" title="Permalink to this definition"></a></dt>
 <dd><p>Checks if a case in the outgoing folder is ready for sending by the dispatcher.</p>
@@ -190,7 +184,7 @@ valid.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dispatch.status.is_target_json_valid">
 <span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_target_json_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">common.types.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dispatch/status.html#is_target_json_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_target_json_valid" title="Permalink to this definition"></a></dt>
-<dd><p>Checks if the task.json file exists and is valid. Returns the content 
+<dd><p>Checks if the task.json file exists and is valid. Returns the content
 of the file (or None if the file is invalid)</p>
 </dd></dl>
 

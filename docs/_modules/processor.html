@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>processor &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>processor &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -129,7 +129,13 @@
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span><span class="p">,</span> <span class="n">mercure_names</span><span class="p">,</span> <span class="n">mercure_events</span>
 <span class="kn">from</span> <span class="nn">process.status</span> <span class="kn">import</span> <span class="n">is_ready_for_processing</span>
-<span class="kn">from</span> <span class="nn">process.process_series</span> <span class="kn">import</span> <span class="n">process_series</span><span class="p">,</span> <span class="n">move_results</span><span class="p">,</span> <span class="n">trigger_notification</span><span class="p">,</span> <span class="n">push_input_task</span><span class="p">,</span> <span class="n">push_input_images</span>
+<span class="kn">from</span> <span class="nn">process.process_series</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">process_series</span><span class="p">,</span>
+    <span class="n">move_results</span><span class="p">,</span>
+    <span class="n">trigger_notification</span><span class="p">,</span>
+    <span class="n">push_input_task</span><span class="p">,</span>
+    <span class="n">push_input_images</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span>
 
 
@@ -139,7 +145,7 @@
     <span class="n">outputs</span><span class="o">=</span><span class="p">(</span>
         <span class="n">daiquiri</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span>
             <span class="n">formatter</span><span class="o">=</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">ColorFormatter</span><span class="p">(</span>
-                <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(color)s%(levelname)-8.8s</span><span class="s2"> &quot;</span> <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s%(color_stop)s</span><span class="s2">&quot;</span>
+                <span class="n">fmt</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_logformat</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="p">),</span>
     <span class="p">),</span>
@@ -215,9 +221,9 @@
         <span class="k">with</span> <span class="n">task_json</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">task</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">task</span><span class="p">,</span> <span class="s2">&quot;nomad_info&quot;</span><span class="p">:</span> <span class="n">job_info</span><span class="p">}</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-       
+
         <span class="c1"># Copy input images if configured in rule</span>
-        <span class="k">if</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">retain_input_images</span><span class="o">==</span><span class="s2">&quot;True&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">retain_input_images</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
             <span class="n">push_input_images</span><span class="p">(</span><span class="n">in_folder</span><span class="p">,</span> <span class="n">out_folder</span><span class="p">)</span>
 
         <span class="c1"># If the only file is task.json, the processing failed</span>
@@ -225,6 +231,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Processing failed.&quot;</span><span class="p">)</span>
             <span class="n">move_results</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">p_folder</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
             <span class="n">trigger_notification</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">),</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Processing failed&quot;</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="n">needs_dispatching</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dispatch&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span>
@@ -233,9 +240,11 @@
         <span class="p">(</span><span class="n">p_folder</span> <span class="o">/</span> <span class="s2">&quot;nomad_job.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
         <span class="p">(</span><span class="n">p_folder</span> <span class="o">/</span> <span class="s2">&quot;.processing&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
         <span class="n">p_folder</span><span class="o">.</span><span class="n">rmdir</span><span class="p">()</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">,</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Processing complete&quot;</span><span class="p">)</span>
         <span class="c1"># If dispatching not needed, then trigger the completion notification (for Nomad)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">needs_dispatching</span><span class="p">:</span>
             <span class="n">trigger_notification</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">),</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">)</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">COMPLETE</span><span class="p">,</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Task complete&quot;</span><span class="p">)</span>
 
     <span class="c1"># Check if processing has been suspended via the UI</span>
     <span class="k">if</span> <span class="n">processor_lockfile</span> <span class="ow">and</span> <span class="n">processor_lockfile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -267,7 +276,7 @@
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Problems while processing series </span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_series_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Exception while processing&quot;</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Exception while processing&quot;</span><span class="p">)</span>
         <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="s2">&quot;Exception while processing series&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
@@ -316,7 +325,9 @@
     <span class="k">if</span> <span class="s2">&quot;--reload&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_ENV&quot;</span><span class="p">,</span> <span class="s2">&quot;PROD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;dev&quot;</span><span class="p">:</span>
         <span class="c1"># start_reloader will only return in a monitored subprocess</span>
         <span class="n">reloader</span> <span class="o">=</span> <span class="n">hupper</span><span class="o">.</span><span class="n">start_reloader</span><span class="p">(</span><span class="s2">&quot;processor.main&quot;</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">logging</span>
 
+        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;watchdog&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mercure DICOM Processor ver </span><span class="si">{</span><span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------&quot;</span><span class="p">)</span>
