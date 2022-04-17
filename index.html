@@ -5,275 +5,44 @@
     <meta http-equiv="refresh" content="0; url=https://mercure-imaging.org/docs">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta name="description" content="mercure imaging">
+    <meta name="author" content="mercure imaging">
     <title>mercure</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/cover/">
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 </head>
 
 <style>
-    a,
-    a:focus,
-    a:hover {
-        color: #fff;
-    }
-
-    .btn-secondary,
-    .btn-secondary:hover,
-    .btn-secondary:focus {
-        color: #333;
-        text-shadow: none;
-        /* Prevent inheritance from `body` */
-        background-color: #fff;
-        border: .05rem solid #fff;
-    }
-
     html,
     body {
-        height: 100%;
-        background-color: #0A0A0A;
+
+        background-color: #FFF;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
-
-    body {
-        display: -ms-flexbox;
-        display: -webkit-box;
-        display: flex;
-        -ms-flex-pack: center;
-        -webkit-box-pack: center;
-        justify-content: center;
-        color: #fff;
+    a {
+        color: hsl(141, 71%, 42%);
+        text-decoration: none;
     }
-
-    .cover-container {
-        max-width: 40em;
+    a:hover {
+        color: hsl(141, 71%, 48%);
+        text-decoration: underline;
     }
-
-
-    /*
- * Header
- */
-    .masthead {
-        margin-bottom: 2rem;
-    }
-
-    .masthead-brand {
-        margin-bottom: 0;
-    }
-
-    .nav-masthead .nav-link {
-        padding: .25rem 0;
-        font-weight: 700;
-        color: rgba(255, 255, 255, .5);
-        background-color: transparent;
-        border-bottom: .25rem solid transparent;
-    }
-
-    .nav-masthead .nav-link:hover,
-    .nav-masthead .nav-link:focus {
-        border-bottom-color: rgba(255, 255, 255, .25);
-    }
-
-    .nav-masthead .nav-link+.nav-link {
-        margin-left: 1rem;
-    }
-
-    .nav-masthead .active {
-        color: #fff;
-        border-bottom-color: #fff;
-    }
-
-    @media (min-width: 48em) {
-        .masthead-brand {
-            float: left;
-        }
-
-        .nav-masthead {
-            float: right;
-        }
-    }
-
-    .cover {
-        padding: 0 1.5rem;
-    }
-
-    .cover .btn-lg {
-        padding: .75rem 1.25rem;
-        font-weight: 700;
-    }
-
-    .mastfoot {
-        color: rgba(255, 255, 255, .5);
-    }
-
-    ::selection {
-        color: none;
-        background: none;
-    }
-
-    body .typing-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.8rem;
-    }
-
-    body .typing-container #feature-text {
-        margin-left: 8px;
-    }
-
-    body .typing-container .input-cursor {
-        display: inline-block;
-        width: 2px;
-        height: 42px;
-        background-color: white;
-        margin-left: 8px;
-        animation: blink 0.6s linear infinite alternate;
-    }
-
-    .bracket {
-        color: #23d160;
-    }
-
-    .spacer {
-        margin-left: 0px;
-    }
-
-    @media (min-width: 500px) {
-        .spacer {
-            margin-left: 10px;
-        }
-    }
-
-    @keyframes blink {
-        0% {
-            opacity: 1;
-        }
-
-        40% {
-            opacity: 1;
-        }
-
-        60% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 0;
-        }
-    }
+    .content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }    
 </style>
 
-<body class="text-center">
-
-    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        <header class="masthead mb-auto">
-            <a type="button" class="btn btn-outline-light" href="https://github.com/mercure-imaging/mercure" style="margin-bottom: 10px;"><i class="fab fa-github"></i>&nbsp; Open GitHub Project</a>
-            <span class="spacer"></span>
-            <a type="button" class="btn btn-outline-light" href="https://mercure-imaging.org/docs/index.html" style="margin-bottom: 10px;"><i class="fas fa-book-open"></i>&nbsp; Show Documentation</a>
-            <span class="spacer"></span>
-            <a type="button" class="btn btn-outline-light" href="https://gitter.im/mercure-imaging/Support" style="margin-bottom: 10px;"><i class="fas fa-comments"></i>&nbsp; Get Support</a>
-        </header>
-
-        <main role="main" class="inner cover">
-            <img src="mercure.png" width="100%">
-
-            <div style="margin-top: 40px;" class="typing-container"><span class="bracket">[</span>
-                <span id="sentence" class="sentence"></span>
-                <span id="feature-text"></span>
-                <span class="input-cursor"></span><span class="bracket">]</span>
-            </div>
-        </main>
-
-        <footer class="mastfoot mt-auto">
-            <div class="inner">
-                <p>Developed by the <a href="https://cai2r.net" target="_bank">Center for Advanced Imaging Innovation
-                        and Research</a>
-                </p>
-            </div>
-        </footer>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<body>
+    <div class="content"><a href="https://mercure-imaging.org/docs">Click here to proceed to the mercure documentation</a></div>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
     <script>
-        const carouselText = [
-            { text: "The open-source DICOM orchestrator", color: "white" },
-            { text: "Simple web-based user interface", color: "white" },
-            { text: "Flexible routing rules", color: "white" },
-            { text: "Extensive monitoring functions", color: "white" },
-            { text: "Containerized processing modules", color: "white" },
-            { text: "Module distribution via Docker Hub", color: "white" }
-        ]
-
-        $(function () {
-            carousel(carouselText, "#feature-text");
-        });
-
-        async function typeSentence(sentence, eleRef, delay = 100) {
-            const letters = sentence.split("");
-            let i = 0;
-            while (i < letters.length) {
-                await waitForMs(delay);
-                $(eleRef).append(letters[i]);
-                i++
-            }
-            return;
-        }
-
-        async function deleteSentence(eleRef) {
-            const sentence = $(eleRef).html();
-            const letters = sentence.split("");
-            let i = 0;
-            while (letters.length > 0) {
-                await waitForMs(80);
-                letters.pop();
-                $(eleRef).html(letters.join(""));
-            }
-        }
-
-        async function carousel(carouselList, eleRef) {
-            var i = 0;
-            while (true) {
-                await typeSentence(carouselList[i].text, eleRef);
-                await waitForMs(1500);
-                await deleteSentence(eleRef);
-                await waitForMs(500);
-                i++
-                if (i >= carouselList.length) { i = 0; }
-            }
-        }
-
-        function waitForMs(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms))
-        }
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-EHLH5W4KQW');
     </script>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-EHLH5W4KQW');
-</script>
-
 </body>
 
 </html>
