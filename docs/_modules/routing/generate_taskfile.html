@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>routing.generate_taskfile &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>routing.generate_taskfile &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -113,6 +113,7 @@
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
@@ -141,6 +142,7 @@
 
 
 <div class="viewcode-block" id="compose_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.compose_task">[docs]</a><span class="k">def</span> <span class="nf">compose_task</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">uid_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">],</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
@@ -154,6 +156,7 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Composing task.&quot;</span><span class="p">)</span>
 
     <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span>
         <span class="c1"># Add general information about the job</span>
         <span class="n">info</span><span class="o">=</span><span class="n">add_info</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">uid_type</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">),</span>
         <span class="c1"># Add dispatch information -- completed only if the job includes a dispatching step</span>
@@ -201,7 +204,10 @@
 
         <span class="c1"># Store in the target structure</span>
         <span class="n">process_info</span><span class="p">:</span> <span class="n">TaskProcessing</span> <span class="o">=</span> <span class="n">TaskProcessing</span><span class="p">(</span>
-            <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span> <span class="n">module_config</span><span class="o">=</span><span class="n">module_config</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">retain_input_images</span><span class="o">=</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_retain_images</span>
+            <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span>
+            <span class="n">module_config</span><span class="o">=</span><span class="n">module_config</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+            <span class="n">retain_input_images</span><span class="o">=</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_retain_images</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">process_info</span>
 
@@ -313,6 +319,7 @@
 
 
 <div class="viewcode-block" id="create_series_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.create_series_task">[docs]</a><span class="k">def</span> <span class="nf">create_series_task</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
     <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -324,7 +331,7 @@
 <span class="sd">    Writes a task file for the received series, containing all information needed by the processor and dispatcher. Additional information is written into the file as well</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Compose the JSON content for the file</span>
-    <span class="n">task</span> <span class="o">=</span> <span class="n">compose_task</span><span class="p">(</span><span class="n">series_UID</span><span class="p">,</span> <span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">compose_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
     <span class="n">task_filename</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
     <span class="k">try</span><span class="p">:</span>
@@ -336,11 +343,12 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
         <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
-
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_register_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="create_study_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.create_study_task">[docs]</a><span class="k">def</span> <span class="nf">create_study_task</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
     <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -351,22 +359,25 @@
 <span class="sd">    Generate task file with information on the study</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Compose the JSON content for the file</span>
-    <span class="n">task_json</span> <span class="o">=</span> <span class="n">compose_task</span><span class="p">(</span><span class="n">study_UID</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">compose_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">study_UID</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
     <span class="n">task_filename</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing study task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">task_file</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task_json</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">task_file</span><span class="p">)</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">task_file</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to create study task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
         <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_register_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="update_study_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.update_study_task">[docs]</a><span class="k">def</span> <span class="nf">update_study_task</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
     <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>

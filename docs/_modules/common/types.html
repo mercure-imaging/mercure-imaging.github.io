@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.types &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>common.types &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -222,7 +222,8 @@
     <span class="n">targets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">DicomTarget</span><span class="p">,</span> <span class="n">SftpTarget</span><span class="p">]]</span>
     <span class="n">rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Rule</span><span class="p">]</span>
     <span class="n">modules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Module</span><span class="p">]</span>
-    <span class="n">process_runner</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;nomad&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+    <span class="n">process_runner</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;nomad&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">bookkeeper_api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="TaskInfo"><a class="viewcode-back" href="../../common.html#common.types.TaskInfo">[docs]</a><span class="k">class</span> <span class="nc">TaskInfo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
@@ -258,12 +259,13 @@
 <div class="viewcode-block" id="TaskProcessing"><a class="viewcode-back" href="../../common.html#common.types.TaskProcessing">[docs]</a><span class="k">class</span> <span class="nc">TaskProcessing</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">module_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Module</span><span class="p">]</span>
-    <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>    
+    <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">retain_input_images</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Task"><a class="viewcode-back" href="../../common.html#common.types.Task">[docs]</a><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">info</span><span class="p">:</span> <span class="n">TaskInfo</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">dispatch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">process</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">study</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskStudy</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>

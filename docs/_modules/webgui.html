@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>webgui &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>webgui &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -160,6 +160,8 @@
 <span class="kn">import</span> <span class="nn">webinterface.targets</span> <span class="k">as</span> <span class="nn">targets</span>
 <span class="kn">import</span> <span class="nn">webinterface.modules</span> <span class="k">as</span> <span class="nn">modules</span>
 <span class="kn">import</span> <span class="nn">webinterface.queue</span> <span class="k">as</span> <span class="nn">queue</span>
+<span class="kn">import</span> <span class="nn">webinterface.api</span> <span class="k">as</span> <span class="nn">api</span>
+<span class="kn">import</span> <span class="nn">webinterface.test</span> <span class="k">as</span> <span class="nn">test</span>
 <span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="o">*</span>
 
 
@@ -169,13 +171,7 @@
 
 <span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
     <span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">(),</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">(</span>
-        <span class="n">daiquiri</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span>
-            <span class="n">formatter</span><span class="o">=</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">ColorFormatter</span><span class="p">(</span>
-                <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(color)s%(levelname)-8.8s</span><span class="s2"> &quot;</span> <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s%(color_stop)s</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">(</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">ColorFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_logformat</span><span class="p">())),),</span>
 <span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;webgui&quot;</span><span class="p">)</span>
 
@@ -215,13 +211,7 @@
         <span class="k">return</span> <span class="n">AuthCredentials</span><span class="p">(</span><span class="n">credentials</span><span class="p">),</span> <span class="n">ExtendedUser</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">is_admin</span><span class="p">)</span></div></div>
 
 
-<span class="n">webgui_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
-    <span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span>
-    <span class="p">)</span>
-    <span class="o">+</span> <span class="s2">&quot;/webgui.env&quot;</span>
-<span class="p">)</span>
+<span class="n">webgui_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/webgui.env&quot;</span><span class="p">)</span>
 
 
 <span class="c1"># Note: PutSomethingRandomHere is the default value in the shipped configuration file.</span>
@@ -244,6 +234,8 @@
 <span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/modules&quot;</span><span class="p">,</span> <span class="n">modules</span><span class="o">.</span><span class="n">modules_app</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/users&quot;</span><span class="p">,</span> <span class="n">users</span><span class="o">.</span><span class="n">users_app</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/queue&quot;</span><span class="p">,</span> <span class="n">queue</span><span class="o">.</span><span class="n">queue_app</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/api&quot;</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">api_app</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/test&quot;</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">test_app</span><span class="p">)</span>
 
 
 <span class="c1">###################################################################################</span>
@@ -262,12 +254,13 @@
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;No services configured&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_nomad_logs"><a class="viewcode-back" href="../webgui.html#webgui.get_nomad_logs">[docs]</a><span class="k">def</span> <span class="nf">get_nomad_logs</span><span class="p">(</span><span class="n">service</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<div class="viewcode-block" id="get_nomad_logs"><a class="viewcode-back" href="../webgui.html#webgui.get_nomad_logs">[docs]</a><span class="k">def</span> <span class="nf">get_nomad_logs</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">log_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Reads the service log when running a nomad-type installation.&quot;&quot;&quot;</span>
     <span class="n">allocations</span> <span class="o">=</span> <span class="n">nomad_connection</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">get_allocations</span><span class="p">(</span><span class="s2">&quot;mercure&quot;</span><span class="p">)</span>
     <span class="n">alloc_id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">a</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">allocations</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="s2">&quot;ClientStatus&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">nomad_log_type</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;stderr&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">nomad_connection</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">stream_logs</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">alloc_id</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nomad_connection</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">stream_logs</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">alloc_id</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">log_size</span><span class="p">)</span>
 
     <span class="n">log_response</span> <span class="o">=</span> <span class="n">nomad_log_type</span><span class="p">()</span> <span class="ow">or</span> <span class="n">nomad_log_type</span><span class="p">(</span><span class="s2">&quot;stdout&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">log_response</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span></div>
@@ -327,7 +320,7 @@
     <span class="c1"># Fetch the log files depending on how mercure has been installed</span>
     <span class="k">if</span> <span class="n">runtime</span> <span class="o">==</span> <span class="s2">&quot;nomad&quot;</span> <span class="ow">and</span> <span class="n">nomad_connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">raw_logs</span> <span class="o">=</span> <span class="n">get_nomad_logs</span><span class="p">(</span><span class="n">requested_service</span><span class="p">)</span>
+            <span class="n">raw_logs</span> <span class="o">=</span> <span class="n">get_nomad_logs</span><span class="p">(</span><span class="n">requested_service</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
             <span class="n">return_code</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">pass</span>
@@ -335,9 +328,9 @@
         <span class="n">start_date_cmd</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">end_date_cmd</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">start_timestamp</span><span class="p">:</span>
-            <span class="n">start_date_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;--since </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">start_timestamp</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+            <span class="n">start_date_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;--since &quot;</span><span class="si">{</span><span class="n">start_timestamp</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
         <span class="k">if</span> <span class="n">end_timestamp</span><span class="p">:</span>
-            <span class="n">end_date_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;--until </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">end_timestamp</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+            <span class="n">end_date_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;--until &quot;</span><span class="si">{</span><span class="n">end_timestamp</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
 
         <span class="n">run_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;sudo journalctl -n 1000 -u &quot;</span>
@@ -593,8 +586,8 @@
             <span class="n">disk_total</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="n">used_space</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">disk_used</span> <span class="o">/</span> <span class="n">disk_total</span>
-        <span class="n">free_space</span> <span class="o">=</span> <span class="n">disk_free</span> <span class="o">//</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">30</span><span class="p">)</span>
-        <span class="n">total_space</span> <span class="o">=</span> <span class="n">disk_total</span> <span class="o">//</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">free_space</span> <span class="o">=</span> <span class="n">disk_free</span> <span class="o">//</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">total_space</span> <span class="o">=</span> <span class="n">disk_total</span> <span class="o">//</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">30</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">used_space</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">free_space</span> <span class="o">=</span> <span class="s2">&quot;N/A&quot;</span>
@@ -649,7 +642,7 @@
         <span class="s2">&quot;free_space&quot;</span><span class="p">:</span> <span class="n">free_space</span><span class="p">,</span>
         <span class="s2">&quot;total_space&quot;</span><span class="p">:</span> <span class="n">total_space</span><span class="p">,</span>
         <span class="s2">&quot;service_status&quot;</span><span class="p">:</span> <span class="n">service_status</span><span class="p">,</span>
-        <span class="s2">&quot;runtime&quot;</span><span class="p">:</span> <span class="n">runtime</span>
+        <span class="s2">&quot;runtime&quot;</span><span class="p">:</span> <span class="n">runtime</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
@@ -738,9 +731,12 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return an HTTP 500 page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;500.html&quot;</span>
-    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">}</span>
-    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;500.html&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Internal server error&quot;</span><span class="p">},</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span></div>
 
 
 <span class="c1">###################################################################################</span>
@@ -756,7 +752,11 @@
 <div class="viewcode-block" id="launch_emergency_app"><a class="viewcode-back" href="../webgui.html#webgui.launch_emergency_app">[docs]</a><span class="k">def</span> <span class="nf">launch_emergency_app</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Launches a minimal application to inform the user about the incorrect configuration&quot;&quot;&quot;</span>
     <span class="c1"># emergency_app = Starlette(debug=True)</span>
-    <span class="n">emergency_app</span> <span class="o">=</span> <span class="n">Router</span><span class="p">([</span><span class="n">Route</span><span class="p">(</span><span class="s2">&quot;/{whatever:path}&quot;</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">emergency_response</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">]),])</span>
+    <span class="n">emergency_app</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">Route</span><span class="p">(</span><span class="s2">&quot;/{whatever:path}&quot;</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">emergency_response</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">]),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
     <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">emergency_app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">WEBGUI_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">WEBGUI_PORT</span><span class="p">)</span></div>
 
 
@@ -769,6 +769,9 @@
     <span class="k">if</span> <span class="s2">&quot;--reload&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_ENV&quot;</span><span class="p">,</span> <span class="s2">&quot;PROD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;dev&quot;</span><span class="p">:</span>
         <span class="c1"># start_reloader will only return in a monitored subprocess</span>
         <span class="n">reloader</span> <span class="o">=</span> <span class="n">hupper</span><span class="o">.</span><span class="n">start_reloader</span><span class="p">(</span><span class="s2">&quot;webgui.main&quot;</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">logging</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;watchdog&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">services</span><span class="o">.</span><span class="n">read_services</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>

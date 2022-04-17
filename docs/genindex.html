@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>Index &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -200,9 +200,11 @@
         <li><a href="bookkeeper.html#module-bookkeeper">module</a>
 </li>
       </ul></li>
+      <li><a href="common.html#common.types.Config.bookkeeper">bookkeeper (common.types.Config attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="common.html#common.types.Config.bookkeeper">bookkeeper (common.types.Config attribute)</a>
+      <li><a href="common.html#common.types.Config.bookkeeper_api_key">bookkeeper_api_key (common.types.Config attribute)</a>
 </li>
       <li><a href="common.html#common.monitor.m_events.BOOT">BOOT (common.monitor.m_events attribute)</a>
 </li>
@@ -296,6 +298,8 @@
       </ul></li>
       <li><a href="common.html#common.types.Compat">Compat (class in common.types)</a>
 </li>
+      <li><a href="common.html#common.monitor.s_events.COMPLETE">COMPLETE (common.monitor.s_events attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_study.COMPLETE_FORCE">COMPLETE_FORCE (common.constants.mercure_study attribute)</a>
@@ -328,8 +332,6 @@
 </li>
       <li><a href="common.html#common.monitor.configure">configure() (in module common.monitor)</a>
 </li>
-      <li><a href="bookkeeper.html#bookkeeper.connection">connection (in module bookkeeper)</a>
-</li>
       <li><a href="common.html#common.types.Module.constraints">constraints (common.types.Module attribute)</a>
 </li>
       <li><a href="common.html#common.types.Module.contact">contact (common.types.Module attribute)</a>
@@ -358,6 +360,10 @@
 </li>
       <li><a href="common.html#common.monitor.severity.CRITICAL">CRITICAL (common.monitor.severity attribute)</a>
 </li>
+      <li><a href="bookkeeper.html#bookkeeper.CustomJSONEncoder">CustomJSONEncoder (class in bookkeeper)</a>
+</li>
+      <li><a href="bookkeeper.html#bookkeeper.CustomJSONResponse">CustomJSONResponse (class in bookkeeper)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -367,6 +373,8 @@
       <li><a href="common.html#common.constants.mercure_names.DCM">DCM (common.constants.mercure_names attribute)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_names.DCMFILTER">DCMFILTER (common.constants.mercure_names attribute)</a>
+</li>
+      <li><a href="bookkeeper.html#bookkeeper.CustomJSONEncoder.default">default() (bookkeeper.CustomJSONEncoder method)</a>
 </li>
       <li><a href="cleaner.html#cleaner.delete_folder">delete_folder() (in module cleaner)</a>
 </li>
@@ -487,8 +495,6 @@
 </li>
       <li><a href="dispatch.html#dispatch.send.execute">execute() (in module dispatch.send)</a>
 </li>
-      <li><a href="bookkeeper.html#bookkeeper.execute_db_operation">execute_db_operation() (in module bookkeeper)</a>
-</li>
       <li><a href="cleaner.html#cleaner.exit_cleaner">exit_cleaner() (in module cleaner)</a>
 </li>
       <li><a href="dispatcher.html#dispatcher.exit_dispatcher">exit_dispatcher() (in module dispatcher)</a>
@@ -534,17 +540,43 @@
       <li><a href="common.html#common.helper.g_log">g_log() (in module common.helper)</a>
 </li>
       <li><a href="common.html#common.types.Compat.get">get() (common.types.Compat method)</a>
+
+      <ul>
+        <li><a href="common.html#common.monitor.get">(in module common.monitor)</a>
+</li>
+      </ul></li>
+      <li><a href="bookkeeper.html#bookkeeper.get_dicom_files">get_dicom_files() (in module bookkeeper)</a>
 </li>
       <li><a href="webinterface.html#webinterface.queue.get_jobinfo">get_jobinfo() (in module webinterface.queue)</a>
+</li>
+      <li><a href="common.html#common.config.get_logformat">get_logformat() (in module common.config)</a>
 </li>
       <li><a href="common.html#common.config.get_loglevel">get_loglevel() (in module common.config)</a>
 </li>
       <li><a href="webgui.html#webgui.get_nomad_logs">get_nomad_logs() (in module webgui)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.config.get_runner">get_runner() (in module common.config)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="bookkeeper.html#bookkeeper.get_series">get_series() (in module bookkeeper)</a>
+
+      <ul>
+        <li><a href="common.html#common.monitor.get_series">(in module common.monitor)</a>
+</li>
+      </ul></li>
+      <li><a href="bookkeeper.html#bookkeeper.get_task_events">get_task_events() (in module bookkeeper)</a>
+
+      <ul>
+        <li><a href="common.html#common.monitor.get_task_events">(in module common.monitor)</a>
+</li>
+      </ul></li>
+      <li><a href="bookkeeper.html#bookkeeper.get_tasks">get_tasks() (in module bookkeeper)</a>
+
+      <ul>
+        <li><a href="common.html#common.monitor.get_tasks">(in module common.monitor)</a>
+</li>
+      </ul></li>
       <li><a href="routing.html#routing.route_series.get_triggered_rules">get_triggered_rules() (in module routing.route_series)</a>
 </li>
       <li><a href="webinterface.html#webinterface.common.get_user_information">get_user_information() (in module webinterface.common)</a>
@@ -561,12 +593,10 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_names.HALT">HALT (common.constants.mercure_names attribute)</a>
 </li>
-      <li><a href="dispatch.html#dispatch.status.has_been_send">has_been_send() (in module dispatch.status)</a>
+      <li><a href="webinterface.html#webinterface.users.hash_password">hash_password() (in module webinterface.users)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="webinterface.html#webinterface.users.hash_password">hash_password() (in module webinterface.users)</a>
-</li>
       <li><a href="webgui.html#webgui.homepage">homepage() (in module webgui)</a>
 </li>
       <li><a href="common.html#common.types.SftpTarget.host">host (common.types.SftpTarget attribute)</a>
@@ -577,6 +607,8 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common.html#common.types.Task.id">id (common.types.Task attribute)</a>
+</li>
       <li><a href="common.html#common.constants.mercure_folders.INCOMING">INCOMING (common.constants.mercure_folders attribute)</a>
 </li>
       <li><a href="common.html#common.types.Config.incoming_folder">incoming_folder (common.types.Config attribute)</a>
@@ -597,10 +629,10 @@
       </ul></li>
       <li><a href="common.html#common.constants.mercure_options.INVALID">INVALID (common.constants.mercure_options attribute)</a>
 </li>
-      <li><a href="common.html#common.types.DicomTarget.ip">ip (common.types.DicomTarget attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common.html#common.types.DicomTarget.ip">ip (common.types.DicomTarget attribute)</a>
+</li>
       <li><a href="webgui.html#webgui.ExtendedUser.is_admin">is_admin (webgui.ExtendedUser property)</a>
 
       <ul>
@@ -794,6 +826,8 @@
 </li>
       <li><a href="common.html#common.types.Config.modules">modules (common.types.Config attribute)</a>
 </li>
+      <li><a href="common.html#common.monitor.MonitorHTTPError">MonitorHTTPError</a>
+</li>
       <li><a href="common.html#common.monitor.s_events.MOVE">MOVE (common.monitor.s_events attribute)</a>
 </li>
       <li><a href="process.html#process.process_series.move_out_folder">move_out_folder() (in module process.process_series)</a>
@@ -898,9 +932,15 @@
         <li><a href="common.html#common.types.DicomTarget.port">(common.types.DicomTarget attribute)</a>
 </li>
       </ul></li>
+      <li><a href="common.html#common.monitor.post">post() (in module common.monitor)</a>
+
+      <ul>
+        <li><a href="common.html#common.notification.post">(in module common.notification)</a>
+</li>
+      </ul></li>
       <li><a href="bookkeeper.html#bookkeeper.post_mercure_event">post_mercure_event() (in module bookkeeper)</a>
 </li>
-      <li><a href="bookkeeper.html#bookkeeper.post_series_event">post_series_event() (in module bookkeeper)</a>
+      <li><a href="bookkeeper.html#bookkeeper.post_task_event">post_task_event() (in module bookkeeper)</a>
 </li>
       <li><a href="bookkeeper.html#bookkeeper.post_webgui_event">post_webgui_event() (in module bookkeeper)</a>
 </li>
@@ -936,10 +976,10 @@
       </ul></li>
       <li><a href="common.html#common.types.Config.process_runner">process_runner (common.types.Config attribute)</a>
 </li>
-      <li><a href="process.html#process.process_series.process_series">process_series() (in module process.process_series)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="process.html#process.process_series.process_series">process_series() (in module process.process_series)</a>
+</li>
       <li><a href="common.html#common.constants.mercure_folders.PROCESSING">PROCESSING (common.constants.mercure_folders attribute)</a>
 
       <ul>
@@ -1017,11 +1057,15 @@
 </li>
       <li><a href="bookkeeper.html#bookkeeper.register_series">register_series() (in module bookkeeper)</a>
 </li>
+      <li><a href="bookkeeper.html#bookkeeper.register_task">register_task() (in module bookkeeper)</a>
+</li>
       <li><a href="common.html#common.monitor.s_events.REGISTERED">REGISTERED (common.monitor.s_events attribute)</a>
 </li>
       <li><a href="routing.html#routing.route_series.remove_series">remove_series() (in module routing.route_series)</a>
 </li>
       <li><a href="routing.html#routing.route_studies.remove_study_folder">remove_study_folder() (in module routing.route_studies)</a>
+</li>
+      <li><a href="bookkeeper.html#bookkeeper.CustomJSONResponse.render">render() (bookkeeper.CustomJSONResponse method)</a>
 </li>
       <li><a href="common.html#common.helper.RepeatedTimer">RepeatedTimer (class in common.helper)</a>
 </li>
@@ -1051,10 +1095,10 @@
 </li>
       <li><a href="routing.html#routing.route_studies.route_studies">route_studies() (in module routing.route_studies)</a>
 </li>
-      <li><a href="routing.html#routing.route_studies.route_study">route_study() (in module routing.route_studies)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="routing.html#routing.route_studies.route_study">route_study() (in module routing.route_studies)</a>
+</li>
       <li>
     router
 
@@ -1141,7 +1185,9 @@
 </li>
       <li><a href="common.html#common.monitor.send_register_series">send_register_series() (in module common.monitor)</a>
 </li>
-      <li><a href="common.html#common.monitor.send_series_event">send_series_event() (in module common.monitor)</a>
+      <li><a href="common.html#common.monitor.send_register_task">send_register_task() (in module common.monitor)</a>
+</li>
+      <li><a href="common.html#common.monitor.send_task_event">send_task_event() (in module common.monitor)</a>
 </li>
       <li><a href="common.html#common.helper.send_to_graphite">send_to_graphite() (in module common.helper)</a>
 </li>
@@ -1159,12 +1205,22 @@
 </li>
       <li><a href="common.html#common.types.TaskDispatch.series_uid">series_uid (common.types.TaskDispatch attribute)</a>
 </li>
-      <li><a href="webgui.html#webgui.server_error">server_error() (in module webgui)</a>
+      <li><a href="bookkeeper.html#bookkeeper.server_error">server_error() (in module bookkeeper)</a>
+
+      <ul>
+        <li><a href="webgui.html#webgui.server_error">(in module webgui)</a>
 </li>
+      </ul></li>
       <li><a href="common.html#common.monitor.w_events.SERVICE_CONTROL">SERVICE_CONTROL (common.monitor.w_events attribute)</a>
 </li>
       <li><a href="webgui.html#webgui.SessionAuthBackend">SessionAuthBackend (class in webgui)</a>
 </li>
+      <li><a href="bookkeeper.html#bookkeeper.set_api_key">set_api_key() (in module bookkeeper)</a>
+
+      <ul>
+        <li><a href="common.html#common.monitor.set_api_key">(in module common.monitor)</a>
+</li>
+      </ul></li>
       <li><a href="webinterface.html#webinterface.queue.set_queues_status">set_queues_status() (in module webinterface.queue)</a>
 </li>
       <li><a href="common.html#common.types.Module.settings">settings (common.types.Module attribute)</a>
@@ -1187,12 +1243,12 @@
 </li>
       <li><a href="webinterface.html#webinterface.queue.show_jobs_routing">show_jobs_routing() (in module webinterface.queue)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webinterface.html#webinterface.queue.show_jobs_studies">show_jobs_studies() (in module webinterface.queue)</a>
 </li>
       <li><a href="webgui.html#webgui.show_log">show_log() (in module webgui)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webinterface.html#webinterface.modules.show_modules">show_modules() (in module webinterface.modules)</a>
 </li>
       <li><a href="webinterface.html#webinterface.queue.show_queues">show_queues() (in module webinterface.queue)</a>
@@ -1305,10 +1361,10 @@
 </li>
       <li><a href="common.html#common.types.Task.Config">Task.Config (class in common.types)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.TaskDispatch">TaskDispatch (class in common.types)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_names.TASKFILE">TASKFILE (common.constants.mercure_names attribute)</a>
 </li>
       <li><a href="common.html#common.types.TaskHasStudy">TaskHasStudy (class in common.types)</a>
@@ -1334,6 +1390,8 @@
       <li><a href="bookkeeper.html#bookkeeper.test_endpoint">test_endpoint() (in module bookkeeper)</a>
 </li>
       <li><a href="common.html#common.rule_evaluation.test_rule">test_rule() (in module common.rule_evaluation)</a>
+</li>
+      <li><a href="bookkeeper.html#bookkeeper.TokenAuth">TokenAuth (class in bookkeeper)</a>
 </li>
       <li><a href="process.html#process.process_series.trigger_notification">trigger_notification() (in module process.process_series)</a>
 </li>
@@ -1400,6 +1458,10 @@
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="bookkeeper.html#bookkeeper.TokenAuth.verify">verify() (bookkeeper.TokenAuth method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_defs.VERSION">VERSION (common.constants.mercure_defs attribute)</a>
 </li>

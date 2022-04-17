@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.config &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>common.config &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -171,6 +171,7 @@
 
 
 <div class="viewcode-block" id="get_loglevel"><a class="viewcode-back" href="../../common.html#common.config.get_loglevel">[docs]</a><span class="k">def</span> <span class="nf">get_loglevel</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the logging level that should be used for printing messages.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;pytest|py.test&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
         <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
 
@@ -185,7 +186,17 @@
 
 
 <div class="viewcode-block" id="get_runner"><a class="viewcode-back" href="../../common.html#common.config.get_runner">[docs]</a><span class="k">def</span> <span class="nf">get_runner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the name of the mechanism that is used for running mercure in the current installation (systemd, docker, nomad).&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_RUNNER&quot;</span><span class="p">,</span> <span class="s2">&quot;systemd&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_logformat"><a class="viewcode-back" href="../../common.html#common.config.get_logformat">[docs]</a><span class="k">def</span> <span class="nf">get_logformat</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the format that should be used for log messages. Includes the time for docker and nomad, but not for systemd as journalctl </span>
+<span class="sd">    already outputs the time of the log events.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">get_runner</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;systemd&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%(color)s%(levelname)-8.8s</span><span class="s2"> &quot;</span> <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s%(color_stop)s</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(color)s%(levelname)-8.8s</span><span class="s2"> &quot;</span> <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s%(color_stop)s</span><span class="s2">&quot;</span></div>
 
 
 <div class="viewcode-block" id="read_config"><a class="viewcode-back" href="../../common.html#common.config.read_config">[docs]</a><span class="k">def</span> <span class="nf">read_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>

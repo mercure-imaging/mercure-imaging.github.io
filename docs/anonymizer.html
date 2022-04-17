@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anonymizer &mdash; mercure Version 0.2.0-beta.5 documentation</title>
+  <title>Anonymizer &mdash; mercure Version 0.2.0-beta.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -39,7 +39,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.5
+                Version 0.2.0-beta.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -129,7 +129,7 @@
 <section id="general-and-project-specific-settings">
 <h2>General and Project-Specific Settings<a class="headerlink" href="#general-and-project-specific-settings" title="Permalink to this headline"></a></h2>
 <p>General settings, which are applied to all anonymization steps, as well as project-specific settings can be defined. Project-specific settings are applied when a series (or study) has been sent to mercure with a certain Application Entity Title (AET). For example, if a series has been sent to mercure using the (receiver) AET “myproject”, the “general” settings are applied and, in addition, the settings defined in the section “myproject” are applied (if settings are defined in both sections, project settings overrule the duplicate general settings).</p>
-<p>The prefix “AZ_” can be added to the AET and will be ignored for the project assignment (i.e., both AETs “myproject” and “AZ_myproject” will be assigned to project “myproject”). This allows defining one global rule for all anonymization tasks by testing in the Selection Rule if “AZ_” is contained in the ReceiverAET (i.e., ‘AZ_’ in &#64;ReceiverAET&#64;).</p>
+<p>The prefix “az_” can be added to the AET and will be ignored for the project assignment (i.e., both AETs “myproject” and “az_myproject” will be assigned to project “myproject”). This allows defining one global rule for all anonymization tasks by testing in the Selection Rule if “az_” is contained in the ReceiverAET (i.e., ‘az_’ in &#64;ReceiverAET&#64;).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;general&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="o">...</span> <span class="n">define</span> <span class="n">general</span> <span class="n">settings</span> <span class="n">here</span> <span class="o">...</span>
