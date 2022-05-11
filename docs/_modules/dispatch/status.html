@@ -119,11 +119,13 @@
 <span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">monitor</span>
 
 <span class="c1"># App-specific includes</span>
-<span class="kn">from</span> <span class="nn">common.monitor</span> <span class="kn">import</span> <span class="n">s_events</span>
+<span class="kn">from</span> <span class="nn">common.monitor</span> <span class="kn">import</span> <span class="n">task_event</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">config</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="is_ready_for_sending"><a class="viewcode-back" href="../../dispatch.html#dispatch.status.is_ready_for_sending">[docs]</a><span class="k">def</span> <span class="nf">is_ready_for_sending</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Task</span><span class="p">]:</span>
@@ -160,20 +162,13 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">target</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;task.json has invalid format&quot;</span><span class="p">)</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span>
-            <span class="n">s_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
-            <span class="s2">&quot;TODO&quot;</span><span class="p">,</span>
-            <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;None&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;task.json has invalid format&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;task.json has invalid format&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">target</span> <span class="ow">or</span> <span class="kc">None</span></div>
     <span class="c1"># dispatch = target.dispatch.dict() if target.dispatch else {}</span>
     <span class="c1"># if not all([key in dispatch for key in [&quot;target_ip&quot;, &quot;target_port&quot;, &quot;target_aet_target&quot;]]):</span>
     <span class="c1">#     send_series_event(</span>
-    <span class="c1">#         s_events.ERROR,</span>
+    <span class="c1">#         task_event.ERROR,</span>
     <span class="c1">#         dispatch.get(&quot;series_uid&quot;, &quot;None&quot;),  # type: ignore</span>
     <span class="c1">#         0,</span>
     <span class="c1">#         dispatch.get(&quot;target_name&quot;, &quot;None&quot;),  # type: ignore</span>
@@ -203,7 +198,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

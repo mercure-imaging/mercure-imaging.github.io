@@ -113,79 +113,26 @@
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
+
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
+
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">urllib.error</span> <span class="kn">import</span> <span class="n">HTTPError</span>
 <span class="kn">import</span> <span class="nn">aiohttp</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span>
-<span class="kn">from</span> <span class="nn">common.helper</span> <span class="kn">import</span> <span class="n">loop</span>
+<span class="kn">from</span> <span class="nn">common.event_types</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <span class="c1"># Create local logger instance</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;monitor&quot;</span><span class="p">)</span>  <span class="c1"># log_helpers.get_logger(&quot;monitor&quot;, True)</span>
 <span class="n">api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="n">sender_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="n">bookkeeper_address</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-
-<div class="viewcode-block" id="m_events"><a class="viewcode-back" href="../../common.html#common.monitor.m_events">[docs]</a><span class="k">class</span> <span class="nc">m_events</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Event types for general mercure monitoring.&quot;&quot;&quot;</span>
-
-    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span>
-    <span class="n">BOOT</span> <span class="o">=</span> <span class="s2">&quot;BOOT&quot;</span>
-    <span class="n">SHUTDOWN</span> <span class="o">=</span> <span class="s2">&quot;SHUTDOWN&quot;</span>
-    <span class="n">SHUTDOWN_REQUEST</span> <span class="o">=</span> <span class="s2">&quot;SHUTDOWN_REQUEST&quot;</span>
-    <span class="n">CONFIG_UPDATE</span> <span class="o">=</span> <span class="s2">&quot;CONFIG_UPDATE&quot;</span>
-    <span class="n">PROCESSING</span> <span class="o">=</span> <span class="s2">&quot;PROCESSING&quot;</span></div>
-
-
-<div class="viewcode-block" id="w_events"><a class="viewcode-back" href="../../common.html#common.monitor.w_events">[docs]</a><span class="k">class</span> <span class="nc">w_events</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Event types for monitoring the webgui activity.&quot;&quot;&quot;</span>
-
-    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span>
-    <span class="n">LOGIN</span> <span class="o">=</span> <span class="s2">&quot;LOGIN&quot;</span>
-    <span class="n">LOGIN_FAIL</span> <span class="o">=</span> <span class="s2">&quot;LOGIN_FAIL&quot;</span>
-    <span class="n">LOGOUT</span> <span class="o">=</span> <span class="s2">&quot;LOGOUT&quot;</span>
-    <span class="n">USER_CREATE</span> <span class="o">=</span> <span class="s2">&quot;USER_CREATE&quot;</span>
-    <span class="n">USER_DELETE</span> <span class="o">=</span> <span class="s2">&quot;USER_DELETE&quot;</span>
-    <span class="n">USER_EDIT</span> <span class="o">=</span> <span class="s2">&quot;USER_EDIT&quot;</span>
-    <span class="n">RULE_CREATE</span> <span class="o">=</span> <span class="s2">&quot;RULE_CREATE&quot;</span>
-    <span class="n">RULE_DELETE</span> <span class="o">=</span> <span class="s2">&quot;RULE_DELETE&quot;</span>
-    <span class="n">RULE_EDIT</span> <span class="o">=</span> <span class="s2">&quot;RULE_EDIT&quot;</span>
-    <span class="n">TARGET_CREATE</span> <span class="o">=</span> <span class="s2">&quot;TARGET_CREATE&quot;</span>
-    <span class="n">TARGET_DELETE</span> <span class="o">=</span> <span class="s2">&quot;TARGET_DELETE&quot;</span>
-    <span class="n">TARGET_EDIT</span> <span class="o">=</span> <span class="s2">&quot;TARGET_EDIT&quot;</span>
-    <span class="n">SERVICE_CONTROL</span> <span class="o">=</span> <span class="s2">&quot;SERVICE_CONTROL&quot;</span>
-    <span class="n">CONFIG_EDIT</span> <span class="o">=</span> <span class="s2">&quot;CONFIG_EDIT&quot;</span></div>
-
-
-<div class="viewcode-block" id="s_events"><a class="viewcode-back" href="../../common.html#common.monitor.s_events">[docs]</a><span class="k">class</span> <span class="nc">s_events</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Event types for monitoring everything related to one specific series.&quot;&quot;&quot;</span>
-
-    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span>
-    <span class="n">REGISTERED</span> <span class="o">=</span> <span class="s2">&quot;REGISTERED&quot;</span>
-    <span class="n">ROUTE</span> <span class="o">=</span> <span class="s2">&quot;ROUTE&quot;</span>
-    <span class="n">DISCARD</span> <span class="o">=</span> <span class="s2">&quot;DISCARD&quot;</span>
-    <span class="n">DISPATCH</span> <span class="o">=</span> <span class="s2">&quot;DISPATCH&quot;</span>
-    <span class="n">CLEAN</span> <span class="o">=</span> <span class="s2">&quot;CLEAN&quot;</span>
-    <span class="n">ERROR</span> <span class="o">=</span> <span class="s2">&quot;ERROR&quot;</span>
-    <span class="n">MOVE</span> <span class="o">=</span> <span class="s2">&quot;MOVE&quot;</span>
-    <span class="n">SUSPEND</span> <span class="o">=</span> <span class="s2">&quot;SUSPEND&quot;</span>
-    <span class="n">COMPLETE</span> <span class="o">=</span> <span class="s2">&quot;COMPLETE&quot;</span></div>
-
-
-<div class="viewcode-block" id="severity"><a class="viewcode-back" href="../../common.html#common.monitor.severity">[docs]</a><span class="k">class</span> <span class="nc">severity</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Severity level associated to the mercure events.&quot;&quot;&quot;</span>
-
-    <span class="n">INFO</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">WARNING</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="n">CRITICAL</span> <span class="o">=</span> <span class="mi">3</span></div>
+<span class="n">loop</span> <span class="o">=</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="MonitorHTTPError"><a class="viewcode-back" href="../../common.html#common.monitor.MonitorHTTPError">[docs]</a><span class="k">class</span> <span class="nc">MonitorHTTPError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -200,7 +147,8 @@
 <div class="viewcode-block" id="set_api_key"><a class="viewcode-back" href="../../common.html#common.monitor.set_api_key">[docs]</a><span class="k">def</span> <span class="nf">set_api_key</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">global</span> <span class="n">api_key</span>
     <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">common.config</span> <span class="kn">import</span> <span class="n">read_config</span>        
+        <span class="kn">from</span> <span class="nn">common.config</span> <span class="kn">import</span> <span class="n">read_config</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">()</span>
             <span class="n">api_key</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">bookkeeper_api_key</span>
@@ -209,22 +157,28 @@
             <span class="k">return</span></div>
 
 
+<div class="viewcode-block" id="do_post"><a class="viewcode-back" href="../../common.html#common.monitor.do_post">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">do_post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">catch_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Posting to </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">bookkeeper_address</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">endpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response from </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Failed POST request </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2"> to bookkeeper endpoint </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: status: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+    <span class="k">except</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">client_exceptions</span><span class="o">.</span><span class="n">ClientConnectorError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed POST request to bookkeeper endpoint </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">catch_errors</span><span class="p">:</span>
+            <span class="k">raise</span></div>
+
+
 <div class="viewcode-block" id="post"><a class="viewcode-back" href="../../common.html#common.monitor.post">[docs]</a><span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">do_post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Posting to </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-                <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">bookkeeper_address</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">endpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response from </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed POST request to bookkeeper endpoint </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: status: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">client_exceptions</span><span class="o">.</span><span class="n">ClientConnectorError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed POST request to bookkeeper endpoint </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">do_post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span></div>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">do_post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get"><a class="viewcode-back" href="../../common.html#common.monitor.get">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -258,31 +212,34 @@
     <span class="k">global</span> <span class="n">bookkeeper_address</span>
     <span class="n">bookkeeper_address</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">address</span>
     <span class="k">global</span> <span class="n">api_key</span>
-    <span class="n">set_api_key</span><span class="p">()</span></div>
+    <span class="n">set_api_key</span><span class="p">()</span>
+    <span class="k">global</span> <span class="n">loop</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="send_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_event">[docs]</a><span class="k">def</span> <span class="nf">send_event</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_event">[docs]</a><span class="k">def</span> <span class="nf">send_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">m_events</span><span class="p">,</span> <span class="n">severity</span><span class="p">:</span> <span class="n">severity</span> <span class="o">=</span> <span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Sends information about general mercure events to the bookkeeper (e.g., during module start).&quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Monitor (mercure-event): level </span><span class="si">{</span><span class="n">severity</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s1">: &quot;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
         <span class="k">return</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (mercure-event): level </span><span class="si">{</span><span class="n">severity</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="n">sender_name</span><span class="p">,</span>
-        <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
-        <span class="s2">&quot;severity&quot;</span><span class="p">:</span> <span class="n">severity</span><span class="p">,</span>
+        <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="s2">&quot;severity&quot;</span><span class="p">:</span> <span class="n">severity</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
         <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">post</span><span class="p">(</span><span class="s2">&quot;mercure-event&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span></div>
     <span class="c1"># requests.post(bookkeeper_address + &quot;/mercure-event&quot;, data=payload, timeout=1)</span>
 
 
-<div class="viewcode-block" id="send_webgui_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_webgui_event">[docs]</a><span class="k">def</span> <span class="nf">send_webgui_event</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_webgui_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_webgui_event">[docs]</a><span class="k">def</span> <span class="nf">send_webgui_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">w_events</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Sends information about an event on the webgui to the bookkeeper.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="n">sender_name</span><span class="p">,</span>
-        <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
+        <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
         <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
         <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
     <span class="p">}</span>
@@ -300,24 +257,31 @@
     <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-series&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">tags</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="send_register_task"><a class="viewcode-back" href="../../common.html#common.monitor.send_register_task">[docs]</a><span class="k">def</span> <span class="nf">send_register_task</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_register_task"><a class="viewcode-back" href="../../common.html#common.monitor.send_register_task">[docs]</a><span class="k">def</span> <span class="nf">send_register_task</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Task</span><span class="p">],</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Registers a new task on the bookkeeper. This should be called whenever a new task has been created.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
         <span class="k">return</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (register-task): task.id=</span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
-    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span></div>
-    <span class="c1"># requests.post(bookkeeper_address + &quot;/register-task&quot;, data=json.dumps(task.dict()), timeout=1)</span>
+
+    <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">task_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">task_dict</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (register-task): task.id=</span><span class="si">{</span><span class="n">task_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+
+    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task_dict</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="send_task_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_task_event">[docs]</a><span class="k">def</span> <span class="nf">send_task_event</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Send an event related to a specific task to the bookkeeper.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="send_task_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_task_event">[docs]</a><span class="k">def</span> <span class="nf">send_task_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">task_event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Send an event related to a specific series to the bookkeeper.&quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (task-event): event=</span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2"> task_id=</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> info=</span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
         <span class="k">return</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (task-event): event=</span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2"> task_id=</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> info=</span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="n">sender_name</span><span class="p">,</span>
-        <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
+        <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
         <span class="s2">&quot;file_count&quot;</span><span class="p">:</span> <span class="n">file_count</span><span class="p">,</span>
         <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">,</span>
         <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">,</span>
@@ -337,6 +301,10 @@
 
 <div class="viewcode-block" id="get_tasks"><a class="viewcode-back" href="../../common.html#common.monitor.get_tasks">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_tasks</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_tests"><a class="viewcode-back" href="../../common.html#common.monitor.get_tests">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_tests</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -359,7 +327,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

@@ -231,6 +231,23 @@ On the first login, the user will be directed to the settings page and asked to 
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="webgui.self_test">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">self_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#self_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.self_test" title="Permalink to this definition"></a></dt>
+<dd><p>generate a test rule</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.self_test_cleanup">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">self_test_cleanup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webgui.html#self_test_cleanup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.self_test_cleanup" title="Permalink to this definition"></a></dt>
+<dd><p>Delete the rules and targets for this test after a delay</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.self_test_notification">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">self_test_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#self_test_notification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.self_test_notification" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="webgui.server_error">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">server_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#server_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.server_error" title="Permalink to this definition"></a></dt>
 <dd><p>Return an HTTP 500 page.</p>
@@ -253,6 +270,16 @@ On the first login, the user will be directed to the settings page and asked to 
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">show_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="reference internal" href="_modules/webgui.html#show_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.show_log" title="Permalink to this definition"></a></dt>
 <dd><p>Render the log for the given service. The time range can be specified via URL parameters.</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.shutdown">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/webgui.html#shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.shutdown" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.startup">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">startup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/webgui.html#startup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.startup" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -281,7 +308,13 @@ On the first login, the user will be directed to the settings page and asked to 
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

@@ -131,13 +131,8 @@
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
 
 
-<span class="c1"># Setup daiquiri logger</span>
-<span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">(),</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">(</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">ColorFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_logformat</span><span class="p">())),),</span>
-<span class="p">)</span>
 <span class="c1"># Create local logger instance</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;dispatcher&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 <span class="n">main_loop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: helper.RepeatedTimer # type: ignore</span>
 
 
@@ -295,7 +290,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

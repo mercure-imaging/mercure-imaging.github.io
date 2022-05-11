@@ -117,10 +117,16 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">graphyte</span>
 <span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="c1"># Global variable to broadcast when the process should terminate</span>
 <span class="n">terminate</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_runner"><a class="viewcode-back" href="../../common.html#common.helper.get_runner">[docs]</a><span class="k">def</span> <span class="nf">get_runner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the name of the mechanism that is used for running mercure in the current installation (systemd, docker, nomad).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_RUNNER&quot;</span><span class="p">,</span> <span class="s2">&quot;systemd&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="trigger_terminate"><a class="viewcode-back" href="../../common.html#common.helper.trigger_terminate">[docs]</a><span class="k">def</span> <span class="nf">trigger_terminate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -232,7 +238,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

@@ -131,8 +131,7 @@
 <span class="kn">import</span> <span class="nn">webinterface.tagslist</span> <span class="k">as</span> <span class="nn">tagslist</span>
 
 
-<span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">())</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;targets&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
 <span class="c1">###################################################################################</span>
@@ -238,12 +237,41 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">editrule</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Rule does not exist anymore.&quot;</span><span class="p">)</span>
 
+    <span class="n">old_rule</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">editrule</span><span class="p">]</span>
     <span class="c1"># Ensure that the processing settings are valid. Should happen on the client side too, but can&#39;t hurt</span>
     <span class="c1"># to check again</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">new_processing_settings</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processing_settings&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">))</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">new_processing_settings</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># new_rule = Rule(</span>
+    <span class="c1">#     disabled=form[&quot;status_disabled&quot;],</span>
+    <span class="c1">#     fallback=form[&quot;status_fallback&quot;],</span>
+    <span class="c1">#     processing_settings=new_processing_settings,</span>
+    <span class="c1">#     **{</span>
+    <span class="c1">#         k: form[k]</span>
+    <span class="c1">#         for k in (</span>
+    <span class="c1">#             &quot;rule&quot;,</span>
+    <span class="c1">#             &quot;target&quot;,</span>
+    <span class="c1">#             &quot;contact&quot;,</span>
+    <span class="c1">#             &quot;comment&quot;,</span>
+    <span class="c1">#             &quot;tags&quot;,</span>
+    <span class="c1">#             &quot;action&quot;,</span>
+    <span class="c1">#             &quot;action_trigger&quot;,</span>
+    <span class="c1">#             &quot;study_trigger_condition&quot;,</span>
+    <span class="c1">#             &quot;study_trigger_series&quot;,</span>
+    <span class="c1">#             &quot;priority&quot;,</span>
+    <span class="c1">#             &quot;processing_module&quot;,</span>
+    <span class="c1">#             &quot;processing_retain_images&quot;,</span>
+    <span class="c1">#             &quot;notification_webhook&quot;,</span>
+    <span class="c1">#             &quot;notification_payload&quot;,</span>
+    <span class="c1">#             &quot;notification_trigger_reception&quot;,</span>
+    <span class="c1">#             &quot;notification_trigger_completion&quot;,</span>
+    <span class="c1">#             &quot;notification_trigger_error&quot;,</span>
+    <span class="c1">#         )</span>
+    <span class="c1">#     },</span>
+    <span class="c1"># )</span>
 
     <span class="n">new_rule</span><span class="p">:</span> <span class="n">Rule</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span>
         <span class="n">rule</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
@@ -320,12 +348,12 @@
 
     <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;span class=&quot;tag is-success is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-thumbs-up&quot;&gt;&lt;/i&gt;&amp;nbsp;Route&lt;/span&gt;&#39;</span>
+            <span class="s1">&#39;&lt;span class=&quot;tag is-success is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-thumbs-up&quot;&gt;&lt;/i&gt;&amp;nbsp;Trigger&lt;/span&gt;&#39;</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;False&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;span class=&quot;tag is-info is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-thumbs-down&quot;&gt;&lt;/i&gt;&amp;nbsp;Discard&lt;/span&gt;&#39;</span>
+                <span class="s1">&#39;&lt;span class=&quot;tag is-info is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-thumbs-down&quot;&gt;&lt;/i&gt;&amp;nbsp;Reject&lt;/span&gt;&#39;</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
@@ -376,7 +404,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

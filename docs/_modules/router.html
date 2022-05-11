@@ -131,19 +131,8 @@
 <span class="kn">from</span> <span class="nn">routing.route_studies</span> <span class="kn">import</span> <span class="n">route_studies</span>
 
 
-<span class="c1"># Setup daiquiri logger</span>
-<span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">(),</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">(</span>
-        <span class="n">daiquiri</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span>
-            <span class="n">formatter</span><span class="o">=</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">ColorFormatter</span><span class="p">(</span>
-                <span class="n">fmt</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_logformat</span><span class="p">()</span>
-            <span class="p">)</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-<span class="p">)</span>
 <span class="c1"># Create local logger instance</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 <span class="n">main_loop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: helper.RepeatedTimer # type: ignore</span>
 
 
@@ -174,9 +163,11 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Unable to update configuration. Skipping processing.&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>  <span class="c1"># handle_error</span>
+            <span class="s2">&quot;Unable to update configuration. Skipping processing.&quot;</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">event_type</span><span class="o">=</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span>
 
     <span class="n">filecount</span> <span class="o">=</span> <span class="mi">0</span>
@@ -220,10 +211,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">route_series</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">series_uid</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Problems while processing series </span><span class="si">{</span><span class="n">series_uid</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-            <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
-            <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Problems while processing series </span><span class="si">{</span><span class="n">series_uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="c1"># If termination is requested, stop processing series after the active one has been completed</span>
         <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">is_terminated</span><span class="p">():</span>
             <span class="k">return</span>
@@ -331,7 +319,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

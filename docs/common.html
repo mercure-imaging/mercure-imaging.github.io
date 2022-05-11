@@ -133,25 +133,6 @@
 <dd><p>Checks if all required folders for handling the DICOM files exist.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="common.config.get_logformat">
-<span class="sig-prename descclassname"><span class="pre">common.config.</span></span><span class="sig-name descname"><span class="pre">get_logformat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/common/config.html#get_logformat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.config.get_logformat" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the format that should be used for log messages. Includes the time for docker and nomad, but not for systemd as journalctl 
-already outputs the time of the log events.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="common.config.get_loglevel">
-<span class="sig-prename descclassname"><span class="pre">common.config.</span></span><span class="sig-name descname"><span class="pre">get_loglevel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/common/config.html#get_loglevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.config.get_loglevel" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the logging level that should be used for printing messages.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="common.config.get_runner">
-<span class="sig-prename descclassname"><span class="pre">common.config.</span></span><span class="sig-name descname"><span class="pre">get_runner</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/common/config.html#get_runner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.config.get_runner" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the name of the mechanism that is used for running mercure in the current installation (systemd, docker, nomad).</p>
-</dd></dl>
-
 <dl class="py data">
 <dt class="sig sig-object py" id="common.config.mercure">
 <span class="sig-prename descclassname"><span class="pre">common.config.</span></span><span class="sig-name descname"><span class="pre">mercure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#common.types.Config" title="common.types.Config"><span class="pre">common.types.Config</span></a></em><a class="headerlink" href="#common.config.mercure" title="Permalink to this definition"></a></dt>
@@ -693,6 +674,12 @@ while the worker function is running</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="common.helper.get_runner">
+<span class="sig-prename descclassname"><span class="pre">common.helper.</span></span><span class="sig-name descname"><span class="pre">get_runner</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/common/helper.html#get_runner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.helper.get_runner" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the name of the mechanism that is used for running mercure in the current installation (systemd, docker, nomad).</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="common.helper.is_terminated">
 <span class="sig-prename descclassname"><span class="pre">common.helper.</span></span><span class="sig-name descname"><span class="pre">is_terminated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/common/helper.html#is_terminated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.helper.is_terminated" title="Permalink to this definition"></a></dt>
 <dd><p>Checks if the process will terminate after the current task.</p>
@@ -732,6 +719,11 @@ will not be transmitted to the bookkeeper.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="common.monitor.do_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">do_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catch_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#do_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.do_post" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="common.monitor.get">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/common/monitor.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.get" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -751,108 +743,19 @@ will not be transmitted to the bookkeeper.</p>
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">get_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/common/monitor.html#get_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.get_tasks" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="common.monitor.m_events">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">m_events</span></span><a class="reference internal" href="_modules/common/monitor.html#m_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.m_events" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Event types for general mercure monitoring.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.m_events.BOOT">
-<span class="sig-name descname"><span class="pre">BOOT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BOOT'</span></em><a class="headerlink" href="#common.monitor.m_events.BOOT" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="common.monitor.get_tests">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">get_tests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/common/monitor.html#get_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.get_tests" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.m_events.CONFIG_UPDATE">
-<span class="sig-name descname"><span class="pre">CONFIG_UPDATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CONFIG_UPDATE'</span></em><a class="headerlink" href="#common.monitor.m_events.CONFIG_UPDATE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.m_events.PROCESSING">
-<span class="sig-name descname"><span class="pre">PROCESSING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PROCESSING'</span></em><a class="headerlink" href="#common.monitor.m_events.PROCESSING" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.m_events.SHUTDOWN">
-<span class="sig-name descname"><span class="pre">SHUTDOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SHUTDOWN'</span></em><a class="headerlink" href="#common.monitor.m_events.SHUTDOWN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.m_events.SHUTDOWN_REQUEST">
-<span class="sig-name descname"><span class="pre">SHUTDOWN_REQUEST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SHUTDOWN_REQUEST'</span></em><a class="headerlink" href="#common.monitor.m_events.SHUTDOWN_REQUEST" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.m_events.UNKNOWN">
-<span class="sig-name descname"><span class="pre">UNKNOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UNKNOWN'</span></em><a class="headerlink" href="#common.monitor.m_events.UNKNOWN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="common.monitor.post">
 <span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.post" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="common.monitor.s_events">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">s_events</span></span><a class="reference internal" href="_modules/common/monitor.html#s_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.s_events" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Event types for monitoring everything related to one specific series.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.CLEAN">
-<span class="sig-name descname"><span class="pre">CLEAN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CLEAN'</span></em><a class="headerlink" href="#common.monitor.s_events.CLEAN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.COMPLETE">
-<span class="sig-name descname"><span class="pre">COMPLETE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'COMPLETE'</span></em><a class="headerlink" href="#common.monitor.s_events.COMPLETE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.DISCARD">
-<span class="sig-name descname"><span class="pre">DISCARD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DISCARD'</span></em><a class="headerlink" href="#common.monitor.s_events.DISCARD" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.DISPATCH">
-<span class="sig-name descname"><span class="pre">DISPATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DISPATCH'</span></em><a class="headerlink" href="#common.monitor.s_events.DISPATCH" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.ERROR">
-<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ERROR'</span></em><a class="headerlink" href="#common.monitor.s_events.ERROR" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.MOVE">
-<span class="sig-name descname"><span class="pre">MOVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MOVE'</span></em><a class="headerlink" href="#common.monitor.s_events.MOVE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.REGISTERED">
-<span class="sig-name descname"><span class="pre">REGISTERED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REGISTERED'</span></em><a class="headerlink" href="#common.monitor.s_events.REGISTERED" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.ROUTE">
-<span class="sig-name descname"><span class="pre">ROUTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ROUTE'</span></em><a class="headerlink" href="#common.monitor.s_events.ROUTE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.SUSPEND">
-<span class="sig-name descname"><span class="pre">SUSPEND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SUSPEND'</span></em><a class="headerlink" href="#common.monitor.s_events.SUSPEND" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.s_events.UNKNOWN">
-<span class="sig-name descname"><span class="pre">UNKNOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UNKNOWN'</span></em><a class="headerlink" href="#common.monitor.s_events.UNKNOWN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="common.monitor.send_event">
-<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">severity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_event" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">common.event_types.m_events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">severity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">common.event_types.severity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">severity.INFO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_event" title="Permalink to this definition"></a></dt>
 <dd><p>Sends information about general mercure events to the bookkeeper (e.g., during module start).</p>
 </dd></dl>
 
@@ -865,19 +768,19 @@ fully received and the DICOM tags have been parsed.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="common.monitor.send_register_task">
-<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_register_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#common.types.Task" title="common.types.Task"><span class="pre">common.types.Task</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_register_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_register_task" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_register_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.Task" title="common.types.Task"><span class="pre">common.types.Task</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_register_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_register_task" title="Permalink to this definition"></a></dt>
 <dd><p>Registers a new task on the bookkeeper. This should be called whenever a new task has been created.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="common.monitor.send_task_event">
-<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_task_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_task_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_task_event" title="Permalink to this definition"></a></dt>
-<dd><p>Send an event related to a specific task to the bookkeeper.</p>
+<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_task_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">common.event_types.task_event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_task_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_task_event" title="Permalink to this definition"></a></dt>
+<dd><p>Send an event related to a specific series to the bookkeeper.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="common.monitor.send_webgui_event">
-<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_webgui_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_webgui_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_webgui_event" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">send_webgui_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">common.event_types.w_events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#send_webgui_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.send_webgui_event" title="Permalink to this definition"></a></dt>
 <dd><p>Sends information about an event on the webgui to the bookkeeper.</p>
 </dd></dl>
 
@@ -885,115 +788,6 @@ fully received and the DICOM tags have been parsed.</p>
 <dt class="sig sig-object py" id="common.monitor.set_api_key">
 <span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">set_api_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/monitor.html#set_api_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.set_api_key" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="common.monitor.severity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">severity</span></span><a class="reference internal" href="_modules/common/monitor.html#severity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.severity" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Severity level associated to the mercure events.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.severity.CRITICAL">
-<span class="sig-name descname"><span class="pre">CRITICAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#common.monitor.severity.CRITICAL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.severity.ERROR">
-<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#common.monitor.severity.ERROR" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.severity.INFO">
-<span class="sig-name descname"><span class="pre">INFO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#common.monitor.severity.INFO" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.severity.WARNING">
-<span class="sig-name descname"><span class="pre">WARNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#common.monitor.severity.WARNING" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="common.monitor.w_events">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.monitor.</span></span><span class="sig-name descname"><span class="pre">w_events</span></span><a class="reference internal" href="_modules/common/monitor.html#w_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.monitor.w_events" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Event types for monitoring the webgui activity.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.CONFIG_EDIT">
-<span class="sig-name descname"><span class="pre">CONFIG_EDIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CONFIG_EDIT'</span></em><a class="headerlink" href="#common.monitor.w_events.CONFIG_EDIT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.LOGIN">
-<span class="sig-name descname"><span class="pre">LOGIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LOGIN'</span></em><a class="headerlink" href="#common.monitor.w_events.LOGIN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.LOGIN_FAIL">
-<span class="sig-name descname"><span class="pre">LOGIN_FAIL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LOGIN_FAIL'</span></em><a class="headerlink" href="#common.monitor.w_events.LOGIN_FAIL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.LOGOUT">
-<span class="sig-name descname"><span class="pre">LOGOUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LOGOUT'</span></em><a class="headerlink" href="#common.monitor.w_events.LOGOUT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.RULE_CREATE">
-<span class="sig-name descname"><span class="pre">RULE_CREATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RULE_CREATE'</span></em><a class="headerlink" href="#common.monitor.w_events.RULE_CREATE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.RULE_DELETE">
-<span class="sig-name descname"><span class="pre">RULE_DELETE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RULE_DELETE'</span></em><a class="headerlink" href="#common.monitor.w_events.RULE_DELETE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.RULE_EDIT">
-<span class="sig-name descname"><span class="pre">RULE_EDIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RULE_EDIT'</span></em><a class="headerlink" href="#common.monitor.w_events.RULE_EDIT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.SERVICE_CONTROL">
-<span class="sig-name descname"><span class="pre">SERVICE_CONTROL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SERVICE_CONTROL'</span></em><a class="headerlink" href="#common.monitor.w_events.SERVICE_CONTROL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.TARGET_CREATE">
-<span class="sig-name descname"><span class="pre">TARGET_CREATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TARGET_CREATE'</span></em><a class="headerlink" href="#common.monitor.w_events.TARGET_CREATE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.TARGET_DELETE">
-<span class="sig-name descname"><span class="pre">TARGET_DELETE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TARGET_DELETE'</span></em><a class="headerlink" href="#common.monitor.w_events.TARGET_DELETE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.TARGET_EDIT">
-<span class="sig-name descname"><span class="pre">TARGET_EDIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TARGET_EDIT'</span></em><a class="headerlink" href="#common.monitor.w_events.TARGET_EDIT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.UNKNOWN">
-<span class="sig-name descname"><span class="pre">UNKNOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UNKNOWN'</span></em><a class="headerlink" href="#common.monitor.w_events.UNKNOWN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.USER_CREATE">
-<span class="sig-name descname"><span class="pre">USER_CREATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'USER_CREATE'</span></em><a class="headerlink" href="#common.monitor.w_events.USER_CREATE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.USER_DELETE">
-<span class="sig-name descname"><span class="pre">USER_DELETE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'USER_DELETE'</span></em><a class="headerlink" href="#common.monitor.w_events.USER_DELETE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="common.monitor.w_events.USER_EDIT">
-<span class="sig-name descname"><span class="pre">USER_EDIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'USER_EDIT'</span></em><a class="headerlink" href="#common.monitor.w_events.USER_EDIT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 </section>
 </section>
@@ -1009,7 +803,7 @@ fully received and the DICOM tags have been parsed.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="common.notification.send_webhook">
-<span class="sig-prename descclassname"><span class="pre">common.notification.</span></span><span class="sig-name descname"><span class="pre">send_webhook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/notification.html#send_webhook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.notification.send_webhook" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">common.notification.</span></span><span class="sig-name descname"><span class="pre">send_webhook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/common/notification.html#send_webhook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.notification.send_webhook" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1021,7 +815,7 @@ fully received and the DICOM tags have been parsed.</p>
 <p>Helper functions for evaluating routing rules and study-completion conditions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="common.rule_evaluation.parse_completion_series">
-<span class="sig-prename descclassname"><span class="pre">common.rule_evaluation.</span></span><span class="sig-name descname"><span class="pre">parse_completion_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">received_series</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/common/rule_evaluation.html#parse_completion_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.rule_evaluation.parse_completion_series" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">common.rule_evaluation.</span></span><span class="sig-name descname"><span class="pre">parse_completion_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completion_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">received_series</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/common/rule_evaluation.html#parse_completion_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.rule_evaluation.parse_completion_series" title="Permalink to this definition"></a></dt>
 <dd><p>Evaluates the configuration string defining which series are required using the list of received series as input.
 Returns true if all required series have arrived, otherwise false is returned.</p>
 </dd></dl>
@@ -1075,7 +869,7 @@ more diagnostic output format for the testing dialog. Also warns about invalid t
 
 <dl class="py class">
 <dt class="sig sig-object py" id="common.types.Config">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.types.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appliance_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_compressed_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">studies_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outgoing_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">router_scan_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher_scan_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleaner_scan_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_complete_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_complete_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_forcecomplete_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graphite_ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graphite_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bookkeeper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offpeak_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offpeak_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.DicomTarget" title="common.types.DicomTarget"><span class="pre">common.types.DicomTarget</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.SftpTarget" title="common.types.SftpTarget"><span class="pre">common.types.SftpTarget</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.Rule" title="common.types.Rule"><span class="pre">common.types.Rule</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.Module" title="common.types.Module"><span class="pre">common.types.Module</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_runner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'docker'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'nomad'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">''</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bookkeeper_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/common/types.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.types.Config" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.types.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appliance_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_compressed_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">studies_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outgoing_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">router_scan_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher_scan_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleaner_scan_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series_complete_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_complete_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_forcecomplete_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graphite_ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graphite_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bookkeeper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offpeak_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offpeak_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.Target" title="common.types.Target"><span class="pre">common.types.Target</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.Rule" title="common.types.Rule"><span class="pre">common.types.Rule</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.Module" title="common.types.Module"><span class="pre">common.types.Module</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_runner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'docker'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'nomad'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">''</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bookkeeper_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/common/types.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.types.Config" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code>, <a class="reference internal" href="#common.types.Compat" title="common.types.Compat"><code class="xref py py-class docutils literal notranslate"><span class="pre">common.types.Compat</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="common.types.Config.accept_compressed_images">
@@ -1219,7 +1013,7 @@ more diagnostic output format for the testing dialog. Also warns about invalid t
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="common.types.Config.targets">
-<span class="sig-name descname"><span class="pre">targets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.DicomTarget" title="common.types.DicomTarget"><span class="pre">common.types.DicomTarget</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.SftpTarget" title="common.types.SftpTarget"><span class="pre">common.types.SftpTarget</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#common.types.Config.targets" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">targets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.Target" title="common.types.Target"><span class="pre">common.types.Target</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#common.types.Config.targets" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1463,6 +1257,17 @@ more diagnostic output format for the testing dialog. Also warns about invalid t
 <span class="sig-name descname"><span class="pre">contact</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#common.types.Target.contact" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="common.types.Target.get_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/common/types.html#Target.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.types.Target.get_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="common.types.Target.validate">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/common/types.html#Target.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.types.Target.validate" title="Permalink to this definition"></a></dt>
+<dd><p>Parse the target as any of the known target types.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1540,11 +1345,16 @@ more diagnostic output format for the testing dialog. Also warns about invalid t
 
 <dl class="py class">
 <dt class="sig sig-object py" id="common.types.TaskHasStudy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.types.</span></span><span class="sig-name descname"><span class="pre">TaskHasStudy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#common.types.TaskInfo" title="common.types.TaskInfo"><span class="pre">common.types.TaskInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">common.types.TaskDispatch</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.EmptyDict" title="common.types.EmptyDict"><span class="pre">common.types.EmptyDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.Module" title="common.types.Module"><span class="pre">common.types.Module</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.EmptyDict" title="common.types.EmptyDict"><span class="pre">common.types.EmptyDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#common.types.TaskStudy" title="common.types.TaskStudy"><span class="pre">common.types.TaskStudy</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/common/types.html#TaskHasStudy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.types.TaskHasStudy" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">common.types.</span></span><span class="sig-name descname"><span class="pre">TaskHasStudy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#common.types.TaskInfo" title="common.types.TaskInfo"><span class="pre">common.types.TaskInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">common.types.TaskDispatch</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.EmptyDict" title="common.types.EmptyDict"><span class="pre">common.types.EmptyDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.Module" title="common.types.Module"><span class="pre">common.types.Module</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.EmptyDict" title="common.types.EmptyDict"><span class="pre">common.types.EmptyDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#common.types.TaskStudy" title="common.types.TaskStudy"><span class="pre">common.types.TaskStudy</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/common/types.html#TaskHasStudy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#common.types.TaskHasStudy" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code>, <a class="reference internal" href="#common.types.Compat" title="common.types.Compat"><code class="xref py py-class docutils literal notranslate"><span class="pre">common.types.Compat</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="common.types.TaskHasStudy.dispatch">
 <span class="sig-name descname"><span class="pre">dispatch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">common.types.TaskDispatch</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#common.types.EmptyDict" title="common.types.EmptyDict"><span class="pre">common.types.EmptyDict</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#common.types.TaskHasStudy.dispatch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="common.types.TaskHasStudy.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#common.types.TaskHasStudy.id" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1726,7 +1536,13 @@ more diagnostic output format for the testing dialog. Also warns about invalid t
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

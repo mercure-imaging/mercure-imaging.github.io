@@ -127,10 +127,10 @@
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">DicomTarget</span><span class="p">,</span> <span class="n">SftpTarget</span>
 <span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">dispatch.target_types</span> <span class="k">as</span> <span class="nn">target_types</span>
 
 
-<span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">())</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;targets&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
 <span class="c1">###################################################################################</span>
@@ -162,6 +162,7 @@
         <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="s2">&quot;targets&quot;</span><span class="p">,</span>
         <span class="s2">&quot;targets&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
         <span class="s2">&quot;used_targets&quot;</span><span class="p">:</span> <span class="n">used_targets</span><span class="p">,</span>
+        <span class="s2">&quot;get_target_handler&quot;</span><span class="p">:</span> <span class="n">target_types</span><span class="o">.</span><span class="n">get_handler</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
@@ -215,6 +216,9 @@
         <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="s2">&quot;targets&quot;</span><span class="p">,</span>
         <span class="s2">&quot;targets&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
         <span class="s2">&quot;edittarget&quot;</span><span class="p">:</span> <span class="n">edittarget</span><span class="p">,</span>
+        <span class="s2">&quot;get_target_handler&quot;</span><span class="p">:</span> <span class="n">target_types</span><span class="o">.</span><span class="n">get_handler</span><span class="p">,</span>
+        <span class="s2">&quot;target_types&quot;</span><span class="p">:</span> <span class="n">target_types</span><span class="o">.</span><span class="n">target_types</span><span class="p">(),</span>
+        <span class="s2">&quot;target_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">target_types</span><span class="o">.</span><span class="n">target_types</span><span class="p">()],</span>
     <span class="p">}</span>
     <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
@@ -235,17 +239,8 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">edittarget</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Target does not exist anymore.&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;target_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;dicom&quot;</span><span class="p">:</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span> <span class="o">=</span> <span class="n">DicomTarget</span><span class="p">(</span>
-            <span class="n">ip</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">],</span> <span class="n">port</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span> <span class="n">aet_target</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;aet_target&quot;</span><span class="p">],</span> <span class="n">aet_source</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;aet_source&quot;</span><span class="p">]</span>
-        <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;target_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sftp&quot;</span><span class="p">:</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span> <span class="o">=</span> <span class="n">SftpTarget</span><span class="p">(</span>
-            <span class="n">host</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">],</span> <span class="n">user</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">],</span> <span class="n">folder</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;folder&quot;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
-        <span class="p">)</span>
-
-    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span><span class="o">.</span><span class="n">contact</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;contact&quot;</span><span class="p">]</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span>
+    <span class="n">TargetType</span> <span class="o">=</span> <span class="n">target_types</span><span class="o">.</span><span class="n">type_from_name</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;target_type&quot;</span><span class="p">])</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span> <span class="o">=</span> <span class="n">TargetType</span><span class="p">(</span><span class="o">**</span><span class="n">form</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
@@ -292,49 +287,10 @@
 
     <span class="n">testtarget</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
     <span class="n">target</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">testtarget</span><span class="p">]</span>
-    <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">cecho_response</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">DicomTarget</span><span class="p">):</span>
-        <span class="n">target_ip</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ip</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">target_port</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">target_aec</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_target</span> <span class="ow">or</span> <span class="s2">&quot;ANY-SCP&quot;</span>
-        <span class="n">target_aet</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_source</span> <span class="ow">or</span> <span class="s2">&quot;ECHOSCU&quot;</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Testing target </span><span class="si">{</span><span class="n">testtarget</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">target_ip</span> <span class="ow">and</span> <span class="n">target_port</span><span class="p">:</span>
-            <span class="n">ping_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ping -w 1 -c 1 </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">ping_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">True</span>
-
-            <span class="n">cecho_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;echoscu -to 2 -aec </span><span class="si">{</span><span class="n">target_aec</span><span class="si">}</span><span class="s2"> -aet </span><span class="si">{</span><span class="n">target_aet</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_port</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">cecho_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">cecho_response</span> <span class="o">=</span> <span class="kc">True</span>
-
-        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;ping&quot;</span><span class="p">:</span> <span class="n">ping_response</span><span class="p">,</span> <span class="s2">&quot;c-echo&quot;</span><span class="p">:</span> <span class="n">cecho_response</span><span class="p">}))</span>
-
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">SftpTarget</span><span class="p">):</span>
-        <span class="n">ping_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ping -w 1 -c 1 </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">ping_result</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">stderr</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
-
-        <span class="n">command</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;sftp -o StrictHostKeyChecking=no &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &quot;</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">user</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot; &lt;&lt;&lt; &quot;&quot; &quot;&quot;&quot;</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="p">:</span>
-            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sshpass -p </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">command</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
-        <span class="n">result</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">ping</span><span class="o">=</span><span class="n">ping_response</span><span class="p">,</span> <span class="n">loggedin</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">target_types</span><span class="o">.</span><span class="n">get_handler</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">handler</span><span class="o">.</span><span class="n">test_connection</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">testtarget</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">test_template</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">})</span></div>
 </pre></div>
 
            </div>
@@ -357,7 +313,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

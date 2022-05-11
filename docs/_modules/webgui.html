@@ -112,6 +112,14 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Standard python includes</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">L</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">common.generate_test_series</span> <span class="kn">import</span> <span class="n">generate_series</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">DicomTarget</span><span class="p">,</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">Module</span>
 <span class="kn">import</span> <span class="nn">uvicorn</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -151,6 +159,7 @@
 <span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
+<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span><span class="p">,</span> <span class="n">mercure_names</span>
 
 <span class="kn">import</span> <span class="nn">webinterface.users</span> <span class="k">as</span> <span class="nn">users</span>
@@ -161,7 +170,7 @@
 <span class="kn">import</span> <span class="nn">webinterface.modules</span> <span class="k">as</span> <span class="nn">modules</span>
 <span class="kn">import</span> <span class="nn">webinterface.queue</span> <span class="k">as</span> <span class="nn">queue</span>
 <span class="kn">import</span> <span class="nn">webinterface.api</span> <span class="k">as</span> <span class="nn">api</span>
-<span class="kn">import</span> <span class="nn">webinterface.test</span> <span class="k">as</span> <span class="nn">test</span>
+<span class="kn">import</span> <span class="nn">webinterface.dashboards</span> <span class="k">as</span> <span class="nn">dashboards</span>
 <span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="o">*</span>
 
 
@@ -169,11 +178,8 @@
 <span class="c1">## Helper classes</span>
 <span class="c1">###################################################################################</span>
 
-<span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">(),</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">(</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">ColorFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_logformat</span><span class="p">())),),</span>
-<span class="p">)</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;webgui&quot;</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
 <span class="k">try</span><span class="p">:</span>
@@ -223,7 +229,16 @@
 <span class="n">DEBUG_MODE</span> <span class="o">=</span> <span class="n">webgui_config</span><span class="p">(</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">DEBUG_MODE</span><span class="p">)</span>
+<div class="viewcode-block" id="startup"><a class="viewcode-back" href="../webgui.html#webgui.startup">[docs]</a><span class="k">def</span> <span class="nf">startup</span><span class="p">():</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;webgui&quot;</span><span class="p">,</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">bookkeeper</span><span class="p">)</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">BOOT</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;PID = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="shutdown"><a class="viewcode-back" href="../webgui.html#webgui.shutdown">[docs]</a><span class="k">def</span> <span class="nf">shutdown</span><span class="p">():</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">DEBUG_MODE</span><span class="p">,</span> <span class="n">on_startup</span><span class="o">=</span><span class="p">[</span><span class="n">startup</span><span class="p">],</span> <span class="n">on_shutdown</span><span class="o">=</span><span class="p">[</span><span class="n">shutdown</span><span class="p">])</span>
 <span class="c1"># Don&#39;t check the existence of the static folder because the wrong parent folder is used if the</span>
 <span class="c1"># source code is parsed by sphinx. This would raise an exception and lead to failure of sphinx.</span>
 <span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/static&quot;</span><span class="p">,</span> <span class="n">StaticFiles</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s2">&quot;webinterface/statics&quot;</span><span class="p">,</span> <span class="n">check_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
@@ -235,7 +250,7 @@
 <span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/users&quot;</span><span class="p">,</span> <span class="n">users</span><span class="o">.</span><span class="n">users_app</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/queue&quot;</span><span class="p">,</span> <span class="n">queue</span><span class="o">.</span><span class="n">queue_app</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/api&quot;</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">api_app</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/test&quot;</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">test_app</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/dashboards&quot;</span><span class="p">,</span> <span class="n">dashboards</span><span class="o">.</span><span class="n">test_app</span><span class="p">)</span>
 
 
 <span class="c1">###################################################################################</span>
@@ -315,7 +330,7 @@
     <span class="n">raw_logs</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">()</span>
 
     <span class="c1"># Get information about the type of mercure installation on the server</span>
-    <span class="n">runtime</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
+    <span class="n">runtime</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
 
     <span class="c1"># Fetch the log files depending on how mercure has been installed</span>
     <span class="k">if</span> <span class="n">runtime</span> <span class="o">==</span> <span class="s2">&quot;nomad&quot;</span> <span class="ow">and</span> <span class="n">nomad_connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -397,7 +412,7 @@
     <span class="n">config_edited</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;edited&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
     <span class="n">os_info</span> <span class="o">=</span> <span class="n">distro</span><span class="o">.</span><span class="n">linux_distribution</span><span class="p">()</span>
     <span class="n">os_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> Version </span><span class="si">{</span><span class="n">os_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">os_info</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
-    <span class="n">runtime</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
+    <span class="n">runtime</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
         <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span>
@@ -485,6 +500,142 @@
         <span class="s2">&quot;appliance_name&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;appliance_name&quot;</span><span class="p">,</span> <span class="s2">&quot;master&quot;</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="self_test_cleanup"><a class="viewcode-back" href="../webgui.html#webgui.self_test_cleanup">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">self_test_cleanup</span><span class="p">(</span><span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delay</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Delete the rules and targets for this test after a delay&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="c1"># for k in list(config.mercure.targets.keys()):</span>
+    <span class="c1">#     if k.endswith(&quot;_self_test_target&quot;):</span>
+    <span class="c1">#         del config.mercure.targets[k]</span>
+    <span class="c1"># for k in list(config.mercure.modules.keys()):</span>
+    <span class="c1">#     if k.endswith(&quot;_module&quot;):</span>
+    <span class="c1">#         del config.mercure.modules[k]</span>
+    <span class="c1"># for k in list(config.mercure.rules.keys()):</span>
+    <span class="c1">#     del config.mercure.rules[k]</span>
+
+    <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_target&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_target&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_module&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_module&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;begin&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_rule_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_rule_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="self_test_notification"><a class="viewcode-back" href="../webgui.html#webgui.self_test_notification">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/self_test_notification&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">self_test_notification</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">test_id</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;self_test_rule_begin&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;event&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;RECEIVED&quot;</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">monitor</span><span class="o">.</span><span class="n">do_post</span><span class="p">(</span><span class="s2">&quot;test-begin&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;task_id&quot;</span><span class="p">])))</span>
+
+    <span class="k">elif</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;self_test_rule_end&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;event&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;COMPLETED&quot;</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">monitor</span><span class="o">.</span><span class="n">do_post</span><span class="p">(</span><span class="s2">&quot;test-end&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;begin&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_rule_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_rule_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">ResourceWarning</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">self_test_cleanup</span><span class="p">(</span><span class="n">test_id</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">monitor</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;OK&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="self_test"><a class="viewcode-back" href="../webgui.html#webgui.self_test">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/self_test&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;homepage&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">self_test</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;generate a test rule&quot;&quot;&quot;</span>
+    <span class="n">form_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
+    <span class="n">receiver_port</span> <span class="o">=</span> <span class="s2">&quot;11112&quot;</span>
+    <span class="n">gui_port</span> <span class="o">=</span> <span class="s2">&quot;8000&quot;</span>
+    <span class="n">test_type</span> <span class="o">=</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;route&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">runner</span> <span class="o">==</span> <span class="s2">&quot;docker&quot;</span><span class="p">:</span>
+        <span class="n">receiver_host</span> <span class="o">=</span> <span class="s2">&quot;receiver&quot;</span>
+        <span class="n">gui_host</span> <span class="o">=</span> <span class="s2">&quot;ui&quot;</span>
+    <span class="k">elif</span> <span class="n">runner</span> <span class="o">==</span> <span class="s2">&quot;nomad&quot;</span><span class="p">:</span>
+        <span class="n">receiver_host</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+        <span class="n">gui_host</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+    <span class="k">elif</span> <span class="n">runner</span> <span class="o">==</span> <span class="s2">&quot;systemd&quot;</span><span class="p">:</span>
+        <span class="n">receiver_host</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+        <span class="n">gui_host</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+
+    <span class="k">if</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;receiver_port&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">receiver_port</span> <span class="o">=</span> <span class="n">form_data</span><span class="p">[</span><span class="s2">&quot;receiver_port&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gui_port&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">gui_port</span> <span class="o">=</span> <span class="n">form_data</span><span class="p">[</span><span class="s2">&quot;gui_port&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;receiver_host&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">receiver_host</span> <span class="o">=</span> <span class="n">form_data</span><span class="p">[</span><span class="s2">&quot;receiver_host&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gui_host&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">gui_host</span> <span class="o">=</span> <span class="n">form_data</span><span class="p">[</span><span class="s2">&quot;gui_host&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">test_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+        <span class="n">test_rule</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_rule&quot;</span>
+        <span class="n">test_target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_self_test_target&quot;</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">test_target</span><span class="p">]</span> <span class="o">=</span> <span class="n">DicomTarget</span><span class="p">(</span>
+            <span class="n">ip</span><span class="o">=</span><span class="n">receiver_host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">receiver_port</span><span class="p">,</span> <span class="n">aet_source</span><span class="o">=</span><span class="s2">&quot;mercure&quot;</span><span class="p">,</span> <span class="n">aet_target</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_end&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+        <span class="c1"># &quot;begin&quot; rule is used to trigger the test. It routes to a test_target, which is the mercure receiver.</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">test_rule</span> <span class="o">+</span> <span class="s2">&quot;_begin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span>
+            <span class="n">rule</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;@ReceiverAET@ == &quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s1">_begin&quot;&#39;</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">test_target</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;route&quot;</span><span class="p">,</span>
+            <span class="n">notification_trigger_completion</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+            <span class="n">notification_webhook</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">gui_host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">gui_port</span><span class="si">}</span><span class="s2">/self_test_notification&quot;</span><span class="p">,</span>
+            <span class="n">notification_payload</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;&quot;rule&quot;:&quot;@rule@&quot;, &quot;event&quot;:&quot;@event@&quot;, &quot;test_id&quot;:&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s1">&quot;, &quot;task_id&quot;:&quot;@task_id@&quot;&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">test_type</span> <span class="o">==</span> <span class="s2">&quot;process&quot;</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">test_rule</span> <span class="o">+</span> <span class="s2">&quot;_module&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Module</span><span class="p">(</span>
+                <span class="n">docker_tag</span><span class="o">=</span><span class="s2">&quot;mercureimaging/mercure-dummy-processor:0.2.0-beta.7&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">test_rule</span> <span class="o">+</span> <span class="s2">&quot;_begin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">test_rule</span> <span class="o">+</span> <span class="s2">&quot;_begin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">processing_module</span> <span class="o">=</span> <span class="n">test_rule</span> <span class="o">+</span> <span class="s2">&quot;_module&quot;</span>
+
+        <span class="c1"># &quot;end&quot; rule is triggered when the test is completed. It just performs a notification to register the test success.</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">test_rule</span> <span class="o">+</span> <span class="s2">&quot;_end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span>
+            <span class="n">rule</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;@ReceiverAET@ == &quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s1">_end&quot;&#39;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;notification&quot;</span><span class="p">,</span>
+            <span class="n">notification_webhook</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">gui_host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">gui_port</span><span class="si">}</span><span class="s2">/self_test_notification&quot;</span><span class="p">,</span>
+            <span class="n">notification_trigger_reception</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+            <span class="n">notification_payload</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;&quot;rule&quot;:&quot;@rule@&quot;, &quot;event&quot;:&quot;@event@&quot;, &quot;test_id&quot;:&quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
+
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">self_test_cleanup</span><span class="p">(</span><span class="n">test_id</span><span class="p">,</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">monitor</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Posting test-begin...&quot;</span><span class="p">)</span>
+        <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/tmp/mercure/self_test_&quot;</span> <span class="o">+</span> <span class="n">test_id</span><span class="p">)</span>
+        <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/tmp/mercure&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">generate_series</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">series_description</span><span class="o">=</span><span class="s2">&quot;self_test_series &quot;</span> <span class="o">+</span> <span class="n">test_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error initializing test: </span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># shutil.copytree(&quot;./test_series&quot;, tmpdir)</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;dcmsend </span><span class="si">{</span><span class="n">receiver_host</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">receiver_port</span><span class="si">}</span><span class="s2"> +sd </span><span class="si">{</span><span class="n">tmpdir</span><span class="si">}</span><span class="s2"> -aet &quot;mercure&quot; -aec &quot;</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">_begin&quot; -nuc +sp &#39;*.dcm&#39; -to 60&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error sending dicoms: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Could not submit dicoms for test:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+    <span class="k">await</span> <span class="n">monitor</span><span class="o">.</span><span class="n">do_post</span><span class="p">(</span><span class="s2">&quot;test-begin&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">test_type</span><span class="p">)))</span>
+    <span class="c1"># logger.info(f&quot;self_test: {output.decode(&#39;utf-8&#39;)}&quot;)</span>
+    <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Test submitted.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="login_post"><a class="viewcode-back" href="../webgui.html#webgui.login_post">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
@@ -577,7 +728,7 @@
     <span class="n">free_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">total_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">disk_total</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">runtime</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
+    <span class="n">runtime</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">disk_total</span><span class="p">,</span> <span class="n">disk_used</span><span class="p">,</span> <span class="n">disk_free</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">disk_usage</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span><span class="p">)</span>
@@ -653,7 +804,7 @@
 <span class="k">async</span> <span class="k">def</span> <span class="nf">control_services</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
     <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
     <span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">runtime</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
+    <span class="n">runtime</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;start&quot;</span><span class="p">:</span>
         <span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
@@ -786,19 +937,13 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Going down.&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">monitor</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;webgui&quot;</span><span class="p">,</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">bookkeeper</span><span class="p">)</span>
-    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">BOOT</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;PID = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
     <span class="k">try</span><span class="p">:</span>
         <span class="n">tagslist</span><span class="o">.</span><span class="n">read_tagslist</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unable to parse tag list. Rule evaluation will not be available.&quot;</span><span class="p">)</span>
 
-    <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">WEBGUI_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">WEBGUI_PORT</span><span class="p">)</span>
-
-    <span class="c1"># Process will exit here</span>
-    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">WEBGUI_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">WEBGUI_PORT</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -825,7 +970,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

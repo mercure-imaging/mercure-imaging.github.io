@@ -113,10 +113,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">import</span> <span class="nn">asyncpg</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.engine.base</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.dialects.postgresql</span> <span class="kn">import</span> <span class="n">insert</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.dialects.postgresql</span> <span class="kn">import</span> <span class="n">JSONB</span>
 <span class="kn">import</span> <span class="nn">uvicorn</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
@@ -142,26 +144,16 @@
 <span class="kn">from</span> <span class="nn">starlette.authentication</span> <span class="kn">import</span> <span class="n">SimpleUser</span>
 
 <span class="c1"># App-specific includes</span>
+<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
-<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">config</span>
 
 
 <span class="c1">###################################################################################</span>
 <span class="c1">## Configuration and initialization</span>
 <span class="c1">###################################################################################</span>
 
-<span class="n">daiquiri</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">get_loglevel</span><span class="p">(),</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">(</span>
-        <span class="n">daiquiri</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span>
-            <span class="n">formatter</span><span class="o">=</span><span class="n">daiquiri</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">ColorFormatter</span><span class="p">(</span>
-                <span class="n">fmt</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_logformat</span><span class="p">()</span>
-            <span class="p">)</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;bookkeeper&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
 <span class="n">bookkeeper_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/bookkeeper.env&quot;</span><span class="p">)</span>
@@ -169,7 +161,7 @@
 <span class="n">BOOKKEEPER_PORT</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;PORT&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8080</span><span class="p">)</span>
 <span class="n">BOOKKEEPER_HOST</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;HOST&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">)</span>
 <span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;DATABASE_URL&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;postgresql://mercure@localhost&quot;</span><span class="p">)</span>
-<span class="n">DATABASE_SCHEMA</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;DATABASE_SCHEMA&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">DATABASE_SCHEMA</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;DATABASE_SCHEMA&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">DEBUG_MODE</span> <span class="o">=</span> <span class="n">bookkeeper_config</span><span class="p">(</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">API_KEY</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -325,9 +317,21 @@
     <span class="n">metadata</span><span class="p">,</span>
     <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">DateTime</span><span class="p">),</span>
-    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;series_uid&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">),</span>
-    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;study_uid&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;series_uid&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;study_uid&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">JSONB</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">tests_table</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span>
+    <span class="s2">&quot;tests&quot;</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="p">,</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;time_begin&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;time_end&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;task_id&quot;</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">JSONB</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="p">)</span>
 
 
@@ -359,7 +363,11 @@
 
 <div class="viewcode-block" id="create_database"><a class="viewcode-back" href="../bookkeeper.html#bookkeeper.create_database">[docs]</a><span class="k">def</span> <span class="nf">create_database</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Creates all tables in the database if they do not exist.&quot;&quot;&quot;</span>
-    <span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="n">DATABASE_URL</span><span class="p">)</span><span class="o">.</span><span class="n">connect</span><span class="p">())</span></div>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;alembic&quot;</span><span class="p">,</span> <span class="s2">&quot;upgrade&quot;</span><span class="p">,</span> <span class="s2">&quot;head&quot;</span><span class="p">],</span>
+        <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">env</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="s2">&quot;PATH&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/env/bin:&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PATH&quot;</span><span class="p">],</span> <span class="s2">&quot;DATABASE_URL&quot;</span><span class="p">:</span> <span class="n">DATABASE_URL</span><span class="p">},</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="startup"><a class="viewcode-back" href="../bookkeeper.html#bookkeeper.startup">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">on_event</span><span class="p">(</span><span class="s2">&quot;startup&quot;</span><span class="p">)</span>
@@ -514,15 +522,60 @@
     <span class="n">study_uid</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;series&quot;</span><span class="p">:</span>
-        <span class="n">series_uid</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;study&quot;</span><span class="p">:</span>
-        <span class="n">study_uid</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid&quot;</span><span class="p">]</span>
+    <span class="n">series_uid</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">study_uid</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;info&quot;</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;series&quot;</span><span class="p">:</span>
+            <span class="n">series_uid</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;study&quot;</span><span class="p">:</span>
+            <span class="n">study_uid</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid&quot;</span><span class="p">]</span>
     <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-    <span class="n">query</span> <span class="o">=</span> <span class="n">tasks_table</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
-        <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">series_uid</span><span class="o">=</span><span class="n">series_uid</span><span class="p">,</span> <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">insert</span><span class="p">(</span><span class="n">tasks_table</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">series_uid</span><span class="o">=</span><span class="n">series_uid</span><span class="p">,</span> <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">on_conflict_do_update</span><span class="p">(</span>
+            <span class="n">index_elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+            <span class="n">set_</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;series_uid&quot;</span><span class="p">:</span> <span class="n">series_uid</span><span class="p">,</span>
+                <span class="s2">&quot;study_uid&quot;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
     <span class="p">)</span>
+    <span class="k">await</span> <span class="n">database</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="test_begin"><a class="viewcode-back" href="../bookkeeper.html#bookkeeper.test_begin">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/test-begin&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">test_begin</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;route&quot;</span><span class="p">)</span>
+    <span class="n">task_id</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">query_a</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">tests_table</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">time_begin</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;begin&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span>
+    <span class="p">)</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="n">query_a</span><span class="o">.</span><span class="n">on_conflict_do_update</span><span class="p">(</span>
+        <span class="n">index_elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+        <span class="n">set_</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span> <span class="ow">or</span> <span class="n">query_a</span><span class="o">.</span><span class="n">excluded</span><span class="o">.</span><span class="n">task_id</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">database</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="test_end"><a class="viewcode-back" href="../bookkeeper.html#bookkeeper.test_end">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/test-end&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">test_end</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="n">tests_table</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tests_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">time_end</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
     <span class="k">await</span> <span class="n">database</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span></div>
 
@@ -533,7 +586,7 @@
     <span class="sd">&quot;&quot;&quot;Endpoint for logging all events related to one series.&quot;&quot;&quot;</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
     <span class="n">sender</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sender&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
-    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">s_events</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">)</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">)</span>
     <span class="c1"># series_uid = payload.get(&quot;series_uid&quot;, &quot;&quot;)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">file_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -590,12 +643,39 @@
             <span class="p">(</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">study_uid</span> <span class="o">==</span> <span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">study_uid</span><span class="p">),</span>
             <span class="p">(</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span> <span class="o">==</span> <span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span><span class="p">),</span>
         <span class="p">),</span>
+        <span class="n">isouter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="c1"># query = sqlalchemy.text(</span>
     <span class="c1">#     &quot;&quot;&quot; select tasks.id as task_id, tasks.time, tasks.series_uid, tasks.study_uid, &quot;tag_seriesdescription&quot;, &quot;tag_modality&quot; from tasks</span>
     <span class="c1">#         join dicom_series on tasks.study_uid = dicom_series.study_uid or tasks.series_uid = dicom_series.series_uid &quot;&quot;&quot;</span>
     <span class="c1"># )</span>
     <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_test_task"><a class="viewcode-back" href="../bookkeeper.html#bookkeeper.get_test_task">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/tests&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_test_task</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">tests_table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">tests_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">time_begin</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+    <span class="c1"># query = (</span>
+    <span class="c1">#     sqlalchemy.select(</span>
+    <span class="c1">#         tasks_table.c.id, tasks_table.c.time, dicom_series.c.tag_seriesdescription, dicom_series.c.tag_modality</span>
+    <span class="c1">#     )</span>
+    <span class="c1">#     .join(</span>
+    <span class="c1">#         dicom_series,</span>
+    <span class="c1">#         sqlalchemy.or_(</span>
+    <span class="c1">#             (dicom_series.c.study_uid == tasks_table.c.study_uid),</span>
+    <span class="c1">#             (dicom_series.c.series_uid == tasks_table.c.series_uid),</span>
+    <span class="c1">#         ),</span>
+    <span class="c1">#     )</span>
+    <span class="c1">#     .where(dicom_series.c.tag_seriesdescription == &quot;self_test_series &quot; + request.query_params.get(&quot;id&quot;, &quot;&quot;))</span>
+    <span class="c1"># )</span>
+    <span class="n">result_rows</span> <span class="o">=</span> <span class="k">await</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result_rows</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="p">[</span><span class="s2">&quot;time_end&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="s2">&quot;time_begin&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+                <span class="n">k</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
     <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
 
@@ -679,7 +759,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

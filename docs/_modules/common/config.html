@@ -113,7 +113,6 @@
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
@@ -121,20 +120,23 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">cast</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="c1"># App-specific includes</span>
+
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Config</span>
 
+
+<span class="kn">from</span> <span class="nn">common.log_helpers</span> <span class="kn">import</span> <span class="n">get_logger</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
+
 <span class="c1"># Create local logger instance</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">daiquiri</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+
 
 <span class="n">configuration_timestamp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">configuration_filename</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span>
-    <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span>
-<span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/mercure.json&quot;</span>
+<span class="n">configuration_filename</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/mercure.json&quot;</span>
 
 <span class="n">mercure_defaults</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;appliance_name&quot;</span><span class="p">:</span> <span class="s2">&quot;master&quot;</span><span class="p">,</span>
@@ -170,36 +172,8 @@
 <span class="n">mercure</span><span class="p">:</span> <span class="n">Config</span>
 
 
-<div class="viewcode-block" id="get_loglevel"><a class="viewcode-back" href="../../common.html#common.config.get_loglevel">[docs]</a><span class="k">def</span> <span class="nf">get_loglevel</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the logging level that should be used for printing messages.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;pytest|py.test&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
-
-    <span class="n">level</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_LOG_LEVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
-    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
-    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;debug&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
-    <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span></div>
-
-
-<div class="viewcode-block" id="get_runner"><a class="viewcode-back" href="../../common.html#common.config.get_runner">[docs]</a><span class="k">def</span> <span class="nf">get_runner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the name of the mechanism that is used for running mercure in the current installation (systemd, docker, nomad).&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_RUNNER&quot;</span><span class="p">,</span> <span class="s2">&quot;systemd&quot;</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_logformat"><a class="viewcode-back" href="../../common.html#common.config.get_logformat">[docs]</a><span class="k">def</span> <span class="nf">get_logformat</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the format that should be used for log messages. Includes the time for docker and nomad, but not for systemd as journalctl </span>
-<span class="sd">    already outputs the time of the log events.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">get_runner</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;systemd&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%(color)s%(levelname)-8.8s</span><span class="s2"> &quot;</span> <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s%(color_stop)s</span><span class="s2">&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(color)s%(levelname)-8.8s</span><span class="s2"> &quot;</span> <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s%(color_stop)s</span><span class="s2">&quot;</span></div>
-
-
 <div class="viewcode-block" id="read_config"><a class="viewcode-back" href="../../common.html#common.config.read_config">[docs]</a><span class="k">def</span> <span class="nf">read_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
+
     <span class="sd">&quot;&quot;&quot;Reads the configuration settings (rules, targets, general settings) from the configuration file. The configuration will</span>
 <span class="sd">    only be updated if the file has changed compared the the last function call. If the configuration file is locked by</span>
 <span class="sd">    another process, an exception will be raised.&quot;&quot;&quot;</span>
@@ -285,10 +259,9 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
+
         <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span></div>
 
 
@@ -316,10 +289,9 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
+
         <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span></div>
 
 
@@ -349,9 +321,12 @@
             <span class="n">entry</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">mercure</span><span class="o">.</span><span class="n">dict</span><span class="p">()[</span><span class="n">entry</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Folder not found </span><span class="si">{</span><span class="n">mercure</span><span class="o">.</span><span class="n">dict</span><span class="p">()[</span><span class="n">entry</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-            <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>  <span class="c1"># handle_error</span>
+                <span class="sa">f</span><span class="s2">&quot;Folder not found </span><span class="si">{</span><span class="n">mercure</span><span class="o">.</span><span class="n">dict</span><span class="p">()[</span><span class="n">entry</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
+                <span class="n">event_type</span><span class="o">=</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 </pre></div>
@@ -376,7 +351,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });

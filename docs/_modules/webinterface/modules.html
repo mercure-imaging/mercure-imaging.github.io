@@ -122,8 +122,10 @@
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Module</span>
+
 <span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">get_user_information</span>
 <span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">templates</span>
 
@@ -231,7 +233,7 @@
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="p">:</span>
         <span class="n">settings_string</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">runtime</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
+    <span class="n">runtime</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;modules_edit.html&quot;</span>
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
@@ -307,7 +309,13 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions">
+    <a href="https://twitter.com/mercure_imaging" target="_blank">
+    <span class="rst-current-version" style="text-align: center;">
+      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
+    </span>
+    </a>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
