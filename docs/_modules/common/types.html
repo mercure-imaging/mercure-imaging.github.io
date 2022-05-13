@@ -72,6 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -174,6 +175,26 @@
     <span class="n">user</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DicomWebTarget"><a class="viewcode-back" href="../../common.html#common.types.DicomWebTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomWebTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+    <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dicomweb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dicomweb&quot;</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">qido_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">wado_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">stow_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">access_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">http_user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">http_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="S3Target"><a class="viewcode-back" href="../../common.html#common.types.S3Target">[docs]</a><span class="k">class</span> <span class="nc">S3Target</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+    <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;s3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;s3&quot;</span>
+    <span class="n">region</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">bucket</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">access_key_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">secret_access_key</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
 <div class="viewcode-block" id="Module"><a class="viewcode-back" href="../../common.html#common.types.Module">[docs]</a><span class="k">class</span> <span class="nc">Module</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>

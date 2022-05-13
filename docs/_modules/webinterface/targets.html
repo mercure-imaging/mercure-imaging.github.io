@@ -72,6 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -240,7 +241,10 @@
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Target does not exist anymore.&quot;</span><span class="p">)</span>
 
     <span class="n">TargetType</span> <span class="o">=</span> <span class="n">target_types</span><span class="o">.</span><span class="n">type_from_name</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;target_type&quot;</span><span class="p">])</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span> <span class="o">=</span> <span class="n">TargetType</span><span class="p">(</span><span class="o">**</span><span class="n">form</span><span class="p">)</span>
+
+    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_types</span><span class="o">.</span><span class="n">get_handler</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;target_type&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">from_form</span><span class="p">(</span>
+        <span class="n">form</span><span class="p">,</span> <span class="n">TargetType</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">edittarget</span><span class="p">]</span>
+    <span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
