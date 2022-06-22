@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monitoring &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>Monitoring &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -115,10 +116,10 @@
            <div itemprop="articleBody">
              
   <section id="monitoring">
-<h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline"></a></h1>
+<h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this heading"></a></h1>
 <p>mercure provides three different mechanisms for monitoring the server activity and health.</p>
 <section id="log-files">
-<h2>Log files<a class="headerlink" href="#log-files" title="Permalink to this headline"></a></h2>
+<h2>Log files<a class="headerlink" href="#log-files" title="Permalink to this heading"></a></h2>
 <p>All mercure services write detailed logging information into system log files. The most convenient way to review these logs is to use the “Logs” page of the mercure web interface. It shows a separate tab for every mercure service. The log display is updated whenever you switch between tabs or when you click the refresh button on the top-right.</p>
 <a class="border reference internal image-reference" href="_images/ui_log.png"><img alt="_images/ui_log.png" class="border align-center" src="_images/ui_log.png" style="width: 550px;" /></a>
 <p>Depending on your mercure installation type, you can restrict the time span shown in the log viewer
@@ -133,7 +134,7 @@ using the From/To controls (systemd-type installations allow providing start &am
 </div>
 </section>
 <section id="graphite">
-<h2>Graphite<a class="headerlink" href="#graphite" title="Permalink to this headline"></a></h2>
+<h2>Graphite<a class="headerlink" href="#graphite" title="Permalink to this heading"></a></h2>
 <p><a class="reference external" href="https://graphiteapp.org/">Graphite</a> is a very powerful tool for monitoring the health of a server. It can collect time-series data from various sources and stores the data in a database. Instead of displaying the data directly with Graphite, the collected data is often visualized using <a class="reference external" href="https://grafana.com/">Grafana</a>, which makes it very easy to create dashboards for various data sources and to setup alerts.</p>
 <p>We highly recommend that you monitor your mercure server with Graphite and Grafana. In a typical setup, Graphite and Grafana are running on a separate monitoring server. Basic health parameters such as the available disk space, CPU load, and memory usage can be collected by installing the <a class="reference external" href="https://collectd.org/">collectd</a> service on your server, which will transmit the information to your Graphite instance.</p>
 <p>mercure can transmit additional information about its activities to Graphite. To enable it, shutdown all mercure services and edit the keys graphite_ip and graphite_port in the file mercure.json (here you need to enter the IP and port of your Graphite instance). Afterwards, restart the mercure services.</p>
@@ -231,7 +232,7 @@ using the From/To controls (systemd-type installations allow providing start &am
 </div>
 </section>
 <section id="bookkeeper-with-redash">
-<h2>Bookkeeper with Redash<a class="headerlink" href="#bookkeeper-with-redash" title="Permalink to this headline"></a></h2>
+<h2>Bookkeeper with Redash<a class="headerlink" href="#bookkeeper-with-redash" title="Permalink to this heading"></a></h2>
 <p>All mercure components transfer real-time information about their activities to mercure’s bookkeeper service, which acts as central monitoring hub. The bookkeeper service can be disabled if not needed, but it is recommended to use it because it allows answering questions such as which series have been processed (or discarded) or how long average processing times were. It also keeps track of all errors and processing abnormalities that might occur. Moreover, because the bookkeeper tracks all DICOM files that pass through the server, including series that are discarded, it can be used for data mining tasks that exceed the capabilities of many PACS systems (e.g., searching for series where a certain contrast agent has been administered).</p>
 <p>Bookkeeper is running as RESTful service on a TCP/IP port (by default 8080) and stores the received information in a PostgreSQL database, which can be queried for analytics purpose.</p>
 <p>The following information is stored in the database:</p>
@@ -281,7 +282,7 @@ using the From/To controls (systemd-type installations allow providing start &am
 <p>Instructions how to create these dashboards are provided in the <a class="reference internal" href="dashboards.html"><span class="doc">Dashboard Gallery</span></a>.</p>
 </section>
 <section id="installing-redash">
-<h2>Installing Redash<a class="headerlink" href="#installing-redash" title="Permalink to this headline"></a></h2>
+<h2>Installing Redash<a class="headerlink" href="#installing-redash" title="Permalink to this heading"></a></h2>
 <p>Redash is a powerful open-source web application for analyzing and visualizing data stored in SQL databases, such as the data collected by the bookkeeper service. Instead of integrating limited analysis functions into mercure’s own web interface, we decided to utilize Redash instead, which provides much greater flexibility. You can learn more about Redash at <a class="reference external" href="http://redash.io">http://redash.io</a>.</p>
 <p>Before proceeding with the installation of Redash, it is recommended to create a dedicated Postgres database user for Redash (named “redash”) with read-only permissions for the database tables that the bookkeeper service created during the mercure installation. This can be achieved by running the following commands in a bash shell (make sure to replace the password in the command shown below).</p>
 <p>For <strong>systemd-type</strong> installations (make sure to use a user account with sudo rights):</p>
@@ -341,7 +342,7 @@ using the From/To controls (systemd-type installations allow providing start &am
 </div>
 </section>
 <section id="alerts">
-<h2>Alerts<a class="headerlink" href="#alerts" title="Permalink to this headline"></a></h2>
+<h2>Alerts<a class="headerlink" href="#alerts" title="Permalink to this heading"></a></h2>
 <p>It is highly recommended to setup alerts for processing errors and server problems, so that you are automatically notified if the mercure router needs your attention. Both Grafana and Redash provide functions for automatic alerts that can be utilized. With both tools, alerts can be delivered via email. However, we recommend using a messaging tool that supports custom webhooks, such as <a class="reference external" href="https://slack.com">Slack</a>. In this way, alerts can be delivered in real-time and across multiple devices, including smartphones.</p>
 <p>Examples for useful alerts include:</p>
 <ul class="simple">

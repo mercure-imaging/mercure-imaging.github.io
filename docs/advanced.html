@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced Topics &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>Advanced Topics &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -113,9 +114,9 @@
            <div itemprop="articleBody">
              
   <section id="advanced-topics">
-<h1>Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline"></a></h1>
+<h1>Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permalink to this heading"></a></h1>
 <section id="configuration-files">
-<h2>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this headline"></a></h2>
+<h2>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this heading"></a></h2>
 <p>mercure stores the configuration in multiple files in the subfolder <strong>/opt/mercure/config</strong>. If you want to backup the configuration or install mercure on another machine, you need to copy all files inside this folder. During installation of mercure, these files are generated from template files contained in the folder <strong>/opt/mercure/app/configuration</strong>.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -147,7 +148,7 @@
 </table>
 </section>
 <section id="additional-settings">
-<h2>Additional settings<a class="headerlink" href="#additional-settings" title="Permalink to this headline"></a></h2>
+<h2>Additional settings<a class="headerlink" href="#additional-settings" title="Permalink to this heading"></a></h2>
 <p>Advanced settings can be reviewed and adjusted on the Configuration page of the web interface. To change the settings, click the “Edit Settings” button at the bottom of the page. Once saved, the different service modules will automatically load the updated configuration.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -259,7 +260,7 @@
 </div>
 </section>
 <section id="scaling-services">
-<h2>Scaling services<a class="headerlink" href="#scaling-services" title="Permalink to this headline"></a></h2>
+<h2>Scaling services<a class="headerlink" href="#scaling-services" title="Permalink to this heading"></a></h2>
 <p>By default, mercure uses only a single instance of each service module (i.e., in the case of the dispatcher, only one series per time is sent outwards). This provides sufficient performance for most applications. However, for demanding applications with very high volume of incoming DICOM series, it can be necessary run multiple instances of the modules (router, processor, dispatcher). All mercure modules have been written to allow for parallel execution, so that additional instances can be started.</p>
 <p>The exact procedure for scaling up services depends on the type of mercure installation (systemd / Docker / Nomad). The instructions below describe how services can be duplicated when using systemd (which is preferred for high-performance installations).</p>
 <p>For systemd installations, the file <strong>services.json</strong> in the folder <strong>/opt/mercure/config</strong> needs to be modified. Here, the section of each module that should be scaled needs to be duplicated. For example, for scaling the dispatcher, the “dispatcher” section needs to be duplicated and a unique name needs to be selected for the copy (for the section name and inner keys “name” and “systemd_service”, as shown below):</p>

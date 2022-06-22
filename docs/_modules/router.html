@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>router &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>router &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,7 +37,7 @@
             <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -130,7 +131,7 @@
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">from</span> <span class="nn">routing.route_series</span> <span class="kn">import</span> <span class="n">route_series</span><span class="p">,</span> <span class="n">route_error_files</span>
 <span class="kn">from</span> <span class="nn">routing.route_studies</span> <span class="kn">import</span> <span class="n">route_studies</span>
-
+<span class="kn">from</span> <span class="nn">routing.common</span> <span class="kn">import</span> <span class="n">generate_task_id</span>
 
 <span class="c1"># Create local logger instance</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
@@ -173,8 +174,8 @@
 
     <span class="n">filecount</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">series</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">complete_series</span> <span class="o">=</span> <span class="p">{}</span>
-
+    <span class="n">complete_series</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">pending_series</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Every series that hasn&#39;t timed out yet</span>
     <span class="n">error_files_found</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1"># Check the incoming folder for completed series. To this end, generate a map of all</span>
@@ -199,7 +200,8 @@
     <span class="k">for</span> <span class="n">series_entry</span> <span class="ow">in</span> <span class="n">series</span><span class="p">:</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">series</span><span class="p">[</span><span class="n">series_entry</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">series_complete_trigger</span><span class="p">:</span>
             <span class="n">complete_series</span><span class="p">[</span><span class="n">series_entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">series</span><span class="p">[</span><span class="n">series_entry</span><span class="p">]</span>
-
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pending_series</span><span class="p">[</span><span class="n">series_entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">series</span><span class="p">[</span><span class="n">series_entry</span><span class="p">]</span>
     <span class="c1"># logger.info(f&#39;Files found     = {filecount}&#39;)</span>
     <span class="c1"># logger.info(f&#39;Series found    = {len(series)}&#39;)</span>
     <span class="c1"># logger.info(f&#39;Complete series = {len(complete_series)}&#39;)</span>
@@ -208,7 +210,7 @@
 
     <span class="c1"># Process all complete series</span>
     <span class="k">for</span> <span class="n">series_uid</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">complete_series</span><span class="p">):</span>
-        <span class="n">task_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">())</span>
+        <span class="n">task_id</span> <span class="o">=</span> <span class="n">generate_task_id</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">route_series</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">series_uid</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -221,7 +223,7 @@
         <span class="n">route_error_files</span><span class="p">()</span>
 
     <span class="c1"># Now, check if studies in the studies folder are ready for routing/processing</span>
-    <span class="n">route_studies</span><span class="p">()</span></div>
+    <span class="n">route_studies</span><span class="p">(</span><span class="n">pending_series</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="exit_router"><a class="viewcode-back" href="../router.html#router.exit_router">[docs]</a><span class="k">def</span> <span class="nf">exit_router</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -293,6 +295,12 @@
 
     <span class="c1"># Process will exit here once the asyncio loop has been stopped</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="c1"># Finish all asyncio tasks that might be still pending</span>
+    <span class="n">remaining_tasks</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
+    <span class="k">if</span> <span class="n">remaining_tasks</span><span class="p">:</span>
+        <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">remaining_tasks</span><span class="p">))</span>
+
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Going down now&quot;</span><span class="p">)</span></div>
 
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module Development &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>Module Development &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -108,13 +109,13 @@
            <div itemprop="articleBody">
              
   <section id="module-development">
-<h1>Module Development<a class="headerlink" href="#module-development" title="Permalink to this headline"></a></h1>
+<h1>Module Development<a class="headerlink" href="#module-development" title="Permalink to this heading"></a></h1>
 <p>Developing processing module for mercure is simple! Processing modules are Docker containers that are started by mercure when a DICOM series or study needs to be processed. After instantiating the container, a defined entry script is called to trigger the processing (docker-entrypoint.sh). The DICOM files that should be processed are found in the path specified by the environment variable <strong>MERCURE_IN_DIR</strong>. The processed DICOM files need to be written by the module into the folder specified by the environment variable <strong>MERCURE_OUT_DIR</strong>. Processing settings can be read from the file <strong>task.json</strong> (“process” &gt; “settings”), which is contained in the folder with the incoming images.</p>
 <p>Due to use of Docker, processing modules can be written using any programming language – as long as the code runs under Linux. We prefer writing processing modules in Python because DICOM loaders (pydicom), image processing libraries (scipy, SimpleITK), and AI frameworks (PyTorch, TensorFlow) are widely available. However, other languages can be likewise used (e.g., Julia, Go, C++, Node.js). It is helpful to select an appropriate container image from <a class="reference external" href="https://hub.docker.com">Docker Hub</a> as basis for building the container (e.g., <a class="reference external" href="https://hub.docker.com/r/continuumio/miniconda3">continuumio/miniconda3</a> for Python-based modules), which simplifies the packaging and build process.</p>
 <p>A simple Python-based demo module can be found in the following Git repository. This repository can be used as template for own module developments:
 <a class="reference external" href="https://github.com/mercure-imaging/mercure-testmodule">https://github.com/mercure-imaging/mercure-testmodule</a></p>
 <section id="dicom-naming-convention">
-<h2>DICOM naming convention<a class="headerlink" href="#dicom-naming-convention" title="Permalink to this headline"></a></h2>
+<h2>DICOM naming convention<a class="headerlink" href="#dicom-naming-convention" title="Permalink to this heading"></a></h2>
 <p>Depending on whether the rule that triggers the processing is a series-level or study-level rule, the folder with the incoming files (MERCURE_IN_DIR) contains the DICOM images from a single series or from all series that belong to the study. As usual for DICOM images, each image slice is stored in a separate file (multi-frame DICOM files aren’t really used in practice). In order to make parsing the files easy, mercure prepends the series UID to the filename of all images belonging to the same series, followed by the separator character #:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span>[series_UID]#[file_UID].dcm
 </pre></div>
@@ -122,12 +123,12 @@
 <p>Thus, by splitting the filename at #, images belonging to the same series can be identified. The ordering of the images within one series needs to be taken from the DICOM tags. These can be either read from the DICOM files (e.g., using a library such as pydicom) or they can be read from the corresponding .tags file, which is a JSON file containing the most relevant DICOM tags extracted from each file.</p>
 </section>
 <section id="creating-annotations">
-<h2>Creating annotations<a class="headerlink" href="#creating-annotations" title="Permalink to this headline"></a></h2>
+<h2>Creating annotations<a class="headerlink" href="#creating-annotations" title="Permalink to this heading"></a></h2>
 <p>When integrating AI-supported CAD algorithms, it is often necessary to mark findings in the DICOM series. mercure is providing a Python support library for this purpose, called <a class="reference internal" href="dcmannotate.html"><span class="doc">DCMAnnotate</span></a>.</p>
 <p>Additional mechanisms for reporting findings and analysis results will be added over time.</p>
 </section>
 <section id="distributing-modules">
-<h2>Distributing modules<a class="headerlink" href="#distributing-modules" title="Permalink to this headline"></a></h2>
+<h2>Distributing modules<a class="headerlink" href="#distributing-modules" title="Permalink to this heading"></a></h2>
 <p>There are two different ways of distributing mercure processing modules: a) sharing the module code, and b) uploading the container image to <a class="reference external" href="https://hub.docker.com">Docker Hub</a>.</p>
 <p>When sharing the module code (e.g., by making the source code available via GitHub), users need to build the container locally first before the module can be used. Hence, users need to checkout the repository onto the mercure server and call the “make” command. Afterwards, the module can be configured via the mercure UI.</p>
 <p>When uploading the container image to Docker Hub, users don’t have to build the container themselves. The module can be configured right away in the mercure UI, and mercure will automatically download the container image from Docker Hub when processing with the module is requested. mercure will also automatically update the container image if a newer version has been published on Docker Hub. This makes it very easy to distribute developed processing algorithms on a large scale.</p>

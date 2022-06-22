@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anonymizer &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>Anonymizer &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -108,13 +109,13 @@
            <div itemprop="articleBody">
              
   <section id="anonymizer">
-<h1>Anonymizer<a class="headerlink" href="#anonymizer" title="Permalink to this headline"></a></h1>
+<h1>Anonymizer<a class="headerlink" href="#anonymizer" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The anonymization module comes <strong>without any warranties</strong>. Operation of the software is <strong>solely at the user’s own risk</strong>. The authors take no responsibility for damages of any kind that may arise from usage of the software and distribution of data processed with the software.</p>
 </div>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <p>The anonymizer module can be installed on a mercure server using the Modules page of the mercure web interface. Enter the following line into the “Docker tag” field. mercure will automatically download and install the module, and it will automatically install updates when they get published on Docker Hub:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mercureimaging</span><span class="o">/</span><span class="n">mercure</span><span class="o">-</span><span class="n">anonymizer</span>
 </pre></div>
@@ -123,12 +124,12 @@
 <p>If you need to modify the source code, compile the code with Qt Creator for Qt version 5.12 under Ubuntu Linux 20.04 and copy the compiled binary file into the folder /bin. Afterwards, build the Docker container using the make command.</p>
 </section>
 <section id="module-configuration">
-<h2>Module Configuration<a class="headerlink" href="#module-configuration" title="Permalink to this headline"></a></h2>
+<h2>Module Configuration<a class="headerlink" href="#module-configuration" title="Permalink to this heading"></a></h2>
 <p>Settings for the anonymizer module can be defined either on the Module page (global module settings) or on the Rule page (rule-dependent processing settings). Both settings are merged prior to the processing. Rule-dependent settings will overrule global module settings if identical settings are defined in both places.</p>
 <p>Settings need to be entered in the JSON format.</p>
 </section>
 <section id="general-and-project-specific-settings">
-<h2>General and Project-Specific Settings<a class="headerlink" href="#general-and-project-specific-settings" title="Permalink to this headline"></a></h2>
+<h2>General and Project-Specific Settings<a class="headerlink" href="#general-and-project-specific-settings" title="Permalink to this heading"></a></h2>
 <p>General settings, which are applied to all anonymization steps, as well as project-specific settings can be defined. Project-specific settings are applied when a series (or study) has been sent to mercure with a certain Application Entity Title (AET). For example, if a series has been sent to mercure using the (receiver) AET “myproject”, the “general” settings are applied and, in addition, the settings defined in the section “myproject” are applied (if settings are defined in both sections, project settings overrule the duplicate general settings).</p>
 <p>The prefix “az_” can be added to the AET and will be ignored for the project assignment (i.e., both AETs “myproject” and “az_myproject” will be assigned to project “myproject”). This allows defining one global rule for all anonymization tasks by testing in the Selection Rule if “az_” is contained in the ReceiverAET (i.e., ‘az_’ in &#64;ReceiverAET&#64;).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -166,7 +167,7 @@
 </table>
 </section>
 <section id="tag-assignment">
-<h2>Tag Assignment<a class="headerlink" href="#tag-assignment" title="Permalink to this headline"></a></h2>
+<h2>Tag Assignment<a class="headerlink" href="#tag-assignment" title="Permalink to this heading"></a></h2>
 <p>You can specify how each DICOM tag should be processed during the anonymization by adding entries to the configuration sections (either “general” or the project-specific section) with the following form:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Format</span><span class="p">:</span>  <span class="s2">&quot;([group],[element])&quot;</span><span class="p">:</span> <span class="s2">&quot;[command]&quot;</span>
 <span class="n">Example</span><span class="p">:</span> <span class="s2">&quot;(0010,1001)&quot;</span><span class="p">:</span> <span class="s2">&quot;remove&quot;</span>
@@ -250,7 +251,7 @@
 </table>
 </section>
 <section id="helper-macros">
-<h2>Helper Macros<a class="headerlink" href="#helper-macros" title="Permalink to this headline"></a></h2>
+<h2>Helper Macros<a class="headerlink" href="#helper-macros" title="Permalink to this heading"></a></h2>
 <p>The following helper macros can be used in combination with the set() command. They need to be used inside the parameter of the set command (e.g., “set(&#64;random_uid&#64;)”):</p>
 <table class="docutils align-default">
 <colgroup>
@@ -300,7 +301,7 @@
 </table>
 </section>
 <section id="presets">
-<h2>Presets<a class="headerlink" href="#presets" title="Permalink to this headline"></a></h2>
+<h2>Presets<a class="headerlink" href="#presets" title="Permalink to this heading"></a></h2>
 <p>To avoid extensive lists of tag assignments in the configuration, the anonymizer provides presets that can be selected in the general or project-specific sections. The preset initializes the tag assignment prior to evaluating the configuration sections. Individual tags can still be added or modified by writing tag-assignment entries into the general or project sections. Use the “print_assignment” option to review the assignment created by the different presets (see above).</p>
 <p>Currently, the following presets exist (please reach out to the authors if you think that the preset assignments are incomplete or if additional specific presets would be useful):</p>
 <table class="docutils align-default">

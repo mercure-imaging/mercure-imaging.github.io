@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.monitor &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>common.monitor &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -14,6 +14,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -36,7 +37,7 @@
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -114,13 +115,13 @@
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
-
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
-
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">urllib.error</span> <span class="kn">import</span> <span class="n">HTTPError</span>
 <span class="kn">import</span> <span class="nn">aiohttp</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span>
@@ -258,19 +259,24 @@
     <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-series&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">tags</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="send_register_task"><a class="viewcode-back" href="../../common.html#common.monitor.send_register_task">[docs]</a><span class="k">def</span> <span class="nf">send_register_task</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Task</span><span class="p">],</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_register_task"><a class="viewcode-back" href="../../common.html#common.monitor.send_register_task">[docs]</a><span class="k">def</span> <span class="nf">send_register_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">series_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Registers a new task on the bookkeeper. This should be called whenever a new task has been created.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
         <span class="k">return</span>
 
-    <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">task_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">task_dict</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">,</span> <span class="s2">&quot;series_uid&quot;</span><span class="p">:</span> <span class="n">series_uid</span><span class="p">,</span> <span class="s2">&quot;parent_id&quot;</span><span class="p">:</span> <span class="n">parent_id</span><span class="p">})</span></div>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (register-task): task.id=</span><span class="si">{</span><span class="n">task_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
 
-    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task_dict</span><span class="p">)</span></div>
+<div class="viewcode-block" id="send_update_task"><a class="viewcode-back" href="../../common.html#common.monitor.send_update_task">[docs]</a><span class="k">def</span> <span class="nf">send_update_task</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Registers a new task on the bookkeeper. This should be called whenever a new task has been created.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">task_dict</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (update-task): task.id=</span><span class="si">{</span><span class="n">task_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+
+    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;update-task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task_dict</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="send_task_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_task_event">[docs]</a><span class="k">def</span> <span class="nf">send_task_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">task_event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -287,25 +293,35 @@
         <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">,</span>
         <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">,</span>
         <span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">,</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">(),</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="p">}</span>
     <span class="n">post</span><span class="p">(</span><span class="s2">&quot;task-event&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span></div>
     <span class="c1"># requests.post(bookkeeper_address + &quot;/series-event&quot;, data=payload, timeout=1)</span>
 
 
 <div class="viewcode-block" id="get_task_events"><a class="viewcode-back" href="../../common.html#common.monitor.get_task_events">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_events</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;task-events&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">})</span></div>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/task-events&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">})</span></div>
 
 
 <div class="viewcode-block" id="get_series"><a class="viewcode-back" href="../../common.html#common.monitor.get_series">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_series</span><span class="p">(</span><span class="n">series_uid</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;series_uid&quot;</span><span class="p">:</span> <span class="n">series_uid</span><span class="p">})</span></div>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/series&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;series_uid&quot;</span><span class="p">:</span> <span class="n">series_uid</span><span class="p">})</span></div>
 
 
 <div class="viewcode-block" id="get_tasks"><a class="viewcode-back" href="../../common.html#common.monitor.get_tasks">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_tasks</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/tasks&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_tests"><a class="viewcode-back" href="../../common.html#common.monitor.get_tests">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_tests</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/tests&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="find_tasks"><a class="viewcode-back" href="../../common.html#common.monitor.find_tasks">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">find_tasks</span><span class="p">(</span><span class="n">search_term</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/find_task&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;search_term&quot;</span><span class="p">:</span> <span class="n">search_term</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="get_task_info"><a class="viewcode-back" href="../../common.html#common.monitor.get_task_info">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_info</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/get_task_info&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">})</span></div>
 </pre></div>
 
            </div>

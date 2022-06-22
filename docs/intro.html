@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What is mercure? &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>What is mercure? &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -111,7 +112,7 @@
            <div itemprop="articleBody">
              
   <section id="what-is-mercure">
-<h1>What is mercure?<a class="headerlink" href="#what-is-mercure" title="Permalink to this headline"></a></h1>
+<h1>What is mercure?<a class="headerlink" href="#what-is-mercure" title="Permalink to this heading"></a></h1>
 <a class="reference internal image-reference" href="_images/scheme.png"><img alt="_images/scheme.png" class="align-center" src="_images/scheme.png" style="width: 550px;" /></a>
 <p>mercure is a flexible platform for orchestrating medical images in the standard DICOM format. Orchestration hereby refers to routing image series or complete patient studies to different destinations, or to process image series with different algorithms upon study reception. The action performed when a series or study is received (processing/routing/notification) is defined by rules that can be configured using mercure’s web-based user interface.</p>
 <p>There are numerous use-cases for such a “DICOM orchestrator” or “DICOM router”:</p>
@@ -138,7 +139,7 @@
 <p>mercure has been released as open-source package under the permissive <a class="reference external" href="https://choosealicense.com/licenses/mit">MIT license</a>. This means that it can be installed and used without paying any charges to the authors. Moreover, the source code can be downloaded and modified if specific functionality is required. mercure has been written mostly in the Python language and is easily customizable.</p>
 </div>
 <section id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline"></a></h2>
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this heading"></a></h2>
 <p>mercure consists of multiple separated service modules that interact with each other. The modularized architecture ensures high reliability and customizability of the software. For example, in the (unlikely) event that one of the modules crashes or needs to be restarted, the other modules continue to function (e.g., the server continues to receive images from imaging devices). Moreover, all modules have been designed such that instances can be scaled-up if more processing power is needed (e.g., mercure can be configured to send out two or more series at the same time). Lastly, the modularized design makes it easy to extend mercure’s capabilities by replacing individual modules with customized versions, e.g. if additional transfer protocols should be supported.</p>
 <div class="topic">
 <p class="topic-title">Receiver</p>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quick Start &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>Quick Start &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -113,7 +114,7 @@
            <div itemprop="articleBody">
              
   <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
 <p>If you want to try out mercure or setup a development environment, you can easily install mercure on your computer via Vagrant, which is an open-source tool for automatically creating and provisioning virtual machines. First, install <a class="reference external" href="https://virtualbox.org/">VirtualBox</a> on your computer. Afterwards, download <a class="reference external" href="https://vagrantup.org/">Vagrant</a> and install it. This should work on Windows, Mac, and Linux systems.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -147,7 +148,7 @@
 <p>If running the Vagrant installation without additional parameters (“vagrant up”), the latest stable version of mercure will be installed. To install the newest development version, add the argument <strong>--dev</strong> to the Vagrant command (”vagrant --dev up”). This mercure version has the newest features but may be incomplete and still unstable. Use the dev version with caution.</p>
 </div>
 <section id="including-orthanc-and-ohif">
-<h2>Including Orthanc and OHIF<a class="headerlink" href="#including-orthanc-and-ohif" title="Permalink to this headline"></a></h2>
+<h2>Including Orthanc and OHIF<a class="headerlink" href="#including-orthanc-and-ohif" title="Permalink to this heading"></a></h2>
 <p>When testing mercure or developing modules, it is helpful to use a local PACS as dummy target. Therefore, we included an option to automatically install the open-source Orthanc PACS and OHIF DICOM viewer alongside mercure if you call the Vagrant installation command with the following argument</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="o">--</span><span class="n">orthanc</span> <span class="n">up</span>
 </pre></div>
@@ -165,7 +166,7 @@
 </div>
 </section>
 <section id="first-steps">
-<h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline"></a></h2>
+<h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this heading"></a></h2>
 <p>After installing mercure and Orthanc using Vagrant, you can go through the following exercise to familiarize yourself with mercure. These instructions assume a systemd-type installation. In this example, a prostate segmentation is performed as processing step. Afterwards, the input images and segmentation masks are sent to the Orthanc instance. This example is also demonstrated in the <a class="reference external" href="https://youtu.be/LyJ4iQE1yLk?t=567">mercure overview video</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -187,7 +188,7 @@
 <p>If you are interested how this segmentation module has been implemented, take a look at the source code <a class="reference external" href="https://github.com/mercure-imaging/mercure-exampleinference">available in GitHub</a> (the relevant file here is inference.py). This repository can be used as starting point for implementing own DL-based processing modules. More information on module development can be found <a class="reference internal" href="modules.html"><span class="doc">here</span></a>.</p>
 </section>
 <section id="other-installation-modes">
-<h2>Other installation modes<a class="headerlink" href="#other-installation-modes" title="Permalink to this headline"></a></h2>
+<h2>Other installation modes<a class="headerlink" href="#other-installation-modes" title="Permalink to this heading"></a></h2>
 <p>In addition to a systemd-based installation, as described above, Vagrant can also be used for Docker-based or Nomad-based installations of mercure. To do this, navigate instead to the folder “/mercure/addons/vagrant/docker” or “/mercure/addons/vagrant/nomad” before calling the “vagrant up” command.</p>
 <p>The Nomad UI for monitoring and controlling jobs can be reached at 127.0.0.1:4646.</p>
 </section>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>Usage &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -117,9 +118,9 @@
            <div itemprop="articleBody">
              
   <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h1>
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
 <section id="web-interface">
-<h2>Web interface<a class="headerlink" href="#web-interface" title="Permalink to this headline"></a></h2>
+<h2>Web interface<a class="headerlink" href="#web-interface" title="Permalink to this heading"></a></h2>
 <p>mercure can be conveniently configured and controlled using the web-based user interface. To access it, use a modern web browser (e.g., Chrome or Firefox) and enter the IP of your mercure server as URL. Depending on the port that you have selected during the installation (by default 8000), you need to add “:8000” to the URL.</p>
 <a class="border reference internal image-reference" href="_images/ui_login.png"><img alt="_images/ui_login.png" class="border align-center" src="_images/ui_login.png" style="width: 550px;" /></a>
 <p>During the installation, mercure creates a “seed account” that you need to use for the first login. You will be asked to change the password after the first login.</p>
@@ -130,7 +131,7 @@
 <p>To end your session, use the menu on the top-right and select “Logout”.</p>
 </section>
 <section id="user-management">
-<h2>User management<a class="headerlink" href="#user-management" title="Permalink to this headline"></a></h2>
+<h2>User management<a class="headerlink" href="#user-management" title="Permalink to this heading"></a></h2>
 <p>Users can be created, modified, and deleted on the “Users” page. There are two types of users: Normal users, who can view the configuration and status but not change any settings, and administrators, who have full access. Users with administration rights are indicated by an icon with a shield in the user list. Users can also be added to permission groups. Permission groups are not yet used for anything, but they will be used in future mercure versions to provide granular access control.</p>
 <a class="border reference internal image-reference" href="_images/ui_users.png"><img alt="_images/ui_users.png" class="border align-center" src="_images/ui_users.png" style="width: 550px;" /></a>
 <div class="admonition tip">
@@ -139,7 +140,7 @@
 </div>
 </section>
 <section id="system-status-and-control">
-<h2>System status and control<a class="headerlink" href="#system-status-and-control" title="Permalink to this headline"></a></h2>
+<h2>System status and control<a class="headerlink" href="#system-status-and-control" title="Permalink to this heading"></a></h2>
 <p>The status of the mercure server and its service components can be monitored on the “Overview” page. If a service module is running, it will be shown in green color, otherwise it is shown in red. In normal operation, everything should be green.</p>
 <a class="border reference internal image-reference" href="_images/ui_status.png"><img alt="_images/ui_status.png" class="border align-center" src="_images/ui_status.png" style="width: 550px;" /></a>
 <p>The Overview page also shows the disk space available in the folder for buffering the incoming DICOM files. If this bar turns yellow or red, make sure to free up disk space as the mercure server will not be able to receive images if the disk is completely full.</p>
@@ -159,7 +160,7 @@
 </div>
 </section>
 <section id="configuring-targets">
-<h2>Configuring targets<a class="headerlink" href="#configuring-targets" title="Permalink to this headline"></a></h2>
+<h2>Configuring targets<a class="headerlink" href="#configuring-targets" title="Permalink to this heading"></a></h2>
 <p>Target nodes that should receive processed and routed DICOM series (via DICOM or SFTP connection) can be defined and configured on the “Targets” page. The first page shows an overview of the currently configured targets. By clicking on an individual item, you can see the target details (e.g., IP address and port). You can test if the target can be reached by clicking the “Test” button, which will try to ping the server and open a connection (via C-Echo or SFTP).</p>
 <a class="border reference internal image-reference" href="_images/ui_targets.png"><img alt="_images/ui_targets.png" class="border align-center" src="_images/ui_targets.png" style="width: 550px;" /></a>
 <p>Click the “Add New” button to create a new target. This can be done during normal operation of the server, i.e. it is not necessary to stop any of the services for adding new targets.</p>
@@ -182,7 +183,7 @@
 <p>On the “Information” tab, you can add information for documentation purpose, including a contact e-mail address (so that it can be looked up who should be contacted if problems with the target occur) and a description of the target.</p>
 </section>
 <section id="installing-modules">
-<h2>Installing modules<a class="headerlink" href="#installing-modules" title="Permalink to this headline"></a></h2>
+<h2>Installing modules<a class="headerlink" href="#installing-modules" title="Permalink to this heading"></a></h2>
 <p>An overview of the installed processing modules can be seen on the “Modules” page. Details are shown by clicking on an item, which also allows editing the module settings.</p>
 <a class="border reference internal image-reference" href="_images/ui_modules.png"><img alt="_images/ui_modules.png" class="border align-center" src="_images/ui_modules.png" style="width: 550px;" /></a>
 <p>To setup a new processing module, click the “Install Module” button. Select a unique name for the module. It is possible to install the same processing module multiple times under different names with different settings. Specify the processing module by entering the Docker Tag.</p>
@@ -197,7 +198,7 @@
 <p>The “Information” tab can be used to document the current module setup, including a free-text description as well as contact e-mail address.</p>
 </section>
 <section id="defining-rules">
-<h2>Defining rules<a class="headerlink" href="#defining-rules" title="Permalink to this headline"></a></h2>
+<h2>Defining rules<a class="headerlink" href="#defining-rules" title="Permalink to this heading"></a></h2>
 <p>After you have configured your targets and processing modules, you can define rules that specify which DICOM series should be processed and to which targets the images should be dispatched. This can be done on the “Rules” page.</p>
 <a class="border reference internal image-reference" href="_images/ui_rules.png"><img alt="_images/ui_rules.png" class="border align-center" src="_images/ui_rules.png" style="width: 550px;" /></a>
 <p>It is not necessary to stop mercure services while defining new rules. The mercure service modules will automatically reload the new configuration when a rule has been added or modified. Click the “Add New” button to create a new rule, or click on any of the existing rules and select “Edit” to modify it.</p>
@@ -291,7 +292,7 @@
 <a class="border reference internal image-reference" href="_images/ui_rules_edit_information.png"><img alt="_images/ui_rules_edit_information.png" class="border align-center" src="_images/ui_rules_edit_information.png" style="width: 550px;" /></a>
 </section>
 <section id="queue-management">
-<h2>Queue management<a class="headerlink" href="#queue-management" title="Permalink to this headline"></a></h2>
+<h2>Queue management<a class="headerlink" href="#queue-management" title="Permalink to this heading"></a></h2>
 <p>The “Queue” page allows monitoring the status of mercure’s processing and routing queues, and it provides basic functions for modifying jobs in the processing queue.</p>
 <a class="border reference internal image-reference" href="_images/ui_queue.png"><img alt="_images/ui_queue.png" class="border align-center" src="_images/ui_queue.png" style="width: 550px;" /></a>
 <div class="admonition note">

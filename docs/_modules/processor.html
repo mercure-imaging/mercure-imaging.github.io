@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>processor &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>processor &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,7 +37,7 @@
             <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -216,9 +217,12 @@
         <span class="k">if</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">retain_input_images</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
             <span class="n">push_input_images</span><span class="p">(</span><span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">in_folder</span><span class="p">,</span> <span class="n">out_folder</span><span class="p">)</span>
 
+        <span class="c1"># Remember the number of DCM files in the output folder (for logging purpose)</span>
+        <span class="n">file_count_complete</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">out_folder</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">DCMFILTER</span><span class="p">)))</span>
+
         <span class="c1"># If the only file is task.json, the processing failed</span>
         <span class="k">if</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">out_folder</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;task.json&quot;</span><span class="p">]:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Processing failed.&quot;</span><span class="p">,</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Processing failed&quot;</span><span class="p">,</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
             <span class="n">move_results</span><span class="p">(</span><span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">p_folder</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
             <span class="n">trigger_notification</span><span class="p">(</span><span class="n">task_typed</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
             <span class="k">continue</span>
@@ -229,7 +233,7 @@
         <span class="p">(</span><span class="n">p_folder</span> <span class="o">/</span> <span class="s2">&quot;nomad_job.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
         <span class="p">(</span><span class="n">p_folder</span> <span class="o">/</span> <span class="s2">&quot;.processing&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
         <span class="n">p_folder</span><span class="o">.</span><span class="n">rmdir</span><span class="p">()</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_COMPLETE</span><span class="p">,</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Processing complete&quot;</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_COMPLETE</span><span class="p">,</span> <span class="n">task_typed</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">file_count_complete</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Processing complete&quot;</span><span class="p">)</span>
         <span class="c1"># If dispatching not needed, then trigger the completion notification (for Nomad)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">needs_dispatching</span><span class="p">:</span>
             <span class="n">trigger_notification</span><span class="p">(</span><span class="n">task_typed</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">)</span>
@@ -377,8 +381,13 @@
 
     <span class="c1"># Process will exit here once the asyncio loop has been stopped</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Going down now&quot;</span><span class="p">)</span></div>
 
+    <span class="c1"># Finish all asyncio tasks that might be still pending</span>
+    <span class="n">remaining_tasks</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span> <span class="c1"># type: ignore[attr-defined]</span>
+    <span class="k">if</span> <span class="n">remaining_tasks</span><span class="p">:</span>
+        <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">remaining_tasks</span><span class="p">))</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Going down now&quot;</span><span class="p">)</span></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DCMAnnotate &mdash; mercure Version 0.2.0-beta.7 documentation</title>
+  <title>DCMAnnotate &mdash; mercure Version 0.2.1-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +40,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.0-beta.7
+                Version 0.2.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -108,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="dcmannotate">
-<h1>DCMAnnotate<a class="headerlink" href="#dcmannotate" title="Permalink to this headline"></a></h1>
+<h1>DCMAnnotate<a class="headerlink" href="#dcmannotate" title="Permalink to this heading"></a></h1>
 <p>DCMAnnotate is a Python support library developed by the mercure team that simplifies creating annotations on DICOM image series. Because currently no well-supported uniform standard for DICOM annotations exists, DCMAnnotate can save the annotations either as DICOM SR files in the TID-1500 format (as, e.g., supported by the OHIF viewer), as “burned in pixels” / “secondary capture” DICOMs (supported by most PACS products), or in the proprietary annotation format of the Visage PACS (for users of the PACS software by Visage Imaging).</p>
 <p>Purpose of DCMAnnotate is to make it easy for AI researchers to implement AI-based image analysis algorithms as mercure processing modules and to integrate the algorithms clinically with standard software infrastructure for reporting findings and results. DCMAnnotate can be included in processing modules written in Python. The output format for the annotations should be taken from the module settings, so that end users can configure the annotation format according to the display capabilities of their local PACS solution.</p>
 <p>The documentation and source code can be found on the <a class="reference external" href="https://github.com/mercure-imaging/dcmannotate">DCMAnnotate Github page</a></p>
