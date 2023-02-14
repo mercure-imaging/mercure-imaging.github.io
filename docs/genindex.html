@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; mercure Version 0.2.1-beta.1 documentation</title>
+  <title>Index &mdash; mercure Version 0.2.2-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -19,12 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
-<script>
-    ((window.gitter = {}).chat = {}).options = {
-      room: 'mercure-imaging/Support'
-    };
-</script>
-<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
 
 </head>
 
@@ -37,7 +32,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.1-beta.1
+                Version 0.2.2-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -166,10 +161,10 @@
 </li>
       <li><a href="routing.html#routing.generate_taskfile.add_info">add_info() (in module routing.generate_taskfile)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webinterface.html#webinterface.modules.add_module">add_module() (in module webinterface.modules)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webinterface.html#webinterface.users.add_new_user">add_new_user() (in module webinterface.users)</a>
 </li>
       <li><a href="routing.html#routing.generate_taskfile.add_processing">add_processing() (in module routing.generate_taskfile)</a>
@@ -190,7 +185,13 @@
 </li>
       <li><a href="common.html#common.types.TaskInfo.applied_rule">applied_rule (common.types.TaskInfo attribute)</a>
 </li>
+      <li><a href="common.html#common.monitor.async_post">async_post() (in module common.monitor)</a>
+</li>
       <li><a href="webinterface.html#webinterface.common.async_run">async_run() (in module webinterface.common)</a>
+</li>
+      <li><a href="common.html#common.monitor.async_send_task_event">async_send_task_event() (in module common.monitor)</a>
+</li>
+      <li><a href="common.html#common.helper.AsyncTimer">AsyncTimer (class in common.helper)</a>
 </li>
       <li><a href="webgui.html#webgui.SessionAuthBackend.authenticate">authenticate() (webgui.SessionAuthBackend method)</a>
 </li>
@@ -371,6 +372,8 @@
 </li>
       <li><a href="webinterface.html#webinterface.modules.delete_module">delete_module() (in module webinterface.modules)</a>
 </li>
+      <li><a href="webgui.html#webgui.delete_old_tests">delete_old_tests() (in module webgui)</a>
+</li>
       <li><a href="common.html#common.types.DicomTarget">DicomTarget (class in common.types)</a>
 </li>
       <li><a href="common.html#common.types.DicomWebTarget">DicomWebTarget (class in common.types)</a>
@@ -387,14 +390,12 @@
       </ul></li>
       <li><a href="common.html#common.types.Config.discard_folder">discard_folder (common.types.Config attribute)</a>
 </li>
+      <li><a href="common.html#common.types.ProcessingLogsConfig.discard_logs">discard_logs (common.types.ProcessingLogsConfig attribute)</a>
+</li>
       <li><a href="common.html#common.constants.mercure_sections.DISPATCH">DISPATCH (common.constants.mercure_sections attribute)</a>
 </li>
       <li><a href="common.html#common.types.Task.dispatch">dispatch (common.types.Task attribute)</a>
-
-      <ul>
-        <li><a href="common.html#common.types.TaskHasStudy.dispatch">(common.types.TaskHasStudy attribute)</a>
 </li>
-      </ul></li>
       <li><a href="dispatcher.html#dispatcher.dispatch">dispatch() (in module dispatcher)</a>
 </li>
   </ul></td>
@@ -458,6 +459,8 @@
 </li>
       <li><a href="webinterface.html#webinterface.users.User.email">email (webinterface.users.User attribute)</a>
 </li>
+      <li><a href="common.html#common.types.Config.emergency_clean_percentage">emergency_clean_percentage (common.types.Config attribute)</a>
+</li>
       <li><a href="webgui.html#webgui.emergency_response">emergency_response() (in module webgui)</a>
 </li>
       <li><a href="common.html#common.types.EmptyDict">EmptyDict (class in common.types)</a>
@@ -508,15 +511,25 @@
 </li>
       <li><a href="common.html#common.helper.FileLock">FileLock (class in common.helper)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_sections.FILES">FILES (common.constants.mercure_sections attribute)</a>
 </li>
       <li><a href="cleaner.html#cleaner.find_series_uid">find_series_uid() (in module cleaner)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.monitor.find_tasks">find_tasks() (in module common.monitor)</a>
 </li>
-      <li><a href="common.html#common.types.SftpTarget.folder">folder (common.types.SftpTarget attribute)</a>
+      <li><a href="common.html#common.types.FolderTarget.folder">folder (common.types.FolderTarget attribute)</a>
+
+      <ul>
+        <li><a href="common.html#common.types.SftpTarget.folder">(common.types.SftpTarget attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="common.html#common.types.FolderTarget">FolderTarget (class in common.types)</a>
+</li>
+      <li><a href="common.html#common.constants.mercure_names.FORCE_COMPLETE">FORCE_COMPLETE (common.constants.mercure_names attribute)</a>
+</li>
+      <li><a href="webinterface.html#webinterface.queue.force_study_complete">force_study_complete() (in module webinterface.queue)</a>
 </li>
       <li><a href="common.html#common.helper.FileLock.free">free() (common.helper.FileLock method)</a>
 </li>
@@ -589,11 +602,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Task.id">id (common.types.Task attribute)</a>
-
-      <ul>
-        <li><a href="common.html#common.types.TaskHasStudy.id">(common.types.TaskHasStudy attribute)</a>
 </li>
-      </ul></li>
       <li><a href="common.html#common.constants.mercure_folders.INCOMING">INCOMING (common.constants.mercure_folders attribute)</a>
 </li>
       <li><a href="common.html#common.types.Config.incoming_folder">incoming_folder (common.types.Config attribute)</a>
@@ -603,17 +612,13 @@
       <li><a href="common.html#common.constants.mercure_sections.INFO">INFO (common.constants.mercure_sections attribute)</a>
 </li>
       <li><a href="common.html#common.types.Task.info">info (common.types.Task attribute)</a>
-
-      <ul>
-        <li><a href="common.html#common.types.TaskHasStudy.info">(common.types.TaskHasStudy attribute)</a>
 </li>
-      </ul></li>
       <li><a href="common.html#common.constants.mercure_options.INVALID">INVALID (common.constants.mercure_options attribute)</a>
+</li>
+      <li><a href="common.html#common.types.DicomTarget.ip">ip (common.types.DicomTarget attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="common.html#common.types.DicomTarget.ip">ip (common.types.DicomTarget attribute)</a>
-</li>
       <li><a href="webgui.html#webgui.ExtendedUser.is_admin">is_admin (webgui.ExtendedUser property)</a>
 
       <ul>
@@ -654,15 +659,17 @@
 </li>
       <li><a href="webgui.html#webgui.launch_emergency_app">launch_emergency_app() (in module webgui)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_names.LOCK">LOCK (common.constants.mercure_names attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webgui.html#webgui.login">login() (in module webgui)</a>
 </li>
       <li><a href="webgui.html#webgui.login_post">login_post() (in module webgui)</a>
 </li>
       <li><a href="webgui.html#webgui.logout">logout() (in module webgui)</a>
+</li>
+      <li><a href="common.html#common.types.ProcessingLogsConfig.logs_file_store">logs_file_store (common.types.ProcessingLogsConfig attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -928,11 +935,7 @@
 </li>
       </ul></li>
       <li><a href="common.html#common.types.Task.process">process (common.types.Task attribute)</a>
-
-      <ul>
-        <li><a href="common.html#common.types.TaskHasStudy.process">(common.types.TaskHasStudy attribute)</a>
 </li>
-      </ul></li>
       <li>
     process.process_series
 
@@ -947,10 +950,10 @@
         <li><a href="process.html#module-process.status">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Config.process_runner">process_runner (common.types.Config attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_folders.PROCESSING">PROCESSING (common.constants.mercure_folders attribute)</a>
 
       <ul>
@@ -958,6 +961,8 @@
 </li>
       </ul></li>
       <li><a href="common.html#common.types.Config.processing_folder">processing_folder (common.types.Config attribute)</a>
+</li>
+      <li><a href="common.html#common.types.Config.processing_logs">processing_logs (common.types.Config attribute)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_rule.PROCESSING_MODULE">PROCESSING_MODULE (common.constants.mercure_rule attribute)</a>
 </li>
@@ -967,6 +972,8 @@
 </li>
       <li><a href="common.html#common.types.Rule.processing_settings">processing_settings (common.types.Rule attribute)</a>
 </li>
+      <li><a href="common.html#common.types.ProcessingLogsConfig">ProcessingLogsConfig (class in common.types)</a>
+</li>
       <li>
     processor
 
@@ -974,6 +981,8 @@
         <li><a href="processor.html#module-processor">module</a>
 </li>
       </ul></li>
+      <li><a href="bookkeeper.html#bookkeeper.processor_logs">processor_logs() (in module bookkeeper)</a>
+</li>
       <li><a href="routing.html#routing.route_series.push_files">push_files() (in module routing.route_series)</a>
 </li>
       <li><a href="process.html#process.process_series.push_input_images">push_input_images() (in module process.process_series)</a>
@@ -1126,6 +1135,8 @@
 </li>
       <li><a href="router.html#router.run_router">run_router() (in module router)</a>
 </li>
+      <li><a href="common.html#common.helper.AsyncTimer.run_until_complete">run_until_complete() (common.helper.AsyncTimer method)</a>
+</li>
       <li><a href="common.html#common.constants.mercure_names.RUNNING">RUNNING (common.constants.mercure_names attribute)</a>
 </li>
   </ul></td>
@@ -1153,6 +1164,8 @@
       <li><a href="webgui.html#webgui.self_test_notification">self_test_notification() (in module webgui)</a>
 </li>
       <li><a href="common.html#common.monitor.send_event">send_event() (in module common.monitor)</a>
+</li>
+      <li><a href="common.html#common.monitor.send_process_logs">send_process_logs() (in module common.monitor)</a>
 </li>
       <li><a href="common.html#common.monitor.send_register_series">send_register_series() (in module common.monitor)</a>
 </li>
@@ -1232,16 +1245,24 @@
         <li><a href="webgui.html#webgui.shutdown">(in module webgui)</a>
 </li>
       </ul></li>
-      <li><a href="common.html#common.helper.RepeatedTimer.start">start() (common.helper.RepeatedTimer method)</a>
+      <li><a href="common.html#common.helper.AsyncTimer.start">start() (common.helper.AsyncTimer method)</a>
+
+      <ul>
+        <li><a href="common.html#common.helper.RepeatedTimer.start">(common.helper.RepeatedTimer method)</a>
 </li>
+      </ul></li>
       <li><a href="bookkeeper.html#bookkeeper.startup">startup() (in module bookkeeper)</a>
 
       <ul>
         <li><a href="webgui.html#webgui.startup">(in module webgui)</a>
 </li>
       </ul></li>
-      <li><a href="common.html#common.helper.RepeatedTimer.stop">stop() (common.helper.RepeatedTimer method)</a>
+      <li><a href="common.html#common.helper.AsyncTimer.stop">stop() (common.helper.AsyncTimer method)</a>
+
+      <ul>
+        <li><a href="common.html#common.helper.RepeatedTimer.stop">(common.helper.RepeatedTimer method)</a>
 </li>
+      </ul></li>
       <li><a href="common.html#common.types.DicomWebTarget.stow_url_prefix">stow_url_prefix (common.types.DicomWebTarget attribute)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_folders.STUDIES">STUDIES (common.constants.mercure_folders attribute)</a>
@@ -1309,6 +1330,8 @@
 </li>
         <li><a href="common.html#common.types.DummyTarget.target_type">(common.types.DummyTarget attribute)</a>
 </li>
+        <li><a href="common.html#common.types.FolderTarget.target_type">(common.types.FolderTarget attribute)</a>
+</li>
         <li><a href="common.html#common.types.S3Target.target_type">(common.types.S3Target attribute)</a>
 </li>
         <li><a href="common.html#common.types.SftpTarget.target_type">(common.types.SftpTarget attribute)</a>
@@ -1330,12 +1353,16 @@
 </li>
       <li><a href="common.html#common.types.Task.Config">Task.Config (class in common.types)</a>
 </li>
+      <li><a href="common.html#common.monitor.task_event_payload">task_event_payload() (in module common.monitor)</a>
+</li>
+      <li><a href="common.html#common.monitor.task_process_logs">task_process_logs() (in module common.monitor)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.TaskDispatch">TaskDispatch (class in common.types)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_names.TASKFILE">TASKFILE (common.constants.mercure_names attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.TaskHasStudy">TaskHasStudy (class in common.types)</a>
 </li>
       <li><a href="common.html#common.types.TaskInfo">TaskInfo (class in common.types)</a>
@@ -1517,7 +1544,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

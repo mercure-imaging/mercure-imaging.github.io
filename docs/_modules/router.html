@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>router &mdash; mercure Version 0.2.1-beta.1 documentation</title>
+  <title>router &mdash; mercure Version 0.2.2-beta.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -19,12 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-<script>
-    ((window.gitter = {}).chat = {}).options = {
-      room: 'mercure-imaging/Support'
-    };
-</script>
-<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
 
 </head>
 
@@ -37,7 +32,7 @@
             <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.1-beta.1
+                Version 0.2.2-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -114,6 +109,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Standard python includes</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -135,10 +131,10 @@
 
 <span class="c1"># Create local logger instance</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
-<span class="n">main_loop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: helper.RepeatedTimer # type: ignore</span>
+<span class="n">main_loop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: helper.AsyncTimer # type: ignore</span>
 
 
-<div class="viewcode-block" id="terminate_process"><a class="viewcode-back" href="../router.html#router.terminate_process">[docs]</a><span class="k">def</span> <span class="nf">terminate_process</span><span class="p">(</span><span class="n">signalNumber</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="terminate_process"><a class="viewcode-back" href="../router.html#router.terminate_process">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">terminate_process</span><span class="p">(</span><span class="n">signalNumber</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Triggers the shutdown of the service</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -151,7 +147,7 @@
     <span class="n">helper</span><span class="o">.</span><span class="n">trigger_terminate</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="run_router"><a class="viewcode-back" href="../router.html#router.run_router">[docs]</a><span class="k">def</span> <span class="nf">run_router</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="run_router"><a class="viewcode-back" href="../router.html#router.run_router">[docs]</a><span class="k">def</span> <span class="nf">run_router</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main processing function that is called every second</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -245,8 +241,9 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
     <span class="c1"># Register system signals to be caught</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">terminate_process</span><span class="p">)</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="n">terminate_process</span><span class="p">)</span>
+    <span class="n">signals</span> <span class="o">=</span> <span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
+        <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">add_signal_handler</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">terminate_process</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="p">)))</span>
 
     <span class="n">instance_name</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span>
 
@@ -285,21 +282,21 @@
 
     <span class="c1"># Start the timer that will periodically trigger the scan of the incoming folder</span>
     <span class="k">global</span> <span class="n">main_loop</span>
-    <span class="n">main_loop</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">RepeatedTimer</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">router_scan_interval</span><span class="p">,</span> <span class="n">run_router</span><span class="p">,</span> <span class="n">exit_router</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">main_loop</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">main_loop</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">AsyncTimer</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">router_scan_interval</span><span class="p">,</span> <span class="n">run_router</span><span class="p">)</span>
 
     <span class="n">helper</span><span class="o">.</span><span class="n">g_log</span><span class="p">(</span><span class="s2">&quot;events.boot&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="c1"># Start the asyncio event loop for asynchronous function calls</span>
-    <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
-
-    <span class="c1"># Process will exit here once the asyncio loop has been stopped</span>
-    <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-
-    <span class="c1"># Finish all asyncio tasks that might be still pending</span>
-    <span class="n">remaining_tasks</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
-    <span class="k">if</span> <span class="n">remaining_tasks</span><span class="p">:</span>
-        <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">remaining_tasks</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">main_loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+        <span class="c1"># Process will exit here once the asyncio loop has been stopped</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">SHUTDOWN</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="c1"># Finish all asyncio tasks that might be still pending</span>
+        <span class="n">remaining_tasks</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="k">if</span> <span class="n">remaining_tasks</span><span class="p">:</span>
+            <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">remaining_tasks</span><span class="p">))</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Going down now&quot;</span><span class="p">)</span></div>
 
@@ -315,7 +312,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

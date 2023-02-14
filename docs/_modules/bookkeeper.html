@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>bookkeeper &mdash; mercure Version 0.2.1-beta.1 documentation</title>
+  <title>bookkeeper &mdash; mercure Version 0.2.2-beta.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -19,12 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-<script>
-    ((window.gitter = {}).chat = {}).options = {
-      room: 'mercure-imaging/Support'
-    };
-</script>
-<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
 
 </head>
 
@@ -37,7 +32,7 @@
             <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.1-beta.1
+                Version 0.2.2-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -116,8 +111,10 @@
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">asyncpg</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.dialects.postgresql</span> <span class="kn">import</span> <span class="n">insert</span>
 <span class="kn">import</span> <span class="nn">uvicorn</span>
@@ -241,6 +238,45 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span></div>
 
 
+<div class="viewcode-block" id="processor_logs"><a class="viewcode-back" href="../bookkeeper.html#bookkeeper.processor_logs">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/processor-logs&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">processor_logs</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Endpoint for receiving mercure system events.&quot;&quot;&quot;</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">task_id</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;task_id&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;no task_id supplied&quot;</span><span class="p">},</span> <span class="mi">400</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">module_name</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;module_name&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;no module_name supplied&quot;</span><span class="p">},</span> <span class="mi">400</span><span class="p">)</span>
+
+    <span class="n">time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logs</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;unable to read logs&quot;</span><span class="p">},</span> <span class="mi">400</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">logs_folder_str</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_logs</span><span class="o">.</span><span class="n">logs_file_store</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="n">logs_path</span> <span class="o">:=</span> <span class="n">Path</span><span class="p">(</span><span class="n">logs_folder_str</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">processor_logs_table</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">database</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="n">logs_path</span> <span class="o">=</span> <span class="n">logs_path</span> <span class="o">/</span> <span class="n">task_id</span>
+        <span class="n">logs_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logs_file</span> <span class="o">=</span> <span class="n">logs_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">.txt&quot;</span>
+        <span class="n">logs_file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">logs</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">processor_logs_table</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="n">logs</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">database</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span></div>
+
+
 <div class="viewcode-block" id="post_webgui_event"><a class="viewcode-back" href="../bookkeeper.html#bookkeeper.post_webgui_event">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/webgui-event&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">post_webgui_event</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
@@ -326,7 +362,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="k">await</span> <span class="n">parse_and_submit_tags</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">asyncpg</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UniqueViolationError</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Series already registered.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Series already registered.&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">})</span></div>
 
@@ -373,7 +409,7 @@
     <span class="k">if</span> <span class="s2">&quot;info&quot;</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;study&quot;</span><span class="p">:</span>
             <span class="n">study_uid</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid&quot;</span><span class="p">]</span>
-            <span class="n">series_uid</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;study&quot;</span><span class="p">][</span><span class="s2">&quot;received_series_uid&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>            
+            <span class="n">series_uid</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;study&quot;</span><span class="p">][</span><span class="s2">&quot;received_series_uid&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">update_values</span><span class="p">[</span><span class="s2">&quot;study_uid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">study_uid</span>
             <span class="n">update_values</span><span class="p">[</span><span class="s2">&quot;series_uid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">series_uid</span>
         <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;uid_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;series&quot;</span><span class="p">:</span>
@@ -448,7 +484,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">event_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="k">pass</span>        
+            <span class="k">pass</span>
 
     <span class="c1"># series_uid = payload.get(&quot;series_uid&quot;, &quot;&quot;)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -516,7 +552,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

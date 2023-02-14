@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Service bookkeeper &mdash; mercure Version 0.2.1-beta.1 documentation</title>
+  <title>Service bookkeeper &mdash; mercure Version 0.2.2-beta.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -22,12 +22,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Service cleaner" href="cleaner.html" />
     <link rel="prev" title="Code Documentation" href="code.html" />
-<script>
-    ((window.gitter = {}).chat = {}).options = {
-      room: 'mercure-imaging/Support'
-    };
-</script>
-<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
 
 </head>
 
@@ -40,7 +35,7 @@
             <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.1-beta.1
+                Version 0.2.2-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -175,6 +170,12 @@ and stores the information in a Postgres database.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="bookkeeper.processor_logs">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">processor_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#processor_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.processor_logs" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for receiving mercure system events.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="bookkeeper.register_dicom">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_dicom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="_modules/bookkeeper.html#register_dicom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeper.register_dicom" title="Permalink to this definition"></a></dt>
 <dd><p>Endpoint for registering newly received DICOM files. Called by the getdcmtags module.</p>
@@ -246,7 +247,7 @@ be created.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

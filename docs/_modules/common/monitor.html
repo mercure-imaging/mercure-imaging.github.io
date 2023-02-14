@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.monitor &mdash; mercure Version 0.2.1-beta.1 documentation</title>
+  <title>common.monitor &mdash; mercure Version 0.2.2-beta.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -19,12 +19,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-<script>
-    ((window.gitter = {}).chat = {}).options = {
-      room: 'mercure-imaging/Support'
-    };
-</script>
-<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
 
 </head>
 
@@ -37,7 +32,7 @@
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.1-beta.1
+                Version 0.2.2-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -116,12 +111,14 @@
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">urllib.error</span> <span class="kn">import</span> <span class="n">HTTPError</span>
 <span class="kn">import</span> <span class="nn">aiohttp</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">threading</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span>
@@ -134,7 +131,7 @@
 
 <span class="n">sender_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="n">bookkeeper_address</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="n">loop</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="MonitorHTTPError"><a class="viewcode-back" href="../../common.html#common.monitor.MonitorHTTPError">[docs]</a><span class="k">class</span> <span class="nc">MonitorHTTPError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -171,16 +168,39 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Failed POST request </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2"> to bookkeeper endpoint </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: status: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
-    <span class="k">except</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">client_exceptions</span><span class="o">.</span><span class="n">ClientConnectorError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">except</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">client_exceptions</span><span class="o">.</span><span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed POST request to bookkeeper endpoint </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">catch_errors</span><span class="p">:</span>
+            <span class="k">raise</span>
+    <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed POST request to bookkeeper endpoint </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2"> with timeout: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">catch_errors</span><span class="p">:</span>
             <span class="k">raise</span></div>
 
 
 <div class="viewcode-block" id="post"><a class="viewcode-back" href="../../common.html#common.monitor.post">[docs]</a><span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># create_task requires a running event loop; during boot there might not be one running yet.</span>
     <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">do_post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="async_post"><a class="viewcode-back" href="../../common.html#common.monitor.async_post">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">async_post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="k">await</span> <span class="n">do_post</span><span class="p">(</span>
+        <span class="n">endpoint</span><span class="p">,</span>
+        <span class="n">kwargs</span><span class="p">,</span>
+        <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get"><a class="viewcode-back" href="../../common.html#common.monitor.get">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -212,7 +232,10 @@
     <span class="k">global</span> <span class="n">sender_name</span>
     <span class="n">sender_name</span> <span class="o">=</span> <span class="n">module</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">instance</span>
     <span class="k">global</span> <span class="n">bookkeeper_address</span>
-    <span class="n">bookkeeper_address</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">address</span>
+    <span class="k">if</span> <span class="n">addr</span> <span class="o">:=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_BOOKKEEPER_PATH&quot;</span><span class="p">):</span>
+        <span class="n">bookkeeper_address</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">addr</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bookkeeper_address</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">address</span>
     <span class="k">global</span> <span class="n">api_key</span>
     <span class="n">set_api_key</span><span class="p">()</span>
     <span class="k">global</span> <span class="n">loop</span>
@@ -221,7 +244,9 @@
 
 <div class="viewcode-block" id="send_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_event">[docs]</a><span class="k">def</span> <span class="nf">send_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">m_events</span><span class="p">,</span> <span class="n">severity</span><span class="p">:</span> <span class="n">severity</span> <span class="o">=</span> <span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Sends information about general mercure events to the bookkeeper (e.g., during module start).&quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Monitor (mercure-event): level </span><span class="si">{</span><span class="n">severity</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s1">: &quot;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;Monitor (mercure-event): level </span><span class="si">{</span><span class="n">severity</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s1">: &quot;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
         <span class="k">return</span>
@@ -252,8 +277,6 @@
 <div class="viewcode-block" id="send_register_series"><a class="viewcode-back" href="../../common.html#common.monitor.send_register_series">[docs]</a><span class="k">def</span> <span class="nf">send_register_series</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Registers a received series on the bookkeeper. This should be called when a series has been</span>
 <span class="sd">    fully received and the DICOM tags have been parsed.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
-        <span class="k">return</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (register-series): series_uid=</span><span class="si">{</span><span class="n">tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;series_uid&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># requests.post(bookkeeper_address + &quot;/register-series&quot;, data=tags, timeout=1)</span>
     <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-series&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">tags</span><span class="p">)</span></div>
@@ -261,17 +284,11 @@
 
 <div class="viewcode-block" id="send_register_task"><a class="viewcode-back" href="../../common.html#common.monitor.send_register_task">[docs]</a><span class="k">def</span> <span class="nf">send_register_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">series_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Registers a new task on the bookkeeper. This should be called whenever a new task has been created.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
-        <span class="k">return</span>
-
     <span class="n">post</span><span class="p">(</span><span class="s2">&quot;register-task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">,</span> <span class="s2">&quot;series_uid&quot;</span><span class="p">:</span> <span class="n">series_uid</span><span class="p">,</span> <span class="s2">&quot;parent_id&quot;</span><span class="p">:</span> <span class="n">parent_id</span><span class="p">})</span></div>
 
 
 <div class="viewcode-block" id="send_update_task"><a class="viewcode-back" href="../../common.html#common.monitor.send_update_task">[docs]</a><span class="k">def</span> <span class="nf">send_update_task</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Registers a new task on the bookkeeper. This should be called whenever a new task has been created.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
-        <span class="k">return</span>
-
     <span class="n">task_dict</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (update-task): task.id=</span><span class="si">{</span><span class="n">task_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
@@ -279,14 +296,8 @@
     <span class="n">post</span><span class="p">(</span><span class="s2">&quot;update-task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task_dict</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="send_task_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_task_event">[docs]</a><span class="k">def</span> <span class="nf">send_task_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">task_event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Send an event related to a specific series to the bookkeeper.&quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (task-event): event=</span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2"> task_id=</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> info=</span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">bookkeeper_address</span><span class="p">:</span>
-        <span class="k">return</span>
-
-    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<div class="viewcode-block" id="task_event_payload"><a class="viewcode-back" href="../../common.html#common.monitor.task_event_payload">[docs]</a><span class="k">def</span> <span class="nf">task_event_payload</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">task_event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="n">sender_name</span><span class="p">,</span>
         <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
         <span class="s2">&quot;file_count&quot;</span><span class="p">:</span> <span class="n">file_count</span><span class="p">,</span>
@@ -294,10 +305,34 @@
         <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">,</span>
         <span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">,</span>
         <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">(),</span>
-        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="send_task_event"><a class="viewcode-back" href="../../common.html#common.monitor.send_task_event">[docs]</a><span class="k">def</span> <span class="nf">send_task_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">task_event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Send an event related to a specific series to the bookkeeper.&quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (task-event): event=</span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2"> task_id=</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> info=</span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;task-event&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">task_event_payload</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">info</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="async_send_task_event"><a class="viewcode-back" href="../../common.html#common.monitor.async_send_task_event">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">async_send_task_event</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">task_event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (task-event): event=</span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2"> task_id=</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> info=</span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="k">await</span> <span class="n">async_post</span><span class="p">(</span><span class="s2">&quot;task-event&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">task_event_payload</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">info</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="send_process_logs"><a class="viewcode-back" href="../../common.html#common.monitor.send_process_logs">[docs]</a><span class="k">def</span> <span class="nf">send_process_logs</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logs</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitor (processor-logs): task_id=</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="n">sender_name</span><span class="p">,</span>
+        <span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">,</span>
+        <span class="s2">&quot;module_name&quot;</span><span class="p">:</span> <span class="n">module_name</span><span class="p">,</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+        <span class="s2">&quot;logs&quot;</span><span class="p">:</span> <span class="n">logs</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;task-event&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span></div>
-    <span class="c1"># requests.post(bookkeeper_address + &quot;/series-event&quot;, data=payload, timeout=1)</span>
+    <span class="n">post</span><span class="p">(</span><span class="s2">&quot;processor-logs&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_task_events"><a class="viewcode-back" href="../../common.html#common.monitor.get_task_events">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_events</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -320,6 +355,10 @@
     <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/find_task&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;search_term&quot;</span><span class="p">:</span> <span class="n">search_term</span><span class="p">})</span></div>
 
 
+<div class="viewcode-block" id="task_process_logs"><a class="viewcode-back" href="../../common.html#common.monitor.task_process_logs">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">task_process_logs</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/task_process_logs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">})</span></div>
+
+
 <div class="viewcode-block" id="get_task_info"><a class="viewcode-back" href="../../common.html#common.monitor.get_task_info">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_info</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="k">return</span> <span class="k">await</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;query/get_task_info&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span><span class="p">})</span></div>
 </pre></div>
@@ -331,7 +370,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

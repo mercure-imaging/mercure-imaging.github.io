@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.types &mdash; mercure Version 0.2.1-beta.1 documentation</title>
+  <title>common.types &mdash; mercure Version 0.2.2-beta.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -19,12 +19,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-<script>
-    ((window.gitter = {}).chat = {}).options = {
-      room: 'mercure-imaging/Support'
-    };
-</script>
-<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
 
 </head>
 
@@ -37,7 +32,7 @@
             <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.1-beta.1
+                Version 0.2.2-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -116,8 +111,7 @@
 <span class="c1"># Standard python includes</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TypedDict</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">create_model_from_typeddict</span>
-<span class="kn">import</span> <span class="nn">daiquiri</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 
 <span class="c1"># TODO: Add description for the individual classes</span>
@@ -198,6 +192,11 @@
     <span class="n">secret_access_key</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
+<div class="viewcode-block" id="FolderTarget"><a class="viewcode-back" href="../../common.html#common.types.FolderTarget">[docs]</a><span class="k">class</span> <span class="nc">FolderTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+    <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;folder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;folder&quot;</span>
+    <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
 <div class="viewcode-block" id="DummyTarget"><a class="viewcode-back" href="../../common.html#common.types.DummyTarget">[docs]</a><span class="k">class</span> <span class="nc">DummyTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dummy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dummy&quot;</span></div>
 
@@ -221,8 +220,8 @@
 <div class="viewcode-block" id="Rule"><a class="viewcode-back" href="../../common.html#common.types.Rule">[docs]</a><span class="k">class</span> <span class="nc">Rule</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
     <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">disabled</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
-    <span class="n">fallback</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+    <span class="n">disabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">fallback</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">contact</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">tags</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -233,18 +232,23 @@
     <span class="n">priority</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span> <span class="s2">&quot;urgent&quot;</span><span class="p">,</span> <span class="s2">&quot;offpeak&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;normal&quot;</span>
     <span class="n">processing_module</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">processing_settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">processing_retain_images</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+    <span class="n">processing_retain_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">notification_webhook</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">notification_payload</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">notification_trigger_reception</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
-    <span class="n">notification_trigger_completion</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
-    <span class="n">notification_trigger_error</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span></div>
+    <span class="n">notification_trigger_reception</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">notification_trigger_completion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">notification_trigger_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="ProcessingLogsConfig"><a class="viewcode-back" href="../../common.html#common.types.ProcessingLogsConfig">[docs]</a><span class="k">class</span> <span class="nc">ProcessingLogsConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">discard_logs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">logs_file_store</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../common.html#common.types.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">appliance_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">accept_compressed_images</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">accept_compressed_images</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">incoming_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">studies_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">outgoing_folder</span><span class="p">:</span> <span class="nb">str</span>
@@ -256,6 +260,7 @@
     <span class="n">dispatcher_scan_interval</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
     <span class="n">cleaner_scan_interval</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
     <span class="n">retention</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds (3 days)</span>
+    <span class="n">emergency_clean_percentage</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in % of disk space</span>
     <span class="n">retry_delay</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds (15 min)</span>
     <span class="n">retry_max</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">series_complete_trigger</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
@@ -271,7 +276,8 @@
     <span class="n">modules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Module</span><span class="p">]</span>
     <span class="n">process_runner</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;nomad&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">bookkeeper_api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">features</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></div>
+    <span class="n">features</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+    <span class="n">processing_logs</span><span class="p">:</span> <span class="n">ProcessingLogsConfig</span> <span class="o">=</span> <span class="n">ProcessingLogsConfig</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="TaskInfo"><a class="viewcode-back" href="../../common.html#common.types.TaskInfo">[docs]</a><span class="k">class</span> <span class="nc">TaskInfo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
@@ -302,14 +308,40 @@
     <span class="n">last_receive_time</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">received_series</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
     <span class="n">received_series_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
-    <span class="n">complete_force</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]</span></div>
+    <span class="n">complete_force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="TaskProcessing"><a class="viewcode-back" href="../../common.html#common.types.TaskProcessing">[docs]</a><span class="k">class</span> <span class="nc">TaskProcessing</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">module_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Module</span><span class="p">]</span>
     <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">retain_input_images</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">]</span></div>
+    <span class="n">retain_input_images</span><span class="p">:</span> <span class="nb">bool</span></div>
+
+
+<span class="c1"># class PydanticFile(object):</span>
+<span class="c1">#     def __init__(self, klass, file_name):</span>
+<span class="c1">#         self.Klass = klass</span>
+<span class="c1">#         self.file_name = file_name</span>
+
+<span class="c1">#     def __enter__(self):</span>
+<span class="c1">#         self.file = open(self.file_name, &quot;r+&quot;)</span>
+<span class="c1">#         self.dict_orig = json.load(self.file)</span>
+<span class="c1">#         self.file.seek(0)</span>
+<span class="c1">#         self.obj = self.Klass(**self.dict_orig)</span>
+<span class="c1">#         return self.obj</span>
+
+<span class="c1">#     def __exit__(self, type, value, traceback):</span>
+<span class="c1">#         new_dict = self.obj.dict()</span>
+<span class="c1">#         if new_dict != self.dict_orig:</span>
+<span class="c1">#             json.dump(new_dict, self.file)</span>
+<span class="c1">#         self.file.truncate()</span>
+<span class="c1">#         self.file.close()</span>
+
+
+<span class="c1"># class ModelHasFile(object):</span>
+<span class="c1">#     @classmethod</span>
+<span class="c1">#     def file_editor(cls, file_name):</span>
+<span class="c1">#         return PydanticFile(cls, file_name)</span>
 
 
 <div class="viewcode-block" id="Task"><a class="viewcode-back" href="../../common.html#common.types.Task">[docs]</a><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
@@ -324,11 +356,7 @@
         <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span></div></div>
 
 
-<div class="viewcode-block" id="TaskHasStudy"><a class="viewcode-back" href="../../common.html#common.types.TaskHasStudy">[docs]</a><span class="k">class</span> <span class="nc">TaskHasStudy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
-    <span class="n">info</span><span class="p">:</span> <span class="n">TaskInfo</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">dispatch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">process</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Module</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
+<div class="viewcode-block" id="TaskHasStudy"><a class="viewcode-back" href="../../common.html#common.types.TaskHasStudy">[docs]</a><span class="k">class</span> <span class="nc">TaskHasStudy</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
     <span class="n">study</span><span class="p">:</span> <span class="n">TaskStudy</span></div>
 </pre></div>
 
@@ -339,7 +367,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2022, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
