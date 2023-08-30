@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>process.process_series &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>process.process_series &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>process.process_series</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">process.process_series</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -109,16 +113,20 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Standard python includes</span>
+<span class="kn">from</span> <span class="nn">genericpath</span> <span class="kn">import</span> <span class="n">isfile</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">stat</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">docker</span>
+<span class="kn">from</span> <span class="nn">docker.models.containers</span> <span class="kn">import</span> <span class="n">Container</span>
+
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">nomad</span>
 <span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
@@ -129,7 +137,7 @@
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
 
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
-<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskInfo</span><span class="p">,</span> <span class="n">Module</span><span class="p">,</span> <span class="n">Rule</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskInfo</span><span class="p">,</span> <span class="n">Module</span><span class="p">,</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">TaskProcessing</span>
 <span class="kn">import</span> <span class="nn">common.notification</span> <span class="k">as</span> <span class="nn">notification</span>
 <span class="kn">from</span> <span class="nn">common.version</span> <span class="kn">import</span> <span class="n">mercure_version</span>
 <span class="kn">import</span> <span class="nn">common.log_helpers</span> <span class="k">as</span> <span class="nn">log_helpers</span>
@@ -141,15 +149,14 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="nomad_runtime"><a class="viewcode-back" href="../../process.html#process.process_series.nomad_runtime">[docs]</a><span class="k">def</span> <span class="nf">nomad_runtime</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="n">nomad_connection</span> <span class="o">=</span> <span class="n">nomad</span><span class="o">.</span><span class="n">Nomad</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;172.17.0.1&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="viewcode-block" id="nomad_runtime"><a class="viewcode-back" href="../../process.html#process.process_series.nomad_runtime">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">nomad_runtime</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">task_processing</span><span class="p">:</span><span class="n">TaskProcessing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">nomad_connection</span> <span class="o">=</span> <span class="n">nomad</span><span class="o">.</span><span class="n">Nomad</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;172.17.0.1&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="n">module</span><span class="p">:</span> <span class="n">Module</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_config</span><span class="p">)</span>
+    <span class="n">module</span><span class="p">:</span> <span class="n">Module</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">task_processing</span><span class="o">.</span><span class="n">module_config</span><span class="p">)</span>
 
-    <span class="n">f_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">module</span><span class="o">.</span><span class="n">docker_tag</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No docker tag supplied&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -166,28 +173,28 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">rendered</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">job_definition</span> <span class="o">=</span> <span class="n">nomad_connection</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">rendered</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">nomad</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">BadRequestNomadException</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="k">except</span> <span class="n">nomad</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">BadRequestNomadException</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span> <span class="c1"># type: ignore</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">nomad_resp</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">nomad_resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="c1"># logger.debug(job_definition)</span>
 
-    <span class="n">job_definition</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;processor-</span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">job_definition</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;processor-</span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">job_definition</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;processor-</span><span class="si">{</span><span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">job_definition</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;processor-</span><span class="si">{</span><span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">nomad_connection</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">register_job</span><span class="p">(</span><span class="n">job_definition</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Job</span><span class="o">=</span><span class="n">job_definition</span><span class="p">))</span>
 
-    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;PATH&quot;</span><span class="p">:</span> <span class="n">f_path</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;PATH&quot;</span><span class="p">:</span> <span class="n">folder</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span>
-    <span class="n">job_info</span> <span class="o">=</span> <span class="n">nomad_connection</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">dispatch_job</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;processor-</span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;nomad_job.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="n">job_info</span> <span class="o">=</span> <span class="n">nomad_connection</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">dispatch_job</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;processor-</span><span class="si">{</span><span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;nomad_job.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">job_info</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span>
         <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_BEGIN</span><span class="p">,</span>
         <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
         <span class="n">file_count_begin</span><span class="p">,</span>
-        <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span>
+        <span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span>
         <span class="s2">&quot;Processing job dispatched&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
@@ -196,13 +203,13 @@
 <span class="n">docker_pull_throttle</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
 
-<div class="viewcode-block" id="docker_runtime"><a class="viewcode-back" href="../../process.html#process.process_series.docker_runtime">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">docker_runtime</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="n">docker_client</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
+<div class="viewcode-block" id="docker_runtime"><a class="viewcode-back" href="../../process.html#process.process_series.docker_runtime">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">docker_runtime</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">task_processing</span><span class="p">:</span><span class="n">TaskProcessing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">docker_client</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="n">module</span><span class="p">:</span> <span class="n">Module</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_config</span><span class="p">)</span>
+    <span class="n">module</span><span class="p">:</span> <span class="n">Module</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">task_processing</span><span class="o">.</span><span class="n">module_config</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">decode_task_json</span><span class="p">(</span><span class="n">json_string</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">json_string</span><span class="p">:</span>
@@ -212,7 +219,8 @@
         <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
 
-    <span class="n">real_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+    <span class="n">real_folder</span> <span class="o">=</span> <span class="n">folder</span>    
+
 
     <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;docker&quot;</span><span class="p">:</span>
         <span class="c1"># We want to bind the correct path into the processor, but if we&#39;re inside docker we need to use the host path</span>
@@ -225,9 +233,11 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base path: </span><span class="si">{</span><span class="n">base_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">real_folder</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s2">&quot;processing&quot;</span> <span class="o">/</span> <span class="n">real_folder</span><span class="o">.</span><span class="n">stem</span>
 
+    <span class="n">container_in_dir</span> <span class="o">=</span> <span class="s2">&quot;/tmp/data&quot;</span>
+    <span class="n">container_out_dir</span> <span class="o">=</span> <span class="s2">&quot;/tmp/output&quot;</span>
     <span class="n">default_volumes</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;bind&quot;</span><span class="p">:</span> <span class="s2">&quot;/tmp/data&quot;</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;rw&quot;</span><span class="p">},</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;bind&quot;</span><span class="p">:</span> <span class="s2">&quot;/tmp/output&quot;</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;rw&quot;</span><span class="p">},</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;bind&quot;</span><span class="p">:</span> <span class="n">container_in_dir</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;rw&quot;</span><span class="p">},</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;bind&quot;</span><span class="p">:</span> <span class="n">container_out_dir</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;rw&quot;</span><span class="p">},</span>
     <span class="p">}</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">default_volumes</span><span class="p">)</span>
 
@@ -236,10 +246,34 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No docker tag supplied&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
+      
+    <span class="n">runtime</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_runtime</span><span class="p">:</span>
+        <span class="n">runtime</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">runtime</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_runtime</span><span class="p">)</span>
+        
     <span class="n">additional_volumes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">decode_task_json</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">additional_volumes</span><span class="p">)</span>
-    <span class="n">environment</span> <span class="o">=</span> <span class="n">decode_task_json</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">environment</span><span class="p">)</span>
-    <span class="n">environment</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">environment</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">MERCURE_IN_DIR</span><span class="o">=</span><span class="s2">&quot;/tmp/data&quot;</span><span class="p">,</span> <span class="n">MERCURE_OUT_DIR</span><span class="o">=</span><span class="s2">&quot;/tmp/output&quot;</span><span class="p">)}</span>
+    <span class="n">module_environment</span> <span class="o">=</span> <span class="n">decode_task_json</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">environment</span><span class="p">)</span>
+    <span class="n">mercure_environment</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">MERCURE_IN_DIR</span><span class="o">=</span><span class="n">container_in_dir</span><span class="p">,</span> <span class="n">MERCURE_OUT_DIR</span><span class="o">=</span><span class="n">container_out_dir</span><span class="p">)</span>
+    <span class="n">monai_environment</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">MONAI_INPUTPATH</span><span class="o">=</span><span class="n">container_in_dir</span><span class="p">,</span> <span class="n">MONAI_OUTPUTPATH</span><span class="o">=</span><span class="n">container_out_dir</span><span class="p">)</span>
+
+    <span class="n">environment</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">module_environment</span><span class="p">,</span> <span class="o">**</span><span class="n">mercure_environment</span><span class="p">,</span> <span class="o">**</span><span class="n">monai_environment</span><span class="p">}</span>
     <span class="n">arguments</span> <span class="o">=</span> <span class="n">decode_task_json</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">docker_arguments</span><span class="p">)</span>
+
+    <span class="n">set_command</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">image_is_monai_map</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">monai_app_manifest</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">docker_client</span><span class="o">.</span><span class="n">containers</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">docker_tag</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="s2">&quot;cat /etc/monai/app.json&quot;</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">image_is_monai_map</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">set_command</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">entrypoint</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">command</span><span class="o">=</span><span class="n">monai_app_manifest</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Detected MONAI MAP, using command from manifest.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">ContainerError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Docker tag </span><span class="si">{</span><span class="n">docker_tag</span><span class="si">}</span><span class="s2"> not found, aborting.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to parse MONAI app manifest.&quot;</span><span class="p">)</span>
+    
+    <span class="n">module</span><span class="o">.</span><span class="n">requires_root</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">requires_root</span> <span class="ow">or</span> <span class="n">image_is_monai_map</span>
 
     <span class="c1"># Merge the two dictionaries</span>
     <span class="n">merged_volumes</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">default_volumes</span><span class="p">,</span> <span class="o">**</span><span class="n">additional_volumes</span><span class="p">}</span>
@@ -274,6 +308,7 @@
 
     <span class="c1"># Run the container and handle errors of running the container</span>
     <span class="n">processing_success</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Now running container:&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
@@ -284,24 +319,46 @@
         <span class="c1"># nomad_connection.job.dispatch_job(&#39;mercure-processor&#39;, meta={&quot;IMAGE_ID&quot;:&quot;alpine:3.11&quot;, &quot;PATH&quot;: &quot;test&quot;})</span>
 
         <span class="k">await</span> <span class="n">monitor</span><span class="o">.</span><span class="n">async_send_task_event</span><span class="p">(</span>
-            <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_BEGIN</span><span class="p">,</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_MODULE_BEGIN</span><span class="p">,</span>
             <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
             <span class="n">file_count_begin</span><span class="p">,</span>
-            <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;Processing job running&quot;</span><span class="p">,</span>
+            <span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Processing module running&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Run the container -- need to do in detached mode to be able to print the log output if container exits</span>
         <span class="c1"># with non-zero code while allowing the container to be removed after execution (with autoremoval and</span>
         <span class="c1"># non-detached mode, the log output is gone before it can be printed from the exception)</span>
-        <span class="n">uid_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getegid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">container</span> <span class="o">=</span> <span class="n">docker_client</span><span class="o">.</span><span class="n">containers</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+
+        <span class="n">user_info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">user</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getegid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">group_add</span><span class="o">=</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">getgid</span><span class="p">()]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">requires_root</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">support_root_modules</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;This module requires execution as root, but &#39;support_root_modules&#39; is not set to true in the configuration. Aborting.&quot;</span><span class="p">)</span>
+            <span class="n">user_info</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Executing module as root.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Executing module as mercure.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># We might be operating in a user-remapped namespace. This makes sure that the user inside the container can read and write the files.</span>
+        <span class="p">(</span> <span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="mo">0o777</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span> <span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*&quot;</span><span class="p">):</span>
+                <span class="n">k</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="mo">0o666</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unable to prepare input files for processor. The receiver may be running as root, which is no longer supported. &quot;</span><span class="p">)</span>
+        <span class="p">(</span> <span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="mo">0o777</span><span class="p">)</span>
+
+        <span class="n">container</span>  <span class="o">=</span> <span class="n">docker_client</span><span class="o">.</span><span class="n">containers</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
             <span class="n">docker_tag</span><span class="p">,</span>
             <span class="n">volumes</span><span class="o">=</span><span class="n">merged_volumes</span><span class="p">,</span>
             <span class="n">environment</span><span class="o">=</span><span class="n">environment</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">runtime</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">set_command</span><span class="p">,</span>
             <span class="o">**</span><span class="n">arguments</span><span class="p">,</span>
-            <span class="n">user</span><span class="o">=</span><span class="n">uid_string</span><span class="p">,</span>
-            <span class="n">group_add</span><span class="o">=</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">getegid</span><span class="p">()],</span>
+            <span class="o">**</span><span class="n">user_info</span><span class="p">,</span>
             <span class="n">detach</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -309,14 +366,46 @@
         <span class="n">docker_result</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">docker_result</span><span class="p">)</span>
 
+        <span class="c1"># In lieu of making mercure a sudoer...</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Changing the ownership of the output directory...&quot;</span><span class="p">)</span>
+        <span class="n">docker_client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="s2">&quot;busybox:stable-musl&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;docker&quot;</span><span class="p">:</span>
+            <span class="c1"># We need to set the owner to the &quot;real&quot;, unremapped mercure user that lives outside of the container, ie our actual uid.</span>
+            <span class="c1"># If docker isn&#39;t in usrns remap mode then this shouldn&#39;t have an effect.</span>
+            <span class="n">set_usrns_mode</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;userns_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span> <span class="p">}</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># We&#39;re running inside docker, so we need to set the owner to our actual uid inside this container (probably 1000), not the one outside.</span>
+            <span class="c1"># If docker is in userns remap mode then this will get mapped, which is what we want. </span>
+            <span class="n">set_usrns_mode</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">docker_client</span><span class="o">.</span><span class="n">containers</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="s2">&quot;busybox:stable-musl&quot;</span><span class="p">,</span>
+            <span class="n">volumes</span><span class="o">=</span><span class="n">merged_volumes</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">set_usrns_mode</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;chown -R </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getegid</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">container_out_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">detach</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Reset the permissions to owner rwx, world readonly. </span>
+        <span class="p">(</span> <span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="mo">0o755</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span> <span class="n">real_folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*&quot;</span><span class="p">):</span>
+            <span class="n">k</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="mo">0o644</span><span class="p">)</span>
         <span class="c1"># Print the log out of the module</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== MODULE OUTPUT - BEGIN ========================================&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">logs</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logs</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">logs</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_logs</span><span class="o">.</span><span class="n">discard_logs</span><span class="p">:</span>
-                <span class="n">monitor</span><span class="o">.</span><span class="n">send_process_logs</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_process_logs</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">logs</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== MODULE OUTPUT - END ==========================================&quot;</span><span class="p">)</span>
+
+        <span class="k">await</span> <span class="n">monitor</span><span class="o">.</span><span class="n">async_send_task_event</span><span class="p">(</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_MODULE_COMPLETE</span><span class="p">,</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">file_count_begin</span><span class="p">,</span>
+            <span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Processing module complete&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># Check if the processing was successful (i.e., container returned exit code 0)</span>
         <span class="n">exit_code</span> <span class="o">=</span> <span class="n">docker_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;StatusCode&quot;</span><span class="p">)</span>
@@ -324,32 +413,36 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error while running container </span><span class="si">{</span><span class="n">docker_tag</span><span class="si">}</span><span class="s2"> - exit code </span><span class="si">{</span><span class="n">exit_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
             <span class="n">processing_success</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="c1"># Remove the container now to avoid that the drive gets full</span>
-        <span class="n">container</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-
-    <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">APIError</span><span class="p">:</span>
+    <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">APIError</span><span class="p">:</span> <span class="c1"># type: ignore</span>
         <span class="c1"># Something really serious happened</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;API error while trying to run Docker container, tag: </span><span class="si">{</span><span class="n">docker_tag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="n">processing_success</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">ImageNotFound</span><span class="p">:</span>
+    <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">ImageNotFound</span><span class="p">:</span> <span class="c1"># type: ignore</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error running docker container. Image for tag </span><span class="si">{</span><span class="n">docker_tag</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="n">processing_success</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">container</span><span class="p">:</span>
+            <span class="c1"># Remove the container now to avoid that the drive gets full</span>
+            <span class="n">container</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">processing_success</span></div>
 
 
 <span class="nd">@log_helpers</span><span class="o">.</span><span class="n">clear_task_decorator_async</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">process_series</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">process_series</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;----------------------------------------------------------------------------------&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Now processing </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">processing_success</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">needs_dispatching</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">PROCESSING</span>
+
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">PROCESSING</span>
     <span class="n">lock</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">taskfile_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+    <span class="n">taskfile_path</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">lock_file</span><span class="o">.</span><span class="n">touch</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -380,36 +473,96 @@
             <span class="n">needs_dispatching</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Remember the number of incoming DCM files (for logging purpose)</span>
-        <span class="n">file_count_begin</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">DCMFILTER</span><span class="p">)))</span>
+        <span class="n">file_count_begin</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">DCMFILTER</span><span class="p">)))</span>
 
-        <span class="n">f_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">f_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;.processing&quot;</span><span class="p">:</span>
                 <span class="c1"># logger.info(f&quot;Moving {child}&quot;)</span>
-                <span class="n">child</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span> <span class="o">/</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span> <span class="o">/</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;nomad&quot;</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">process_runner</span> <span class="o">==</span> <span class="s2">&quot;nomad&quot;</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processing with Nomad.&quot;</span><span class="p">)</span>
             <span class="c1"># Use nomad if we&#39;re being run inside nomad, or we&#39;re configured to use nomad regardless</span>
-            <span class="n">processing_success</span> <span class="o">=</span> <span class="n">nomad_runtime</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">)</span>
+            <span class="n">runtime</span> <span class="o">=</span> <span class="n">nomad_runtime</span>
         <span class="k">elif</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;systemd&quot;</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processing with Docker&quot;</span><span class="p">)</span>
             <span class="c1"># Use docker if we&#39;re being run inside docker or just by systemd</span>
-            <span class="n">processing_success</span> <span class="o">=</span> <span class="k">await</span> <span class="n">docker_runtime</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">)</span>
+            <span class="n">runtime</span> <span class="o">=</span> <span class="n">docker_runtime</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">processing_success</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unable to determine valid runtime for processing&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">runtime</span> <span class="o">==</span> <span class="n">docker_runtime</span><span class="p">:</span> <span class="c1"># docker runtime might run several processing steps, need to put this event here</span>
+            <span class="k">await</span> <span class="n">monitor</span><span class="o">.</span><span class="n">async_send_task_event</span><span class="p">(</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_BEGIN</span><span class="p">,</span>
+                <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="n">file_count_begin</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">module_name</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">,</span><span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">)</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span> <span class="k">else</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Processing job running&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="c1"># There are multiple processing steps</span>
+        <span class="k">if</span> <span class="n">runtime</span> <span class="o">==</span> <span class="n">docker_runtime</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">retain_input_images</span><span class="p">:</span> <span class="c1"># Keep a copy of the input files</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==== TASK ====&quot;</span><span class="p">,</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+            <span class="n">copied_task</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">task_processing</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">):</span>
+                    <span class="c1"># As far as the processing step is concerned, theres&#39; only one processing step and it&#39;s this one,</span>
+                    <span class="c1"># so we copy this one&#39;s information into a copy of the task file and hand that to the container.</span>
+                    <span class="n">copied_task</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">task_processing</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">task_file</span><span class="p">:</span>
+                        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">copied_task</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">task_file</span><span class="p">)</span>
+
+                    <span class="n">processing_success</span> <span class="o">=</span> <span class="k">await</span> <span class="n">docker_runtime</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">,</span> <span class="n">task_processing</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">processing_success</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">handle_processor_output</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">task_processing</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+                    <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">task_processing</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span><span class="n">output</span><span class="p">))</span>
+                    <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="o">/</span> <span class="s2">&quot;result.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">missing_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="c1"># Move the results of the processing step to the input folder of the next one</span>
+                        <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">)</span>
+                        <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+                    <span class="n">task_processing</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>
+                <span class="c1"># Done all steps</span>
+                <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">retain_input_images</span><span class="p">:</span>
+                    <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">outputs</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="o">/</span> <span class="s2">&quot;result.json&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">task_file</span><span class="p">:</span>
+                    <span class="c1">#  logger.warning(f&quot;DUMPING to {folder / &#39;out&#39; / mercure_names.TASKFILE} TASK {task=}&quot;)</span>
+                     <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">task_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Multiple processing steps are only supported on the Docker runtime.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">task_process</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">TaskProcessing</span><span class="p">,</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
+            <span class="n">processing_success</span> <span class="o">=</span> <span class="k">await</span> <span class="n">runtime</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">file_count_begin</span><span class="p">,</span> <span class="n">task_process</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">processing_success</span><span class="p">:</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">handle_processor_output</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">task_process</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+                <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="c1"># type: ignore</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="c1"># logger.warning(f&quot;DUMPING to {folder / &#39;out&#39; / mercure_names.TASKFILE} TASK {task=}&quot;)</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+                <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">task_process</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span><span class="n">output</span><span class="p">))</span>
+        
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">processing_success</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">task_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Processing error.&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="n">task_id</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">task_id</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">taskfile_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">))[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Processing error.&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Processing error.&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Processing error.&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">task_id</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span>
@@ -418,12 +571,13 @@
         <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_runner</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;systemd&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">process_runner</span> <span class="o">!=</span> <span class="s2">&quot;nomad&quot;</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Docker processing complete&quot;</span><span class="p">)</span>
             <span class="c1"># Copy the task to the output folder (in case the module didn&#39;t move it)</span>
-            <span class="n">push_input_task</span><span class="p">(</span><span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span>
+            <span class="n">push_input_task</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span>
             <span class="c1"># If configured in the rule, copy the input images to the output folder</span>
-            <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">retain_input_images</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">push_input_images</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">,</span><span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">)</span><span class="o">.</span><span class="n">retain_input_images</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">push_input_images</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span>
             <span class="c1"># Remember the number of DCM files in the output folder (for logging purpose)</span>
-            <span class="n">file_count_complete</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">f_path</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">DCMFILTER</span><span class="p">)))</span>
+            <span class="n">file_count_complete</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">DCMFILTER</span><span class="p">)))</span>
+
             <span class="c1"># Push the results either to the success or error folder</span>
             <span class="n">move_results</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">lock</span><span class="p">,</span> <span class="n">processing_success</span><span class="p">,</span> <span class="n">needs_dispatching</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -432,11 +586,17 @@
                 <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span>
                     <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">PROCESS_COMPLETE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_count_complete</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Processing job complete&quot;</span>
                 <span class="p">)</span>
+                
                 <span class="c1"># If dispatching not needed, then trigger the completion notification (for docker/systemd)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">needs_dispatching</span><span class="p">:</span>
                     <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">COMPLETE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Task complete&quot;</span><span class="p">)</span>
                     <span class="c1"># TODO: task really is never none if processing_success is true</span>
-                    <span class="n">trigger_notification</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+                    <span class="n">request_do_send</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">if</span> <span class="n">outputs</span> <span class="ow">and</span> <span class="n">task</span> <span class="ow">and</span> <span class="p">(</span><span class="n">applied_rule</span> <span class="o">:=</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applied_rule&quot;</span><span class="p">)))</span> <span class="ow">and</span> <span class="n">applied_rule</span><span class="o">.</span><span class="n">notification_trigger_completion_on_request</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">notification</span><span class="o">.</span><span class="n">get_task_requested_notification</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+                            <span class="n">request_do_send</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">trigger_notification</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> <span class="n">notification</span><span class="o">.</span><span class="n">get_task_custom_notification</span><span class="p">(</span><span class="n">task</span><span class="p">),</span> <span class="n">request_do_send</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Processing failed&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># TODO: handle if task is none?</span>
@@ -452,7 +612,7 @@
                     <span class="n">trigger_notification</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
     <span class="k">return</span>
 
-
+        
 <div class="viewcode-block" id="push_input_task"><a class="viewcode-back" href="../../process.html#process.process_series.push_input_task">[docs]</a><span class="k">def</span> <span class="nf">push_input_task</span><span class="p">(</span><span class="n">input_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
     <span class="n">task_json</span> <span class="o">=</span> <span class="n">output_folder</span> <span class="o">/</span> <span class="s2">&quot;task.json&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">task_json</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -481,13 +641,28 @@
             <span class="sa">f</span><span class="s2">&quot;Error while copying files to output folder </span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="n">error_info</span>
         <span class="p">)</span>  <span class="c1"># handle_error</span></div>
 
+<div class="viewcode-block" id="handle_processor_output"><a class="viewcode-back" href="../../process.html#process.process_series.handle_processor_output">[docs]</a><span class="k">def</span> <span class="nf">handle_processor_output</span><span class="p">(</span><span class="n">task</span><span class="p">:</span><span class="n">Task</span><span class="p">,</span> <span class="n">task_processing</span><span class="p">:</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;out&quot;</span> <span class="o">/</span> <span class="s2">&quot;result.json&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No result.json&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
+        <span class="c1"># Not json</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Failed to parse result.json&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Read result.json:&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_processor_output</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">task_processing</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
 
 <div class="viewcode-block" id="move_results"><a class="viewcode-back" href="../../process.html#process.process_series.move_results">[docs]</a><span class="k">def</span> <span class="nf">move_results</span><span class="p">(</span>
-    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">],</span> <span class="n">processing_success</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">needs_dispatching</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">],</span> <span class="n">processing_success</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">needs_dispatching</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># Create a new lock file to ensure that no other process picks up the folder while copying</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Moving results folder </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;with&#39;</span> <span class="k">if</span> <span class="n">needs_dispatching</span> <span class="k">else</span> <span class="s1">&#39;without&#39;</span><span class="si">}</span><span class="s2"> dispatching&quot;</span><span class="p">)</span>
-    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Moving results folder </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;with&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">needs_dispatching</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;without&#39;</span><span class="si">}</span><span class="s2"> dispatching&quot;</span><span class="p">)</span>
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span>
     <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Folder already contains lockfile </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/&quot;</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
         <span class="k">return</span>
@@ -499,22 +674,21 @@
 
     <span class="k">if</span> <span class="n">lock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-
     <span class="k">if</span> <span class="ow">not</span> <span class="n">processing_success</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failing: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">error_folder</span><span class="p">,</span> <span class="n">move_all</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">error_folder</span><span class="p">),</span> <span class="n">move_all</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">needs_dispatching</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dispatching: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="p">)</span>
+            <span class="n">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Success: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">success_folder</span><span class="p">)</span></div>
+            <span class="n">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">success_folder</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="move_out_folder"><a class="viewcode-back" href="../../process.html#process.process_series.move_out_folder">[docs]</a><span class="k">def</span> <span class="nf">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source_folder_str</span><span class="p">,</span> <span class="n">destination_folder_str</span><span class="p">,</span> <span class="n">move_all</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">source_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">source_folder_str</span><span class="p">)</span>
-    <span class="n">destination_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destination_folder_str</span><span class="p">)</span>
+<div class="viewcode-block" id="move_out_folder"><a class="viewcode-back" href="../../process.html#process.process_series.move_out_folder">[docs]</a><span class="k">def</span> <span class="nf">move_out_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">destination_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">move_all</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># source_folder = Path(source_folder_str)</span>
+    <span class="c1"># destination_folder = Path(destination_folder_str)</span>
 
     <span class="n">target_folder</span> <span class="o">=</span> <span class="n">destination_folder</span> <span class="o">/</span> <span class="n">source_folder</span><span class="o">.</span><span class="n">name</span>
     <span class="k">if</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -537,66 +711,15 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error moving folder </span><span class="si">{</span><span class="n">source_folder</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">destination_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span></div>
 
 
-<div class="viewcode-block" id="trigger_notification"><a class="viewcode-back" href="../../process.html#process.process_series.trigger_notification">[docs]</a><span class="k">def</span> <span class="nf">trigger_notification</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">task_info</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span>
-    <span class="n">current_rule</span> <span class="o">=</span> <span class="n">task_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applied_rule&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Notification </span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="trigger_notification"><a class="viewcode-back" href="../../process.html#process.process_series.trigger_notification">[docs]</a><span class="k">def</span> <span class="nf">trigger_notification</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">mercure_events</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">send_always</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">current_rule_name</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applied_rule&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Notification </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># Check if the rule is available</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">current_rule</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">current_rule_name</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing applied_rule in task file in task </span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span>
 
-    <span class="c1"># Check if the mercure configuration still contains that rule</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">Rule</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Applied rule not existing anymore in mercure configuration from task </span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span>
-        <span class="p">)</span>  <span class="c1"># handle_error</span>
-        <span class="k">return</span>
-
-    <span class="n">notification_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-    <span class="c1"># Now fire the webhook if configured</span>
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_reception</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">notification_type</span> <span class="o">=</span> <span class="s2">&quot;RECEPTION&quot;</span>
-
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_completion</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">notification_type</span> <span class="o">=</span> <span class="s2">&quot;COMPLETION&quot;</span>
-
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_error</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">notification_type</span> <span class="o">=</span> <span class="s2">&quot;ERROR&quot;</span>
-
-    <span class="k">if</span> <span class="n">notification_type</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span>
-            <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">NOTIFICATION</span><span class="p">,</span>
-            <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="mi">0</span><span class="p">,</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;Announced &quot;</span> <span class="o">+</span> <span class="n">notification_type</span><span class="p">,</span>
-        <span class="p">)</span></div>
+    <span class="n">notification</span><span class="o">.</span><span class="n">trigger_notification_for_rule</span><span class="p">(</span><span class="n">current_rule_name</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">send_always</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -606,7 +729,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -620,11 +743,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

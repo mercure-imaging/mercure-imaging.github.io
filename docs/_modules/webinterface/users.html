@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>webinterface.users &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>webinterface.users &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>webinterface.users</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">webinterface.users</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -131,7 +135,8 @@
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span><span class="p">,</span> <span class="n">mercure_names</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
-
+<span class="kn">from</span> <span class="nn">decoRouter</span> <span class="kn">import</span> <span class="n">Router</span> <span class="k">as</span> <span class="n">decoRouter</span>
+<span class="n">router</span> <span class="o">=</span> <span class="n">decoRouter</span><span class="p">()</span>
 
 <span class="c1">###################################################################################</span>
 <span class="c1">## Helper functions</span>
@@ -158,7 +163,7 @@
 
 
 <div class="viewcode-block" id="read_users"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.read_users">[docs]</a><span class="k">def</span> <span class="nf">read_users</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Reads the user list from the configuration file. The file will only be read if it has been updated since the last</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads the user list from the configuration file. The file will only be read if it has been updated since the last</span>
 <span class="sd">    function call. If the file does not exist, create a new user file.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">users_list</span>
     <span class="k">global</span> <span class="n">users_timestamp</span>
@@ -194,7 +199,7 @@
 
 
 <div class="viewcode-block" id="create_users"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.create_users">[docs]</a><span class="k">def</span> <span class="nf">create_users</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Create new users file and create seed admin account with name &quot;admin&quot; and password &quot;router&quot;.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create new users file and create seed admin account with name &quot;admin&quot; and password &quot;router&quot;.&quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No user file found. Creating user list with seed admin account.&quot;</span><span class="p">)</span>
     <span class="k">global</span> <span class="n">users_list</span>
     <span class="n">users_list</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;admin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">hash_password</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">),</span> <span class="s2">&quot;is_admin&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;change_password&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="p">}}</span>
@@ -203,7 +208,7 @@
 
 
 <div class="viewcode-block" id="save_users"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.save_users">[docs]</a><span class="k">def</span> <span class="nf">save_users</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Write the users list into a file on the disk.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write the users list into a file on the disk.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">users_list</span>
     <span class="k">global</span> <span class="n">users_timestamp</span>
     <span class="n">users_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">users_filename</span><span class="p">)</span>
@@ -227,7 +232,7 @@
 
 
 <div class="viewcode-block" id="evaluate_password"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.evaluate_password">[docs]</a><span class="k">def</span> <span class="nf">evaluate_password</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check if the given password for the given user is correct. Hashed passwords are stored with salt.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the given password for the given user is correct. Hashed passwords are stored with salt.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">password</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -248,12 +253,12 @@
 
 
 <div class="viewcode-block" id="hash_password"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.hash_password">[docs]</a><span class="k">def</span> <span class="nf">hash_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Hash the password using the passlib library.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hash the password using the passlib library.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pwd_context</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">password</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="is_admin"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.is_admin">[docs]</a><span class="k">def</span> <span class="nf">is_admin</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check in the user list if the given user has admin rights.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check in the user list if the given user has admin rights.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">users_list</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -264,7 +269,7 @@
 
 
 <div class="viewcode-block" id="needs_change_password"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.needs_change_password">[docs]</a><span class="k">def</span> <span class="nf">needs_change_password</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check if the given user has to change his password after login.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the given user has to change his password after login.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">users_list</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -279,13 +284,11 @@
 <span class="c1">###################################################################################</span>
 
 
-<span class="n">users_app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">()</span>
 
-
-<div class="viewcode-block" id="show_users"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.show_users">[docs]</a><span class="nd">@users_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="show_users"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.show_users">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;homepage&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_users</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Shows all available users.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shows all available users.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">read_users</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -297,10 +300,10 @@
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="add_new_user"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.add_new_user">[docs]</a><span class="nd">@users_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="add_new_user"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.add_new_user">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;homepage&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">add_new_user</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Creates a new user and redirects to the user-edit page.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a new user and redirects to the user-edit page.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">read_users</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -325,10 +328,10 @@
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/users/edit/&quot;</span> <span class="o">+</span> <span class="n">newuser</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="users_edit"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.users_edit">[docs]</a><span class="nd">@users_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{user}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="users_edit"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.users_edit">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{user}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">users_edit</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Shows the settings for a given user.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shows the settings for a given user.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">read_users</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -351,10 +354,10 @@
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="users_edit_post"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.users_edit_post">[docs]</a><span class="nd">@users_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{user}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="users_edit_post"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.users_edit_post">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{user}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">users_edit_post</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Updates the given user with settings passed as form parameters.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Updates the given user with settings passed as form parameters.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">read_users</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -393,10 +396,10 @@
         <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/users&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="users_delete_post"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.users_delete_post">[docs]</a><span class="nd">@users_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{user}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="users_delete_post"><a class="viewcode-back" href="../../webinterface.html#webinterface.users.users_delete_post">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{user}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">users_delete_post</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Deletes the given users.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deletes the given users.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -415,6 +418,8 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted user </span><span class="si">{</span><span class="n">deleteuser</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_webgui_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">w_events</span><span class="o">.</span><span class="n">USER_DELETE</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">deleteuser</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/users&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
+
+<span class="n">users_app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">router</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -424,7 +429,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -438,11 +443,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

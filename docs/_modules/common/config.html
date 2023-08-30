@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.config &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>common.config &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>common.config</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">common.config</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -117,20 +121,17 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">cast</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-
+<span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Config</span>
-
-
 <span class="kn">from</span> <span class="nn">common.log_helpers</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">import</span> <span class="nn">common.tagslist</span> <span class="k">as</span> <span class="nn">tagslist</span>
 
-
-<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
 <span class="c1"># Create local logger instance</span>
-
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
 <span class="n">configuration_timestamp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">configuration_filename</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/mercure.json&quot;</span>
@@ -156,6 +157,7 @@
     <span class="s2">&quot;series_complete_trigger&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># in seconds</span>
     <span class="s2">&quot;study_complete_trigger&quot;</span><span class="p">:</span> <span class="mi">900</span><span class="p">,</span>  <span class="c1"># in seconds</span>
     <span class="s2">&quot;study_forcecomplete_trigger&quot;</span><span class="p">:</span> <span class="mi">5400</span><span class="p">,</span>  <span class="c1"># in seconds</span>
+    <span class="s2">&quot;dicom_receiver&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;additional_tags&quot;</span><span class="p">:</span> <span class="p">[]},</span>
     <span class="s2">&quot;graphite_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;graphite_port&quot;</span><span class="p">:</span> <span class="mi">2003</span><span class="p">,</span>
     <span class="s2">&quot;bookkeeper&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.0.0:8080&quot;</span><span class="p">,</span>
@@ -167,14 +169,15 @@
     <span class="s2">&quot;modules&quot;</span><span class="p">:</span> <span class="p">{},</span>
     <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;dummy_target&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
     <span class="s2">&quot;processing_logs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;discard_logs&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">&quot;email_notification_from&quot;</span><span class="p">:</span><span class="s2">&quot;mercure@mercure.mercure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;support_root_modules&quot;</span><span class="p">:</span> <span class="kc">False</span>
 <span class="p">}</span>
 
 <span class="n">mercure</span><span class="p">:</span> <span class="n">Config</span>
 
 
 <div class="viewcode-block" id="read_config"><a class="viewcode-back" href="../../common.html#common.config.read_config">[docs]</a><span class="k">def</span> <span class="nf">read_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
-
-    <span class="sd">&quot;&quot;&quot;Reads the configuration settings (rules, targets, general settings) from the configuration file. The configuration will</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads the configuration settings (rules, targets, general settings) from the configuration file. The configuration will</span>
 <span class="sd">    only be updated if the file has changed compared the the last function call. If the configuration file is locked by</span>
 <span class="sd">    another process, an exception will be raised.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">mercure</span>
@@ -220,6 +223,12 @@
             <span class="c1"># logger.info(json.dumps(mercure, indent=4))</span>
             <span class="c1"># logger.info(&quot;&quot;)</span>
 
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">read_tagslist</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unable to parse list of additional tags. Check configuration file.&quot;</span><span class="p">)</span>
+
             <span class="n">configuration_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
             <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;Configuration updated&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">mercure</span>
@@ -228,7 +237,7 @@
 
 
 <div class="viewcode-block" id="save_config"><a class="viewcode-back" href="../../common.html#common.config.save_config">[docs]</a><span class="k">def</span> <span class="nf">save_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Saves the current configuration in a file on the disk. Raises an exception if the file has</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Saves the current configuration in a file on the disk. Raises an exception if the file has</span>
 <span class="sd">    been locked by another process.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">configuration_timestamp</span><span class="p">,</span> <span class="n">mercure</span>
     <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">configuration_filename</span><span class="p">)</span>
@@ -266,7 +275,7 @@
 
 
 <div class="viewcode-block" id="write_configfile"><a class="viewcode-back" href="../../common.html#common.config.write_configfile">[docs]</a><span class="k">def</span> <span class="nf">write_configfile</span><span class="p">(</span><span class="n">json_content</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Rewrites the config file using the JSON data passed as argument. Used by the config editor of the webgui.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rewrites the config file using the JSON data passed as argument. Used by the config editor of the webgui.&quot;&quot;&quot;</span>
     <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">configuration_filename</span><span class="p">)</span>
 
     <span class="c1"># Check for existence of lock file</span>
@@ -296,7 +305,7 @@
 
 
 <div class="viewcode-block" id="check_folders"><a class="viewcode-back" href="../../common.html#common.config.check_folders">[docs]</a><span class="k">def</span> <span class="nf">check_folders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Checks if all required folders for handling the DICOM files exist.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if all required folders for handling the DICOM files exist.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">mercure</span>
 
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="p">[</span>
@@ -329,6 +338,13 @@
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="read_tagslist"><a class="viewcode-back" href="../../common.html#common.config.read_tagslist">[docs]</a><span class="k">def</span> <span class="nf">read_tagslist</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads the list of supported DICOM tags with example values, displayed the UI.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">mercure</span>
+    <span class="n">tagslist</span><span class="o">.</span><span class="n">alltags</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">tagslist</span><span class="o">.</span><span class="n">default_tags</span><span class="p">,</span> <span class="o">**</span><span class="n">mercure</span><span class="o">.</span><span class="n">dicom_receiver</span><span class="o">.</span><span class="n">additional_tags</span><span class="p">}</span>
+    <span class="n">tagslist</span><span class="o">.</span><span class="n">sortedtags</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tagslist</span><span class="o">.</span><span class="n">alltags</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -338,7 +354,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -352,11 +368,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

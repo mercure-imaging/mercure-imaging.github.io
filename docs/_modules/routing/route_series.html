@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>routing.route_series &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>routing.route_series &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>routing.route_series</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">routing.route_series</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -143,7 +147,7 @@
 
 <span class="nd">@log_helpers</span><span class="o">.</span><span class="n">clear_task_decorator</span>
 <span class="k">def</span> <span class="nf">route_series</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Processes the series with the given series UID from the incoming folder.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">setTask</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
@@ -226,7 +230,7 @@
 <div class="viewcode-block" id="get_triggered_rules"><a class="viewcode-back" href="../../routing.html#routing.route_series.get_triggered_rules">[docs]</a><span class="k">def</span> <span class="nf">get_triggered_rules</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tagList</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]]]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluates the routing rules and returns a list with triggered rules.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -272,7 +276,7 @@
 <div class="viewcode-block" id="push_series_complete"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_series_complete">[docs]</a><span class="k">def</span> <span class="nf">push_series_complete</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">discard_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Moves all files of the series into either the &quot;discard&quot; or &quot;success&quot; folders, which both are periodically cleared.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Define the source and target folder. Use UUID as name for the target folder in the</span>
@@ -333,7 +337,7 @@
     <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Prepeares study-level routing for the current series.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Move series into individual study-level folder for every rule</span>
@@ -391,7 +395,7 @@
     <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Prepeares all series-level routings for the current series.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">push_serieslevel_routing</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span>
@@ -423,7 +427,7 @@
                     <span class="n">selected_targets</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_rule</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">selected_targets</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_rule</span><span class="p">)</span>
-            <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+            <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
     <span class="n">push_serieslevel_outgoing</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">selected_targets</span><span class="p">)</span></div>
 
@@ -495,7 +499,7 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
                     <span class="k">return</span> <span class="kc">False</span>
 
-                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
@@ -511,8 +515,8 @@
     <span class="k">for</span> <span class="n">current_rule</span> <span class="ow">in</span> <span class="n">triggered_rules</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_trigger&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">SERIES</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">SERIES</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">NOTIFICATION</span><span class="p">:</span>
-                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
-                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
                 <span class="n">notification_rules_count</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="c1"># If the current rule is &quot;notification-only&quot; and this is the only rule that has been</span>
@@ -535,7 +539,7 @@
     <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">selected_targets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Move the DICOM files of the series to a separate subfolder for each target in the outgoing folder.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">source_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
@@ -615,7 +619,7 @@
 
 
 <div class="viewcode-block" id="push_files"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_files">[docs]</a><span class="k">def</span> <span class="nf">push_files</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">target_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Copies or moves the given files to the target path. If copy_files is True, files are copied, otherwise moved.</span>
 <span class="sd">    Note that this function does not create a lock file (this needs to be done by the calling function).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -648,7 +652,7 @@
 
 
 <div class="viewcode-block" id="remove_series"><a class="viewcode-back" href="../../routing.html#routing.route_series.remove_series">[docs]</a><span class="k">def</span> <span class="nf">remove_series</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Deletes the given files from the incoming folder.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">source_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
@@ -666,7 +670,7 @@
 
 
 <div class="viewcode-block" id="route_error_files"><a class="viewcode-back" href="../../routing.html#routing.route_series.route_error_files">[docs]</a><span class="k">def</span> <span class="nf">route_error_files</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Looks for error files, moves these files and the corresponding DICOM files to the error folder,</span>
 <span class="sd">    and sends an alert to the bookkeeper instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -708,48 +712,8 @@
     <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="trigger_serieslevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_series.trigger_serieslevel_notification">[docs]</a><span class="k">def</span> <span class="nf">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">event</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">notification_type</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_reception</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task_id</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">notification_type</span> <span class="o">=</span> <span class="s1">&#39;RECEPTION&#39;</span>
-
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_completion</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task_id</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">notification_type</span> <span class="o">=</span> <span class="s1">&#39;COMPLETION&#39;</span>            
-
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_error</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task_id</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">notification_type</span> <span class="o">=</span> <span class="s1">&#39;ERROR&#39;</span>
-
-    <span class="k">if</span> <span class="n">notification_type</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span>
-            <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">NOTIFICATION</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> 
-            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> 
-            <span class="s2">&quot;Announced &quot;</span> <span class="o">+</span> <span class="n">notification_type</span>
-        <span class="p">)</span></div>
+<div class="viewcode-block" id="trigger_serieslevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_series.trigger_serieslevel_notification">[docs]</a><span class="k">def</span> <span class="nf">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">event</span><span class="p">:</span><span class="n">mercure_events</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">notification</span><span class="o">.</span><span class="n">trigger_notification_for_rule</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -759,7 +723,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -773,11 +737,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

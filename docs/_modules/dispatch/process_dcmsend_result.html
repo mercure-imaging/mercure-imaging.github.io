@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dispatch.process_dcmsend_result &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>dispatch.process_dcmsend_result &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>dispatch.process_dcmsend_result</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dispatch.process_dcmsend_result</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -140,7 +144,7 @@
 
 
 <div class="viewcode-block" id="parse"><a class="viewcode-back" href="../../dispatch.html#dispatch.process_dcmsend_result.parse">[docs]</a><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">result_file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Parses the dcmsend result file and returns a python dictionary.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses the dcmsend result file and returns a python dictionary.&quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">result_file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
@@ -148,7 +152,9 @@
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Status Summary&quot;</span><span class="p">):</span>
             <span class="n">summary_start</span> <span class="o">=</span> <span class="n">index</span>
-
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to parse dcmsend result.&quot;</span><span class="p">)</span>
     <span class="n">result</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_parse_summary</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">summary_start</span><span class="p">:])</span>
     <span class="c1"># Just take the first 8 lines of the result file,</span>
     <span class="c1"># optimistic guessing length of the header</span>
@@ -157,7 +163,7 @@
 
 
 <div class="viewcode-block" id="create_arg_parser"><a class="viewcode-back" href="../../dispatch.html#dispatch.process_dcmsend_result.create_arg_parser">[docs]</a><span class="k">def</span> <span class="nf">create_arg_parser</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Creates and returns the ArgumentParser object.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates and returns the ArgumentParser object.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Creates stripped json representation of a dcmsend result text file and prints it out.&quot;</span>
     <span class="p">)</span>
@@ -181,7 +187,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -195,11 +201,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

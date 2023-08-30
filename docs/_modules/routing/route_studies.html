@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>routing.route_studies &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>routing.route_studies &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>routing.route_studies</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">routing.route_studies</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -146,7 +150,7 @@
 
 
 <div class="viewcode-block" id="route_studies"><a class="viewcode-back" href="../../routing.html#routing.route_studies.route_studies">[docs]</a><span class="k">def</span> <span class="nf">route_studies</span><span class="p">(</span><span class="n">pending_series</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Searches for completed studies and initiates the routing of the completed studies</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: Handle studies that exceed the &quot;force completion&quot; timeout in the &quot;CONDITION_RECEIVED_SERIES&quot; mode</span>
@@ -182,7 +186,7 @@
 
 
 <div class="viewcode-block" id="is_study_locked"><a class="viewcode-back" href="../../routing.html#routing.route_studies.is_study_locked">[docs]</a><span class="k">def</span> <span class="nf">is_study_locked</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns true if the given folder is locked, i.e. if another process is already working on the study</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
@@ -195,7 +199,7 @@
 
 
 <div class="viewcode-block" id="is_study_complete"><a class="viewcode-back" href="../../routing.html#routing.route_studies.is_study_complete">[docs]</a><span class="k">def</span> <span class="nf">is_study_complete</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pending_series</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns true if the study in the given folder is ready for processing, i.e. if the completeness criteria of the triggered rule has been met</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -247,7 +251,7 @@
 
 
 <div class="viewcode-block" id="check_study_timeout"><a class="viewcode-back" href="../../routing.html#routing.route_studies.check_study_timeout">[docs]</a><span class="k">def</span> <span class="nf">check_study_timeout</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">TaskHasStudy</span><span class="p">,</span> <span class="n">pending_series</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks if the duration since the last series of the study was received exceeds the study completion timeout</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking study timeout&quot;</span><span class="p">)</span>
@@ -272,7 +276,7 @@
 
 
 <div class="viewcode-block" id="check_study_series"><a class="viewcode-back" href="../../routing.html#routing.route_studies.check_study_series">[docs]</a><span class="k">def</span> <span class="nf">check_study_series</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">TaskHasStudy</span><span class="p">,</span> <span class="n">required_series</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks if all series required for study completion have been received</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">received_series</span> <span class="o">=</span> <span class="p">[]</span>
@@ -287,7 +291,7 @@
 
 <span class="nd">@log_helpers</span><span class="o">.</span><span class="n">clear_task_decorator</span>
 <span class="k">def</span> <span class="nf">route_study</span><span class="p">(</span><span class="n">study</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Processses the study in the folder &#39;study&#39;. Loads the task file and delegates the action to helper functions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Route_study </span><span class="si">{</span><span class="n">study</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -359,33 +363,33 @@
 
 
 <div class="viewcode-block" id="push_studylevel_dispatch"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_dispatch">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_dispatch</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pushes the study folder to the dispatchter, including the generated task file containing the destination information</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">)</span>
+    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">move_study_folder</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="s2">&quot;OUTGOING&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="push_studylevel_processing"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_processing">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_processing</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pushes the study folder to the processor, including the generated task file containing the processing instructions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">)</span>
+    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">move_study_folder</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="s2">&quot;PROCESSING&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="push_studylevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_notification">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Executes the study-level reception notification</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">)</span>
-    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">)</span>
+    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">)</span>
+    <span class="n">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
     <span class="n">move_study_folder</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="push_studylevel_error"><a class="viewcode-back" href="../../routing.html#routing.route_studies.push_studylevel_error">[docs]</a><span class="k">def</span> <span class="nf">push_studylevel_error</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pushes the study folder to the error folder after unsuccessful processing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">study_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study</span>
@@ -410,7 +414,7 @@
 
 
 <div class="viewcode-block" id="move_study_folder"><a class="viewcode-back" href="../../routing.html#routing.route_studies.move_study_folder">[docs]</a><span class="k">def</span> <span class="nf">move_study_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Moves the study subfolder to the specified destination with proper locking of the folders</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Move_study_folder </span><span class="si">{</span><span class="n">study</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -477,7 +481,7 @@
 
 
 <div class="viewcode-block" id="remove_study_folder"><a class="viewcode-back" href="../../routing.html#routing.route_studies.remove_study_folder">[docs]</a><span class="k">def</span> <span class="nf">remove_study_folder</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes a study folder containing nothing but the lock file (called during cleanup after all files have</span>
 <span class="sd">    been moved somewhere else already)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -497,47 +501,13 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="trigger_studylevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_studies.trigger_studylevel_notification">[docs]</a><span class="k">def</span> <span class="nf">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="trigger_studylevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_studies.trigger_studylevel_notification">[docs]</a><span class="k">def</span> <span class="nf">trigger_studylevel_notification</span><span class="p">(</span><span class="n">study</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">mercure_events</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="c1"># Check if the applied_rule is available</span>
     <span class="n">current_rule</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">applied_rule</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">current_rule</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing applied_rule in task file in study </span><span class="si">{</span><span class="n">study</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="c1"># Check if the mercure configuration still contains that rule</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">Rule</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Applied rule not existing anymore in mercure configuration </span><span class="si">{</span><span class="n">study</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="c1"># OK, now fire out the webhook if configured</span>
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_reception</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEPTION</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="p">)</span>
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_completion</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETION</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="p">)</span>
-    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">notification_trigger_error</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">notification</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_webhook&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
-                <span class="n">current_rule</span><span class="p">,</span>
-                <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="p">)</span>
-
+    <span class="n">notification</span><span class="o">.</span><span class="n">trigger_notification_for_rule</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span><span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 </pre></div>
 
@@ -548,7 +518,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -562,11 +532,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

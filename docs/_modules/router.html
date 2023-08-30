@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>router &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>router &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html">
-            <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Module code</a> &raquo;</li>
-      <li>router</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">router</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -135,7 +139,7 @@
 
 
 <div class="viewcode-block" id="terminate_process"><a class="viewcode-back" href="../router.html#router.terminate_process">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">terminate_process</span><span class="p">(</span><span class="n">signalNumber</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Triggers the shutdown of the service</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">helper</span><span class="o">.</span><span class="n">g_log</span><span class="p">(</span><span class="s2">&quot;events.shutdown&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -148,7 +152,7 @@
 
 
 <div class="viewcode-block" id="run_router"><a class="viewcode-back" href="../router.html#router.run_router">[docs]</a><span class="k">def</span> <span class="nf">run_router</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main processing function that is called every second</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">helper</span><span class="o">.</span><span class="n">is_terminated</span><span class="p">():</span>
@@ -223,7 +227,7 @@
 
 
 <div class="viewcode-block" id="exit_router"><a class="viewcode-back" href="../router.html#router.exit_router">[docs]</a><span class="k">def</span> <span class="nf">exit_router</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Callback function that is triggered when the process terminates. Stops the asyncio event loop</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span></div>
@@ -274,9 +278,9 @@
         <span class="n">graphyte</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_port</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">graphite_prefix</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Incoming folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">        Studies folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">        Outgoing folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="si">}</span><span class="s2"></span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Incoming folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span><span class="si">}</span>
+<span class="s2">        Studies folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span><span class="si">}</span>
+<span class="s2">        Outgoing folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="si">}</span>
 <span class="s2">        Processing folder: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
     <span class="p">)</span>
 
@@ -312,7 +316,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -326,11 +330,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

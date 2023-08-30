@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.types &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>common.types &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>common.types</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">common.types</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -139,7 +143,7 @@
 
 <div class="viewcode-block" id="Target.validate"><a class="viewcode-back" href="../../common.html#common.types.Target.validate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parse the target as any of the known target types.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the target as any of the known target types.&quot;&quot;&quot;</span>
 
         <span class="n">subclass_dict</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">Target</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">sbc</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">sbc</span> <span class="k">for</span> <span class="n">sbc</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()}</span>
 
@@ -210,8 +214,8 @@
     <span class="n">contact</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">constraints</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">resources</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
-
+    <span class="n">resources</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">requires_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="UnsetRule"><a class="viewcode-back" href="../../common.html#common.types.UnsetRule">[docs]</a><span class="k">class</span> <span class="nc">UnsetRule</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span></div>
@@ -230,13 +234,18 @@
     <span class="n">study_trigger_condition</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;received_series&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;timeout&quot;</span>
     <span class="n">study_trigger_series</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">priority</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span> <span class="s2">&quot;urgent&quot;</span><span class="p">,</span> <span class="s2">&quot;offpeak&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;normal&quot;</span>
-    <span class="n">processing_module</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">processing_settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">processing_module</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">processing_settings</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">processing_retain_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">notification_email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">notification_webhook</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">notification_payload</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">notification_payload_body</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">notification_email_body</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">notification_email_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;plain&quot;</span>
     <span class="n">notification_trigger_reception</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">notification_trigger_completion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">notification_trigger_completion_on_request</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">notification_trigger_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
@@ -244,6 +253,10 @@
     <span class="n">discard_logs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">logs_file_store</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
+
+<div class="viewcode-block" id="DicomReceiverConfig"><a class="viewcode-back" href="../../common.html#common.types.DicomReceiverConfig">[docs]</a><span class="k">class</span> <span class="nc">DicomReceiverConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">additional_tags</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
+    
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../common.html#common.types.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">appliance_name</span><span class="p">:</span> <span class="nb">str</span>
@@ -256,16 +269,17 @@
     <span class="n">error_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">discard_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">processing_folder</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">router_scan_interval</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
-    <span class="n">dispatcher_scan_interval</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
-    <span class="n">cleaner_scan_interval</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
-    <span class="n">retention</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds (3 days)</span>
-    <span class="n">emergency_clean_percentage</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in % of disk space</span>
-    <span class="n">retry_delay</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds (15 min)</span>
+    <span class="n">router_scan_interval</span><span class="p">:</span> <span class="nb">int</span>       <span class="c1"># in seconds</span>
+    <span class="n">dispatcher_scan_interval</span><span class="p">:</span> <span class="nb">int</span>   <span class="c1"># in seconds</span>
+    <span class="n">cleaner_scan_interval</span><span class="p">:</span> <span class="nb">int</span>      <span class="c1"># in seconds</span>
+    <span class="n">retention</span><span class="p">:</span> <span class="nb">int</span>                  <span class="c1"># in seconds (3 days)</span>
+    <span class="n">emergency_clean_percentage</span><span class="p">:</span> <span class="nb">int</span> <span class="c1"># in % of disk space</span>
+    <span class="n">retry_delay</span><span class="p">:</span> <span class="nb">int</span>                <span class="c1"># in seconds (15 min)</span>
     <span class="n">retry_max</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">series_complete_trigger</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
-    <span class="n">study_complete_trigger</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
+    <span class="n">series_complete_trigger</span><span class="p">:</span> <span class="nb">int</span>    <span class="c1"># in seconds</span>
+    <span class="n">study_complete_trigger</span><span class="p">:</span> <span class="nb">int</span>     <span class="c1"># in seconds</span>
     <span class="n">study_forcecomplete_trigger</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in seconds</span>
+    <span class="n">dicom_receiver</span><span class="p">:</span> <span class="n">DicomReceiverConfig</span> <span class="o">=</span> <span class="n">DicomReceiverConfig</span><span class="p">()</span>
     <span class="n">graphite_ip</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">graphite_port</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">bookkeeper</span><span class="p">:</span> <span class="nb">str</span>
@@ -275,9 +289,12 @@
     <span class="n">rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Rule</span><span class="p">]</span>
     <span class="n">modules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Module</span><span class="p">]</span>
     <span class="n">process_runner</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;nomad&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">processing_runtime</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">bookkeeper_api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
-    <span class="n">processing_logs</span><span class="p">:</span> <span class="n">ProcessingLogsConfig</span> <span class="o">=</span> <span class="n">ProcessingLogsConfig</span><span class="p">()</span></div>
+    <span class="n">processing_logs</span><span class="p">:</span> <span class="n">ProcessingLogsConfig</span> <span class="o">=</span> <span class="n">ProcessingLogsConfig</span><span class="p">()</span>
+    <span class="n">email_notification_from</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mercure@mercure.mercure&quot;</span>
+    <span class="n">support_root_modules</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="TaskInfo"><a class="viewcode-back" href="../../common.html#common.types.TaskInfo">[docs]</a><span class="k">class</span> <span class="nc">TaskInfo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
@@ -286,6 +303,7 @@
     <span class="n">uid_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">]</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]</span>
     <span class="n">applied_rule</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">patient_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">mrn</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">acc</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">mercure_version</span><span class="p">:</span> <span class="nb">str</span>
@@ -315,8 +333,8 @@
     <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">module_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Module</span><span class="p">]</span>
     <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">retain_input_images</span><span class="p">:</span> <span class="nb">bool</span></div>
-
+    <span class="n">retain_input_images</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span></div>
 
 <span class="c1"># class PydanticFile(object):</span>
 <span class="c1">#     def __init__(self, klass, file_name):</span>
@@ -348,7 +366,7 @@
     <span class="n">info</span><span class="p">:</span> <span class="n">TaskInfo</span>
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">dispatch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">process</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">process</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">,</span><span class="n">List</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">study</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskStudy</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">nomad_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
 
@@ -367,7 +385,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -381,11 +399,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);

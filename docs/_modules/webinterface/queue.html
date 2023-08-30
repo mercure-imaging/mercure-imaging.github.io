@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>webinterface.queue &mdash; mercure Version 0.2.2-beta.1 documentation</title>
+  <title>webinterface.queue &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -28,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html">
-            <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.2.2-beta.1
+                Version 0.3.0-alpha.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +72,7 @@
 <p class="caption" role="heading"><span class="caption-text">Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../announcements.html">Announcements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
@@ -90,9 +94,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>webinterface.queue</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">webinterface.queue</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -127,7 +131,8 @@
 <span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">get_user_information</span>
 <span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">templates</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span>
-
+<span class="kn">from</span> <span class="nn">decoRouter</span> <span class="kn">import</span> <span class="n">Router</span> <span class="k">as</span> <span class="n">decoRouter</span>
+<span class="n">router</span> <span class="o">=</span> <span class="n">decoRouter</span><span class="p">()</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
@@ -137,13 +142,10 @@
 <span class="c1">###################################################################################</span>
 
 
-<span class="n">queue_app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">()</span>
-
-
-<div class="viewcode-block" id="show_queues"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_queues">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="show_queues"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_queues">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_queues</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Shows all installed modules&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shows all installed modules&quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
@@ -172,7 +174,7 @@
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="show_jobs_processing"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_processing">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/processing&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="show_jobs_processing"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_processing">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/jobs/processing&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_processing</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -202,8 +204,11 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">:</span>
-                        <span class="n">job_module</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="n">job_module</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">module_name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">job_module</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span>
                     <span class="n">job_acc</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span>
                     <span class="n">job_mrn</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span>
                     <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">uid_type</span> <span class="o">==</span> <span class="s2">&quot;series&quot;</span><span class="p">:</span>
@@ -234,7 +239,7 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">sorted_jobs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="show_jobs_routing"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_routing">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/routing&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="show_jobs_routing"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_routing">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/jobs/routing&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_routing</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -291,7 +296,7 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">sorted_jobs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="force_study_complete"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.force_study_complete">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/studies/force-complete&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="force_study_complete"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.force_study_complete">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/jobs/studies/force-complete&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">force_study_complete</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
@@ -304,7 +309,7 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="show_jobs_studies"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_studies">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/studies&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="show_jobs_studies"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_studies">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/jobs/studies&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_studies</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -365,7 +370,7 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="show_jobs_fail"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_fail">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobs/fail&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="show_jobs_fail"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_jobs_fail">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/jobs/fail&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_jobs_fail</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -412,7 +417,7 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="show_queues_status"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_queues_status">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/status&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="show_queues_status"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.show_queues_status">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/status&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_queues_status</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 
@@ -477,7 +482,7 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">queue_status</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="set_queues_status"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.set_queues_status">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/status&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="set_queues_status"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.set_queues_status">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/status&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">set_queues_status</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 
@@ -511,7 +516,7 @@
     <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;OK&quot;</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="get_jobinfo"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.get_jobinfo">[docs]</a><span class="nd">@queue_app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/jobinfo/</span><span class="si">{category}</span><span class="s2">/</span><span class="si">{id}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="get_jobinfo"><a class="viewcode-back" href="../../webinterface.html#webinterface.queue.get_jobinfo">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/jobinfo/</span><span class="si">{category}</span><span class="s2">/</span><span class="si">{id}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">get_jobinfo</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -549,6 +554,8 @@
         <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">loaded_task</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Task not found. Refresh view!&quot;</span><span class="p">)</span></div>
+
+<span class="n">queue_app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">router</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -558,7 +565,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023, Kai Tobias Block, Roy Wiggins, Joshy Cyriac.</p>
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -572,11 +579,6 @@
     </section>
   </div>
   <div class="rst-versions">
-    <a href="https://twitter.com/mercure_imaging" target="_blank">
-    <span class="rst-current-version" style="text-align: center;">
-      <span class="fa fa-twitter">&nbsp;&nbsp;Follow us on Twitter</span>
-    </span>
-    </a>
 </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
