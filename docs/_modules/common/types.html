@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.types &mdash; mercure Version 0.3.0-alpha.1 documentation</title>
+  <title>common.types &mdash; mercure Version 0.3.0-beta.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.0-alpha.1
+                Version 0.3.0-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -174,6 +174,14 @@
     <span class="n">user</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="XnatTarget"><a class="viewcode-back" href="../../common.html#common.types.XnatTarget">[docs]</a><span class="k">class</span> <span class="nc">XnatTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+    <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;xnat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xnat&quot;</span>
+    <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">user</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
 <div class="viewcode-block" id="DicomWebTarget"><a class="viewcode-back" href="../../common.html#common.types.DicomWebTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomWebTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
