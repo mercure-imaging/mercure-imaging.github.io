@@ -22,7 +22,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Advanced Topics" href="advanced.html" />
     <link rel="prev" title="Installation" href="install.html" />
-<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
 
 </head>
 
@@ -160,7 +160,7 @@
 </section>
 <section id="configuring-targets">
 <h2>Configuring targets<a class="headerlink" href="#configuring-targets" title="Permalink to this heading"></a></h2>
-<p>Target nodes that should receive processed and routed DICOM series (via DICOM or SFTP connection) can be defined and configured on the “Targets” page. The first page shows an overview of the currently configured targets. By clicking on an individual item, you can see the target details (e.g., IP address and port). You can test if the target can be reached by clicking the “Test” button, which will try to ping the server and open a connection (via C-Echo or SFTP).</p>
+<p>Target nodes that should receive processed and routed DICOM series (via DICOM, DICOM+TLS or SFTP connection) can be defined and configured on the “Targets” page. The first page shows an overview of the currently configured targets. By clicking on an individual item, you can see the target details (e.g., IP address and port). You can test if the target can be reached by clicking the “Test” button, which will try to ping the server and open a connection (via C-Echo or SFTP).</p>
 <a class="border reference internal image-reference" href="_images/ui_targets.png"><img alt="_images/ui_targets.png" class="border align-center" src="_images/ui_targets.png" style="width: 550px;" /></a>
 <p>Click the “Add New” button to create a new target. This can be done during normal operation of the server, i.e. it is not necessary to stop any of the services for adding new targets.</p>
 <a class="border reference internal image-reference" href="_images/ui_target_edit.png"><img alt="_images/ui_target_edit.png" class="border align-center" src="_images/ui_target_edit.png" style="width: 550px;" /></a>
@@ -178,6 +178,15 @@
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Support for SFTP transfers is still experimental and should be used with care.</p>
+</div>
+<p>For DICOM TLS targets, enter the TLS client key path, TLS client certificate path, and the path to the Certificate Authority (CA) certificate file. You will need to add these files to your mercure installation, e.g. in <cite>/opt/mercure/certs</cite>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Support for DICOM TLS transfers is still experimental and should be used with care.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Due to an incompatibility in DICOM toolkit v3.6.4 and OpenSSL v1.1.1, the dcmtk and openssl versions supported by Ubuntu 20.04, only Ubuntu 22.04 mercure installs support DICOM+TLS targets.</p>
 </div>
 <p>On the “Information” tab, you can add information for documentation purpose, including a contact e-mail address (so that it can be looked up who should be contacted if problems with the target occur) and a description of the target.</p>
 </section>

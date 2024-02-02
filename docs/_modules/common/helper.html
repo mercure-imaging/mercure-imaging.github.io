@@ -19,7 +19,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
 
 </head>
 
@@ -246,7 +246,7 @@
 <div class="viewcode-block" id="FileLock"><a class="viewcode-back" href="../../common.html#common.helper.FileLock">[docs]</a><span class="k">class</span> <span class="nc">FileLock</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class that implements a file lock. The lock file will be removed also from the destructor so that</span>
 <span class="sd">    no spurious lock files remain if exceptions are raised.&quot;&quot;&quot;</span>
-
+    <span class="n">lockCreated</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_for_lockfile</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lockfile</span> <span class="o">=</span> <span class="n">path_for_lockfile</span>
         <span class="c1"># TODO: Handle case if lock file cannot be created</span>

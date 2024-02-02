@@ -22,7 +22,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="Quick Start" href="quickstart.html" />
-<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
 
 </head>
 
@@ -60,6 +60,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#installation-types">Installation types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-mercure">Installing mercure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#locations">Locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dicom-reception-over-tls-connection">DICOM Reception over TLS Connection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#congratulations">Congratulations</a></li>
 </ul>
 </li>
@@ -187,6 +188,60 @@
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The source code located in the /app folder is directly executed only for systemd-type installations. Docker and Nomad installations execute container images instead. By default, these images are downloaded from Docker Hub. If you want to modify the mercure source code, you need to rebuild the container images for the changes to go into effect. This can be done with the script build-docker.sh.</p>
+</div>
+</section>
+<section id="dicom-reception-over-tls-connection">
+<h2>DICOM Reception over TLS Connection<a class="headerlink" href="#dicom-reception-over-tls-connection" title="Permalink to this heading"></a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Support for the DICOM TLS receiver mode is still experimental and should be used with care.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Due to an incompatibility in DICOM toolkit v3.6.4 and OpenSSL v1.1.1, the dcmtk and openssl versions supported by Ubuntu 20.04, only Ubuntu 22.04 mercure installs support TLS reception.</p>
+</div>
+<p>The following environment variables must be defined to run mercure in DICOM TLS receiver mode. This can be done, for example, by adding the values to the /etc/environment file. First, set <cite>MERCURE_TLS_ENABLED</cite> to <cite>1</cite>. Next, specify the paths to your server TLS key, certificate, and CA certificate, as shown in the below sample configuration.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Environment Variable</p></th>
+<th class="head"><p>Example Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MERCURE_TLS_ENABLED</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERCURE_TLS_KEY</p></td>
+<td><p>/opt/mercure/tls/private_key.pem</p></td>
+</tr>
+<tr class="row-even"><td><p>MERCURE_TLS_CERT</p></td>
+<td><p>/opt/mercure/tls/certificate.pem</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERCURE_TLS_CA_CERT</p></td>
+<td><p>/opt/mercure/tls/CA_certificate.pem</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following example shows how to create your own Certificate Authority (CA) to self-sign your own certificates. In production, you will likely use your organization’s certificate authority to sign the TLS receiver certificate, or create an intermediate CA from your organizational CA to sign CSR when generating certificates.</p>
+</div>
+<p>Here are some example steps to create a self-signed certificate authority and TLS key/certificate that can be utilized for use mercure in DICOM TLS receiver mode.</p>
+<ul class="simple">
+<li><p>Step 1: Generate the CA key: <cite>openssl genrsa -out CA_key.pem 4096</cite></p></li>
+<li><p>Step 2: Create the CA certificate: <cite>openssl req -new -x509 -days 3650 -key CA_key.pem -out CA_certificate.pem</cite></p></li>
+<li><p>Step 3: Create a TLS private key: <cite>openssl genrsa -out SCP_private_key.pem 4096</cite></p></li>
+<li><p>Step 4: Create a CSR (Certificate Signing Request) with the TLS private key: <cite>openssl req -new -key private_key.pem -out receiver_csr.pem</cite></p></li>
+<li><p>Step 5: Sign the CSR with the CA private key and certificate to generate the TLS certificate: <cite>openssl x509 -req -days 3650 -in receiver_csr.pem -CA CA_certificate.pem -CAkey CA_key.pem -CAcreateserial -out certificate.pem</cite></p></li>
+<li><p>Step 6: Verify that the generated TLS certificate is valid against the CA certificate: <cite>openssl verify -CAfile CA_certificate.pem certificate.pem</cite></p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When creating the CSR, ensure that the CSR common name is NOT the same as the CA common name. If so, the openssl certificate validation will fail and you will not be able to receive DICOM data over TLS.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember to add both your TLS receiver private key (private_key.pem), certificate file (certificate.pem), and CA certificate file (CA_certificate.pem) to the file system of your mercure installation and specify the above environment variables to enable TLS receiver mode.</p>
 </div>
 </section>
 <section id="congratulations">

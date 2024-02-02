@@ -19,7 +19,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
 
 </head>
 
@@ -220,6 +220,9 @@
     <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Invalid module name provided.&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;A module with this name already exists.&quot;</span><span class="p">)</span>
 
@@ -231,6 +234,8 @@
             <span class="n">client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">get_registry_data</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;docker_tag&quot;</span><span class="p">])</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A Docker container with this tag does not exist locally or in the Docker Hub registry.&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable read container list. Check Docker installation and firewall settings.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;container_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;monai&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">support_root_modules</span> <span class="o">!=</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MONAI modules must run as root user, but the setting &#39;Support Root Modules&#39; is disabled in the mercure configuration. Enable it on the Configuration page before installing MONAI modules.&quot;</span><span class="p">)</span>

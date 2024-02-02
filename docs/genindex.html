@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
-<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
 
 </head>
 
@@ -170,10 +170,10 @@
 </li>
       <li><a href="webinterface.html#webinterface.users.add_new_user">add_new_user() (in module webinterface.users)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="routing.html#routing.generate_taskfile.add_processing">add_processing() (in module routing.generate_taskfile)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webinterface.html#webinterface.rules.add_rule">add_rule() (in module webinterface.rules)</a>
 </li>
       <li><a href="routing.html#routing.generate_taskfile.add_study">add_study() (in module routing.generate_taskfile)</a>
@@ -185,9 +185,17 @@
       <li><a href="common.html#common.types.Module.additional_volumes">additional_volumes (common.types.Module attribute)</a>
 </li>
       <li><a href="common.html#common.types.DicomTarget.aet_source">aet_source (common.types.DicomTarget attribute)</a>
+
+      <ul>
+        <li><a href="common.html#common.types.DicomTLSTarget.aet_source">(common.types.DicomTLSTarget attribute)</a>
 </li>
+      </ul></li>
       <li><a href="common.html#common.types.DicomTarget.aet_target">aet_target (common.types.DicomTarget attribute)</a>
+
+      <ul>
+        <li><a href="common.html#common.types.DicomTLSTarget.aet_target">(common.types.DicomTLSTarget attribute)</a>
 </li>
+      </ul></li>
       <li><a href="common.html#common.types.Config.appliance_name">appliance_name (common.types.Config attribute)</a>
 </li>
       <li><a href="common.html#common.types.TaskInfo.applied_rule">applied_rule (common.types.TaskInfo attribute)</a>
@@ -231,13 +239,11 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common.html#common.types.DicomTLSTarget.ca_cert">ca_cert (common.types.DicomTLSTarget attribute)</a>
+</li>
       <li><a href="webinterface.html#webinterface.users.User.change_password">change_password (webinterface.users.User attribute)</a>
 </li>
       <li><a href="common.html#common.config.check_folders">check_folders() (in module common.config)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.check_study_series">check_study_series() (in module routing.route_studies)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.check_study_timeout">check_study_timeout() (in module routing.route_studies)</a>
 </li>
       <li><a href="cleaner.html#cleaner.clean">clean() (in module cleaner)</a>
 </li>
@@ -286,13 +292,6 @@
 
       <ul>
         <li><a href="common.html#module-common.monitor">module</a>
-</li>
-      </ul></li>
-      <li>
-    common.notification
-
-      <ul>
-        <li><a href="common.html#module-common.notification">module</a>
 </li>
       </ul></li>
       <li>
@@ -388,11 +387,15 @@
 </li>
       <li><a href="webgui.html#webgui.delete_old_tests">delete_old_tests() (in module webgui)</a>
 </li>
+      <li><a href="common.html#common.types.TaskInfo.device_serial_number">device_serial_number (common.types.TaskInfo attribute)</a>
+</li>
       <li><a href="common.html#common.types.Config.dicom_receiver">dicom_receiver (common.types.Config attribute)</a>
 </li>
       <li><a href="common.html#common.types.DicomReceiverConfig">DicomReceiverConfig (class in common.types)</a>
 </li>
       <li><a href="common.html#common.types.DicomTarget">DicomTarget (class in common.types)</a>
+</li>
+      <li><a href="common.html#common.types.DicomTLSTarget">DicomTLSTarget (class in common.types)</a>
 </li>
       <li><a href="common.html#common.types.DicomWebTarget">DicomWebTarget (class in common.types)</a>
 </li>
@@ -406,6 +409,8 @@
         <li><a href="common.html#common.constants.mercure_folders.DISCARD">(common.constants.mercure_folders attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Config.discard_folder">discard_folder (common.types.Config attribute)</a>
 </li>
       <li><a href="common.html#common.types.ProcessingLogsConfig.discard_logs">discard_logs (common.types.ProcessingLogsConfig attribute)</a>
@@ -413,10 +418,6 @@
       <li><a href="common.html#common.constants.mercure_sections.DISPATCH">DISPATCH (common.constants.mercure_sections attribute)</a>
 </li>
       <li><a href="common.html#common.types.Task.dispatch">dispatch (common.types.Task attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dispatcher.html#dispatcher.dispatch">dispatch() (in module dispatcher)</a>
 </li>
       <li>
     dispatch.process_dcmsend_result
@@ -433,24 +434,10 @@
 </li>
       </ul></li>
       <li>
-    dispatch.send
-
-      <ul>
-        <li><a href="dispatch.html#module-dispatch.send">module</a>
-</li>
-      </ul></li>
-      <li>
     dispatch.status
 
       <ul>
         <li><a href="dispatch.html#module-dispatch.status">module</a>
-</li>
-      </ul></li>
-      <li>
-    dispatcher
-
-      <ul>
-        <li><a href="dispatcher.html#module-dispatcher">module</a>
 </li>
       </ul></li>
       <li><a href="common.html#common.types.Config.dispatcher_scan_interval">dispatcher_scan_interval (common.types.Config attribute)</a>
@@ -458,8 +445,6 @@
       <li><a href="common.html#common.monitor.do_post">do_post() (in module common.monitor)</a>
 </li>
       <li><a href="common.html#common.types.Module.docker_arguments">docker_arguments (common.types.Module attribute)</a>
-</li>
-      <li><a href="process.html#process.process_series.docker_runtime">docker_runtime() (in module process.process_series)</a>
 </li>
       <li><a href="common.html#common.types.Module.docker_tag">docker_tag (common.types.Module attribute)</a>
 </li>
@@ -487,6 +472,8 @@
 </li>
       <li><a href="common.html#common.types.Module.environment">environment (common.types.Module attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_events.ERROR">ERROR (common.constants.mercure_events attribute)</a>
 
       <ul>
@@ -495,8 +482,6 @@
         <li><a href="common.html#common.constants.mercure_names.ERROR">(common.constants.mercure_names attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webgui.html#webgui.error">error() (in module webgui)</a>
 </li>
       <li><a href="common.html#common.types.Config.error_folder">error_folder (common.types.Config attribute)</a>
@@ -504,12 +489,6 @@
       <li><a href="webinterface.html#webinterface.users.evaluate_password">evaluate_password() (in module webinterface.users)</a>
 </li>
       <li><a href="cleaner.html#cleaner.exit_cleaner">exit_cleaner() (in module cleaner)</a>
-</li>
-      <li><a href="dispatcher.html#dispatcher.exit_dispatcher">exit_dispatcher() (in module dispatcher)</a>
-</li>
-      <li><a href="processor.html#processor.exit_processor">exit_processor() (in module processor)</a>
-</li>
-      <li><a href="router.html#router.exit_router">exit_router() (in module router)</a>
 </li>
       <li><a href="webgui.html#webgui.ExtendedUser">ExtendedUser (class in webgui)</a>
 </li>
@@ -575,23 +554,17 @@
 </li>
       <li><a href="common.html#common.helper.get_runner">get_runner() (in module common.helper)</a>
 </li>
-      <li><a href="common.html#common.monitor.get_series">get_series() (in module common.monitor)</a>
-</li>
-      <li><a href="common.html#common.notification.get_task_custom_notification">get_task_custom_notification() (in module common.notification)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common.html#common.monitor.get_series">get_series() (in module common.monitor)</a>
+</li>
       <li><a href="common.html#common.monitor.get_task_events">get_task_events() (in module common.monitor)</a>
 </li>
       <li><a href="common.html#common.monitor.get_task_info">get_task_info() (in module common.monitor)</a>
 </li>
-      <li><a href="common.html#common.notification.get_task_requested_notification">get_task_requested_notification() (in module common.notification)</a>
-</li>
       <li><a href="common.html#common.monitor.get_tasks">get_tasks() (in module common.monitor)</a>
 </li>
       <li><a href="common.html#common.monitor.get_tests">get_tests() (in module common.monitor)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.get_triggered_rules">get_triggered_rules() (in module routing.route_series)</a>
 </li>
       <li><a href="webinterface.html#webinterface.common.get_user_information">get_user_information() (in module webinterface.common)</a>
 </li>
@@ -606,8 +579,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_names.HALT">HALT (common.constants.mercure_names attribute)</a>
-</li>
-      <li><a href="process.html#process.process_series.handle_processor_output">handle_processor_output() (in module process.process_series)</a>
 </li>
       <li><a href="webinterface.html#webinterface.users.hash_password">hash_password() (in module webinterface.users)</a>
 </li>
@@ -646,7 +617,11 @@
       <li><a href="common.html#common.constants.mercure_options.INVALID">INVALID (common.constants.mercure_options attribute)</a>
 </li>
       <li><a href="common.html#common.types.DicomTarget.ip">ip (common.types.DicomTarget attribute)</a>
+
+      <ul>
+        <li><a href="common.html#common.types.DicomTLSTarget.ip">(common.types.DicomTLSTarget attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webgui.html#webgui.ExtendedUser.is_admin">is_admin (webgui.ExtendedUser property)</a>
@@ -660,10 +635,6 @@
       <li><a href="process.html#process.status.is_ready_for_processing">is_ready_for_processing() (in module process.status)</a>
 </li>
       <li><a href="dispatch.html#dispatch.status.is_ready_for_sending">is_ready_for_sending() (in module dispatch.status)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.is_study_complete">is_study_complete() (in module routing.route_studies)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.is_study_locked">is_study_locked() (in module routing.route_studies)</a>
 </li>
       <li><a href="dispatch.html#dispatch.status.is_target_json_valid">is_target_json_valid() (in module dispatch.status)</a>
 </li>
@@ -693,6 +664,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common.html#common.helper.FileLock.lockCreated">lockCreated (common.helper.FileLock attribute)</a>
+</li>
       <li><a href="webgui.html#webgui.login">login() (in module webgui)</a>
 </li>
       <li><a href="webgui.html#webgui.login_post">login_post() (in module webgui)</a>
@@ -711,12 +684,6 @@
 
       <ul>
         <li><a href="cleaner.html#cleaner.main">(in module cleaner)</a>
-</li>
-        <li><a href="dispatcher.html#dispatcher.main">(in module dispatcher)</a>
-</li>
-        <li><a href="processor.html#processor.main">(in module processor)</a>
-</li>
-        <li><a href="router.html#router.main">(in module router)</a>
 </li>
         <li><a href="webgui.html#webgui.main">(in module webgui)</a>
 </li>
@@ -775,8 +742,6 @@
 </li>
         <li><a href="common.html#module-common.monitor">common.monitor</a>
 </li>
-        <li><a href="common.html#module-common.notification">common.notification</a>
-</li>
         <li><a href="common.html#module-common.rule_evaluation">common.rule_evaluation</a>
 </li>
         <li><a href="common.html#module-common.tagslist">common.tagslist</a>
@@ -787,25 +752,11 @@
 </li>
         <li><a href="dispatch.html#module-dispatch.retry">dispatch.retry</a>
 </li>
-        <li><a href="dispatch.html#module-dispatch.send">dispatch.send</a>
-</li>
         <li><a href="dispatch.html#module-dispatch.status">dispatch.status</a>
-</li>
-        <li><a href="dispatcher.html#module-dispatcher">dispatcher</a>
-</li>
-        <li><a href="process.html#module-process.process_series">process.process_series</a>
 </li>
         <li><a href="process.html#module-process.status">process.status</a>
 </li>
-        <li><a href="processor.html#module-processor">processor</a>
-</li>
-        <li><a href="router.html#module-router">router</a>
-</li>
         <li><a href="routing.html#module-routing.generate_taskfile">routing.generate_taskfile</a>
-</li>
-        <li><a href="routing.html#module-routing.route_series">routing.route_series</a>
-</li>
-        <li><a href="routing.html#module-routing.route_studies">routing.route_studies</a>
 </li>
         <li><a href="webgui.html#module-webgui">webgui</a>
 </li>
@@ -838,12 +789,6 @@
 </li>
       <li><a href="common.html#common.monitor.MonitorHTTPError">MonitorHTTPError</a>
 </li>
-      <li><a href="process.html#process.process_series.move_out_folder">move_out_folder() (in module process.process_series)</a>
-</li>
-      <li><a href="process.html#process.process_series.move_results">move_results() (in module process.process_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.move_study_folder">move_study_folder() (in module routing.route_studies)</a>
-</li>
       <li><a href="common.html#common.constants.mercure_info.MRN">MRN (common.constants.mercure_info attribute)</a>
 </li>
       <li><a href="common.html#common.types.TaskInfo.mrn">mrn (common.types.TaskInfo attribute)</a>
@@ -859,8 +804,6 @@
       <li><a href="common.html#common.types.TaskDispatch.next_retry_at">next_retry_at (common.types.TaskDispatch attribute)</a>
 </li>
       <li><a href="common.html#common.types.Task.nomad_info">nomad_info (common.types.Task attribute)</a>
-</li>
-      <li><a href="process.html#process.process_series.nomad_runtime">nomad_runtime() (in module process.process_series)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_options.NORMAL">NORMAL (common.constants.mercure_options attribute)</a>
 </li>
@@ -878,10 +821,10 @@
 </li>
       <li><a href="common.html#common.types.Rule.notification_email_type">notification_email_type (common.types.Rule attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_rule.NOTIFICATION_PAYLOAD">NOTIFICATION_PAYLOAD (common.constants.mercure_rule attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Rule.notification_payload">notification_payload (common.types.Rule attribute)</a>
 </li>
       <li><a href="common.html#common.types.Rule.notification_payload_body">notification_payload_body (common.types.Rule attribute)</a>
@@ -936,8 +879,6 @@
 </li>
       <li><a href="common.html#common.rule_evaluation.parse_completion_series">parse_completion_series() (in module common.rule_evaluation)</a>
 </li>
-      <li><a href="common.html#common.notification.parse_payload">parse_payload() (in module common.notification)</a>
-</li>
       <li><a href="common.html#common.rule_evaluation.parse_rule">parse_rule() (in module common.rule_evaluation)</a>
 </li>
       <li><a href="common.html#common.types.SftpTarget.password">password (common.types.SftpTarget attribute)</a>
@@ -957,13 +898,11 @@
       <ul>
         <li><a href="common.html#common.types.DicomTarget.port">(common.types.DicomTarget attribute)</a>
 </li>
-      </ul></li>
-      <li><a href="common.html#common.monitor.post">post() (in module common.monitor)</a>
-
-      <ul>
-        <li><a href="common.html#common.notification.post">(in module common.notification)</a>
+        <li><a href="common.html#common.types.DicomTLSTarget.port">(common.types.DicomTLSTarget attribute)</a>
 </li>
       </ul></li>
+      <li><a href="common.html#common.monitor.post">post() (in module common.monitor)</a>
+</li>
       <li><a href="bookkeeper.html#bookkeeper.post_mercure_event">post_mercure_event() (in module bookkeeper)</a>
 </li>
       <li><a href="bookkeeper.html#bookkeeper.post_task_event">post_task_event() (in module bookkeeper)</a>
@@ -974,6 +913,8 @@
 </li>
       <li><a href="common.html#common.constants.mercure_rule.PRIORITY">PRIORITY (common.constants.mercure_rule attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Rule.priority">priority (common.types.Rule attribute)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_actions.PROCESS">PROCESS (common.constants.mercure_actions attribute)</a>
@@ -985,13 +926,6 @@
       <li><a href="common.html#common.types.Task.process">process (common.types.Task attribute)</a>
 </li>
       <li>
-    process.process_series
-
-      <ul>
-        <li><a href="process.html#module-process.process_series">module</a>
-</li>
-      </ul></li>
-      <li>
     process.status
 
       <ul>
@@ -1000,8 +934,6 @@
       </ul></li>
       <li><a href="common.html#common.types.Config.process_runner">process_runner (common.types.Config attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.constants.mercure_folders.PROCESSING">PROCESSING (common.constants.mercure_folders attribute)</a>
 
       <ul>
@@ -1024,44 +956,9 @@
 </li>
       <li><a href="common.html#common.types.ProcessingLogsConfig">ProcessingLogsConfig (class in common.types)</a>
 </li>
-      <li>
-    processor
-
-      <ul>
-        <li><a href="processor.html#module-processor">module</a>
-</li>
-      </ul></li>
       <li><a href="bookkeeper.html#bookkeeper.processor_logs">processor_logs() (in module bookkeeper)</a>
 </li>
       <li><a href="common.html#common.types.XnatTarget.project_id">project_id (common.types.XnatTarget attribute)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_files">push_files() (in module routing.route_series)</a>
-</li>
-      <li><a href="process.html#process.process_series.push_input_images">push_input_images() (in module process.process_series)</a>
-</li>
-      <li><a href="process.html#process.process_series.push_input_task">push_input_task() (in module process.process_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_series_complete">push_series_complete() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_series_serieslevel">push_series_serieslevel() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_series_studylevel">push_series_studylevel() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_serieslevel_notification">push_serieslevel_notification() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_serieslevel_outgoing">push_serieslevel_outgoing() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_serieslevel_processing">push_serieslevel_processing() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.push_serieslevel_routing">push_serieslevel_routing() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.push_studylevel_dispatch">push_studylevel_dispatch() (in module routing.route_studies)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.push_studylevel_error">push_studylevel_error() (in module routing.route_studies)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.push_studylevel_notification">push_studylevel_notification() (in module routing.route_studies)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.push_studylevel_processing">push_studylevel_processing() (in module routing.route_studies)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1101,10 +998,6 @@
 </li>
       <li><a href="bookkeeper.html#bookkeeper.register_task">register_task() (in module bookkeeper)</a>
 </li>
-      <li><a href="routing.html#routing.route_series.remove_series">remove_series() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.remove_study_folder">remove_study_folder() (in module routing.route_studies)</a>
-</li>
       <li><a href="common.html#common.helper.RepeatedTimer">RepeatedTimer (class in common.helper)</a>
 </li>
       <li><a href="common.html#common.rule_evaluation.replace_tags">replace_tags() (in module common.rule_evaluation)</a>
@@ -1119,25 +1012,14 @@
 </li>
       <li><a href="common.html#common.types.TaskDispatch.retries">retries (common.types.TaskDispatch attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Config.retry_delay">retry_delay (common.types.Config attribute)</a>
 </li>
       <li><a href="common.html#common.types.Config.retry_max">retry_max (common.types.Config attribute)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_actions.ROUTE">ROUTE (common.constants.mercure_actions attribute)</a>
 </li>
-      <li><a href="routing.html#routing.route_series.route_error_files">route_error_files() (in module routing.route_series)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="routing.html#routing.route_studies.route_studies">route_studies() (in module routing.route_studies)</a>
-</li>
-      <li>
-    router
-
-      <ul>
-        <li><a href="router.html#module-router">module</a>
-</li>
-      </ul></li>
       <li><a href="common.html#common.types.Config.router_scan_interval">router_scan_interval (common.types.Config attribute)</a>
 </li>
       <li>
@@ -1145,20 +1027,6 @@
 
       <ul>
         <li><a href="routing.html#module-routing.generate_taskfile">module</a>
-</li>
-      </ul></li>
-      <li>
-    routing.route_series
-
-      <ul>
-        <li><a href="routing.html#module-routing.route_series">module</a>
-</li>
-      </ul></li>
-      <li>
-    routing.route_studies
-
-      <ul>
-        <li><a href="routing.html#module-routing.route_studies">module</a>
 </li>
       </ul></li>
       <li><a href="common.html#common.types.Rule">Rule (class in common.types)</a>
@@ -1185,10 +1053,6 @@
 </li>
       <li><a href="webinterface.html#webinterface.rules.rules_test_completionseries">rules_test_completionseries() (in module webinterface.rules)</a>
 </li>
-      <li><a href="processor.html#processor.run_processor">run_processor() (in module processor)</a>
-</li>
-      <li><a href="router.html#router.run_router">run_router() (in module router)</a>
-</li>
       <li><a href="common.html#common.helper.AsyncTimer.run_until_complete">run_until_complete() (common.helper.AsyncTimer method)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_names.RUNNING">RUNNING (common.constants.mercure_names attribute)</a>
@@ -1207,8 +1071,6 @@
 </li>
       <li><a href="webinterface.html#webinterface.users.save_users">save_users() (in module webinterface.users)</a>
 </li>
-      <li><a href="processor.html#processor.search_folder">search_folder() (in module processor)</a>
-</li>
       <li><a href="common.html#common.types.S3Target.secret_access_key">secret_access_key (common.types.S3Target attribute)</a>
 </li>
       <li><a href="webgui.html#webgui.self_test">self_test() (in module webgui)</a>
@@ -1216,10 +1078,6 @@
       <li><a href="webgui.html#webgui.self_test_cleanup">self_test_cleanup() (in module webgui)</a>
 </li>
       <li><a href="webgui.html#webgui.self_test_notification">self_test_notification() (in module webgui)</a>
-</li>
-      <li><a href="common.html#common.notification.send_email">send_email() (in module common.notification)</a>
-</li>
-      <li><a href="common.html#common.notification.send_email_helper">send_email_helper() (in module common.notification)</a>
 </li>
       <li><a href="common.html#common.monitor.send_event">send_event() (in module common.monitor)</a>
 </li>
@@ -1239,7 +1097,7 @@
 </li>
       <li><a href="common.html#common.monitor.send_webgui_event">send_webgui_event() (in module common.monitor)</a>
 </li>
-      <li><a href="common.html#common.notification.send_webhook">send_webhook() (in module common.notification)</a>
+      <li><a href="common.html#common.types.TaskInfo.sender_address">sender_address (common.types.TaskInfo attribute)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_names.SENDLOG">SENDLOG (common.constants.mercure_names attribute)</a>
 </li>
@@ -1279,10 +1137,10 @@
 </li>
       <li><a href="webinterface.html#webinterface.queue.show_jobs_processing">show_jobs_processing() (in module webinterface.queue)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webinterface.html#webinterface.queue.show_jobs_routing">show_jobs_routing() (in module webinterface.queue)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="webinterface.html#webinterface.queue.show_jobs_studies">show_jobs_studies() (in module webinterface.queue)</a>
 </li>
       <li><a href="webgui.html#webgui.show_log">show_log() (in module webgui)</a>
@@ -1390,6 +1248,8 @@
       <li><a href="common.html#common.types.DicomTarget.target_type">target_type (common.types.DicomTarget attribute)</a>
 
       <ul>
+        <li><a href="common.html#common.types.DicomTLSTarget.target_type">(common.types.DicomTLSTarget attribute)</a>
+</li>
         <li><a href="common.html#common.types.DicomWebTarget.target_type">(common.types.DicomWebTarget attribute)</a>
 </li>
         <li><a href="common.html#common.types.DummyTarget.target_type">(common.types.DummyTarget attribute)</a>
@@ -1417,14 +1277,14 @@
 </li>
       <li><a href="common.html#common.types.Task">Task (class in common.types)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.Task.Config">Task.Config (class in common.types)</a>
 </li>
       <li><a href="common.html#common.monitor.task_event_payload">task_event_payload() (in module common.monitor)</a>
 </li>
       <li><a href="common.html#common.monitor.task_process_logs">task_process_logs() (in module common.monitor)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common.html#common.types.TaskDispatch">TaskDispatch (class in common.types)</a>
 </li>
       <li><a href="common.html#common.constants.mercure_names.TASKFILE">TASKFILE (common.constants.mercure_names attribute)</a>
@@ -1438,15 +1298,7 @@
       <li><a href="common.html#common.types.TaskStudy">TaskStudy (class in common.types)</a>
 </li>
       <li><a href="cleaner.html#cleaner.terminate_process">terminate_process() (in module cleaner)</a>
-
-      <ul>
-        <li><a href="dispatcher.html#dispatcher.terminate_process">(in module dispatcher)</a>
 </li>
-        <li><a href="processor.html#processor.terminate_process">(in module processor)</a>
-</li>
-        <li><a href="router.html#router.terminate_process">(in module router)</a>
-</li>
-      </ul></li>
       <li><a href="bookkeeper.html#bookkeeper.test_begin">test_begin() (in module bookkeeper)</a>
 </li>
       <li><a href="common.html#common.rule_evaluation.test_completion_series">test_completion_series() (in module common.rule_evaluation)</a>
@@ -1457,15 +1309,11 @@
 </li>
       <li><a href="common.html#common.rule_evaluation.test_rule">test_rule() (in module common.rule_evaluation)</a>
 </li>
+      <li><a href="common.html#common.types.DicomTLSTarget.tls_cert">tls_cert (common.types.DicomTLSTarget attribute)</a>
+</li>
+      <li><a href="common.html#common.types.DicomTLSTarget.tls_key">tls_key (common.types.DicomTLSTarget attribute)</a>
+</li>
       <li><a href="bookkeeper.html#bookkeeper.TokenAuth">TokenAuth (class in bookkeeper)</a>
-</li>
-      <li><a href="process.html#process.process_series.trigger_notification">trigger_notification() (in module process.process_series)</a>
-</li>
-      <li><a href="common.html#common.notification.trigger_notification_for_rule">trigger_notification_for_rule() (in module common.notification)</a>
-</li>
-      <li><a href="routing.html#routing.route_series.trigger_serieslevel_notification">trigger_serieslevel_notification() (in module routing.route_series)</a>
-</li>
-      <li><a href="routing.html#routing.route_studies.trigger_studylevel_notification">trigger_studylevel_notification() (in module routing.route_studies)</a>
 </li>
       <li><a href="common.html#common.helper.trigger_terminate">trigger_terminate() (in module common.helper)</a>
 </li>
@@ -1544,6 +1392,8 @@
         <li><a href="webgui.html#module-webgui">module</a>
 </li>
       </ul></li>
+      <li><a href="common.html#common.types.Config.webhook_certificate_location">webhook_certificate_location (common.types.Config attribute)</a>
+</li>
       <li>
     webinterface.common
 

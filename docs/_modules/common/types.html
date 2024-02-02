@@ -19,7 +19,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-<a href="https://github.com/orgs/mercure-imaging/discussions" target="_none" class="chat-button">Open Chat</a>
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
 
 </head>
 
@@ -168,6 +168,17 @@
     <span class="n">aet_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="DicomTLSTarget"><a class="viewcode-back" href="../../common.html#common.types.DicomTLSTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomTLSTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+    <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dicomtls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dicomtls&quot;</span>
+    <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">aet_target</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">aet_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">tls_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tls_cert</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ca_cert</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
 <div class="viewcode-block" id="SftpTarget"><a class="viewcode-back" href="../../common.html#common.types.SftpTarget">[docs]</a><span class="k">class</span> <span class="nc">SftpTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sftp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sftp&quot;</span>
     <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span>
@@ -302,7 +313,8 @@
     <span class="n">features</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
     <span class="n">processing_logs</span><span class="p">:</span> <span class="n">ProcessingLogsConfig</span> <span class="o">=</span> <span class="n">ProcessingLogsConfig</span><span class="p">()</span>
     <span class="n">email_notification_from</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mercure@mercure.mercure&quot;</span>
-    <span class="n">support_root_modules</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
+    <span class="n">support_root_modules</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">webhook_certificate_location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="TaskInfo"><a class="viewcode-back" href="../../common.html#common.types.TaskInfo">[docs]</a><span class="k">class</span> <span class="nc">TaskInfo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
@@ -314,10 +326,11 @@
     <span class="n">patient_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">mrn</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">acc</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">sender_address</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">mercure_version</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">mercure_appliance</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">mercure_server</span><span class="p">:</span> <span class="nb">str</span></div>
-
+    <span class="n">mercure_server</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">device_serial_number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="TaskDispatch"><a class="viewcode-back" href="../../common.html#common.types.TaskDispatch">[docs]</a><span class="k">class</span> <span class="nc">TaskDispatch</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span>
