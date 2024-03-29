@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Package webinterface &mdash; mercure Version 0.3.0-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Package webinterface &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.0-beta.1
+                Version 0.3.1-alpha.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -135,6 +137,12 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.async_run_exec">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">async_run_exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/webinterface/common.html#async_run_exec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.async_run_exec" title="Permalink to this definition"></a></dt>
+<dd><p>Executes the given command in a way compatible with ayncio.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="webinterface.common.get_user_information">
 <span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">get_user_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/webinterface/common.html#get_user_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.get_user_information" title="Permalink to this definition"></a></dt>
 <dd><p>Returns dictionary of values that should always be passed to the templates when the user is logged in.</p>
@@ -147,6 +155,18 @@
 <section id="modules-py">
 <h3>modules.py<a class="headerlink" href="#modules-py" title="Permalink to this heading"></a></h3>
 <p>Modules page for the graphical user interface of mercure.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.modules.BadRequestResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">BadRequestResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#BadRequestResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.BadRequestResponse" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PlainTextResponse</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.modules.ServerErrorResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">ServerErrorResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#ServerErrorResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.ServerErrorResponse" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PlainTextResponse</span></code></p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="webinterface.modules.add_module">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">add_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/webinterface/modules.html#add_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.add_module" title="Permalink to this definition"></a></dt>
@@ -173,7 +193,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="webinterface.modules.save_module">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">save_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="_modules/webinterface/modules.html#save_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.save_module" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">save_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/webinterface/modules.html#save_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.save_module" title="Permalink to this definition"></a></dt>
 <dd><p>Save the settings for the module with the given name.</p>
 </dd></dl>
 
@@ -355,7 +375,7 @@ can be modified if multiple instances of individual services should be used to i
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="webinterface.users.User.change_password">
-<span class="sig-name descname"><span class="pre">change_password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">False</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.users.User.change_password" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">change_password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'True'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'False'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.users.User.change_password" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -365,7 +385,7 @@ can be modified if multiple instances of individual services should be used to i
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="webinterface.users.User.is_admin">
-<span class="sig-name descname"><span class="pre">is_admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">False</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.users.User.is_admin" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'True'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'False'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.users.User.is_admin" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

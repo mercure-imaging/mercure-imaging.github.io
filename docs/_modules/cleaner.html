@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleaner &mdash; mercure Version 0.3.0-beta.1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <title>cleaner &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.0-beta.1
+                Version 0.3.1-alpha.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -136,6 +138,8 @@
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
 <span class="kn">from</span> <span class="nn">common.monitor</span> <span class="kn">import</span> <span class="n">task_event</span>
 <span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
+<span class="kn">import</span> <span class="nn">common.influxdb</span>
+<span class="kn">import</span> <span class="nn">common.notification</span> <span class="k">as</span> <span class="nn">notification</span>
 
 
 <span class="c1"># Setup daiquiri logger</span>
@@ -320,6 +324,7 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instance  PID  = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
 
+    <span class="n">notification</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;cleaner&quot;</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">bookkeeper</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">BOOT</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;PID = </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -330,6 +335,16 @@
             <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_ip</span><span class="p">,</span>
             <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">graphite_port</span><span class="p">,</span>
             <span class="n">prefix</span><span class="o">=</span><span class="n">graphite_prefix</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">influxdb_host</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending events to influxdb server: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">influxdb_host</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">common</span><span class="o">.</span><span class="n">influxdb</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">influxdb_host</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">influxdb_token</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">influxdb_org</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">influxdb_bucket</span><span class="p">,</span>
+            <span class="s2">&quot;mercure.&quot;</span> <span class="o">+</span> <span class="n">appliance_name</span> <span class="o">+</span> <span class="s2">&quot;.cleaner.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span>
         <span class="p">)</span>
 
     <span class="k">global</span> <span class="n">main_loop</span>

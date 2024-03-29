@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Service dispatcher &mdash; mercure Version 0.3.0-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Service dispatcher &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.0-beta.1
+                Version 0.3.1-alpha.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -121,8 +123,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="service-dispatcher">
-<h1>Service dispatcher<a class="headerlink" href="#service-dispatcher" title="Permalink to this heading"></a></h1>
+  <section id="module-dispatcher">
+<span id="service-dispatcher"></span><h1>Service dispatcher<a class="headerlink" href="#module-dispatcher" title="Permalink to this heading"></a></h1>
+<section id="dispatcher-py">
+<h2>dispatcher.py<a class="headerlink" href="#dispatcher-py" title="Permalink to this heading"></a></h2>
+<p>The dispatcher service of mercure that executes the DICOM transfer to the different targets.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatcher.dispatch">
+<span class="sig-prename descclassname"><span class="pre">dispatcher.</span></span><span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dispatcher.html#dispatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatcher.dispatch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatcher.exit_dispatcher">
+<span class="sig-prename descclassname"><span class="pre">dispatcher.</span></span><span class="sig-name descname"><span class="pre">exit_dispatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dispatcher.html#exit_dispatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatcher.exit_dispatcher" title="Permalink to this definition"></a></dt>
+<dd><p>Stop the asyncio event loop.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatcher.main">
+<span class="sig-prename descclassname"><span class="pre">dispatcher.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['-b',</span> <span class="pre">'html',</span> <span class="pre">'-d',</span> <span class="pre">'_build/doctrees',</span> <span class="pre">'.',</span> <span class="pre">'_build/html']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dispatcher.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatcher.main" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatcher.terminate_process">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatcher.</span></span><span class="sig-name descname"><span class="pre">terminate_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signalNumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dispatcher.html#terminate_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatcher.terminate_process" title="Permalink to this definition"></a></dt>
+<dd><p>Triggers the shutdown of the service.</p>
+</dd></dl>
+
+</section>
 </section>
 
 

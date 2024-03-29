@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced Topics &mdash; mercure Version 0.3.0-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Advanced Topics &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.0-beta.1
+                Version 0.3.1-alpha.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -62,6 +64,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#configuration-files">Configuration files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#additional-settings">Additional settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scaling-services">Scaling services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-on-apple-macs-with-arm-processors">Installation on Apple Macs with ARM processors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
@@ -284,6 +287,53 @@
 </pre></div>
 </div>
 <p>As last step, it is necessary to authorize the mercure system user to control the duplicated services. This is done by editing the file <strong>/etc/sudoers.d/mercure</strong> (using a user account with sudo permission) and adding a line for each duplicated service (according to the name specified above). When copying an existing line from the file, make sure to change every occurrence of the service name in the line.</p>
+</section>
+<section id="installation-on-apple-macs-with-arm-processors">
+<h2>Installation on Apple Macs with ARM processors<a class="headerlink" href="#installation-on-apple-macs-with-arm-processors" title="Permalink to this heading"></a></h2>
+<p>Because the modern Apple Mac computers with M1/M2/M3 processors use a different architecture (ARM) than the older Intel-based Macs, it is not possible to directly run virtual machines with x86 architecture. Therefore, the installation instructions described in the Quickstart section do not work. It is still possible to run mercure on these Macs by using a software-based virtualization software called QEMU. However, this is VERY slow and may only be useful for initial testing purposes.</p>
+<p>The following steps describe how to install and run mercure on a Mac with an Mx processor:</p>
+<ul class="simple">
+<li><p>Download and install  <a class="reference external" href="https://virtualbox.org/">VirtualBox</a>. <strong>Note:</strong> The latest version currently does not support ARM Macs. Go to download page, go to older builds, Version 7.0.8 supports ARM Mac (Developer Preview)</p></li>
+<li><p>Make sure that Homebrew is installed</p></li>
+<li><p>Run the following commands to install Qemu and Vagrant</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">install</span> <span class="n">qemu</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="o">--</span><span class="n">cask</span> <span class="n">vagrant</span>
+<span class="n">vagrant</span> <span class="n">plugin</span> <span class="n">install</span> <span class="n">vagrant</span><span class="o">-</span><span class="n">qemu</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Make sure that rosetta is installed:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">softwareupdate</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">rosetta</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Clone the mercure repository and navigate to the vagrant folder for Macs:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">addons</span><span class="o">/</span><span class="n">vagrant</span><span class="o">/</span><span class="n">systemd_m1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Start the mercure VM as usual with:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="o">--</span><span class="n">orthanc</span> <span class="n">up</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>To increase speed, try the following provider setup in the Vagrantfile:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="s2">&quot;qemu&quot;</span> <span class="n">do</span> <span class="o">|</span><span class="n">qe</span><span class="o">|</span>
+    <span class="n">qe</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s2">&quot;x86_64&quot;</span>
+    <span class="n">qe</span><span class="o">.</span><span class="n">machine</span> <span class="o">=</span> <span class="s2">&quot;q35&quot;</span>
+    <span class="n">qe</span><span class="o">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="s2">&quot;max&quot;</span>
+    <span class="n">qe</span><span class="o">.</span><span class="n">smp</span> <span class="o">=</span> <span class="s2">&quot;cpus=2,sockets=1,cores=2,threads=1&quot;</span>
+    <span class="n">qe</span><span class="o">.</span><span class="n">net_device</span> <span class="o">=</span> <span class="s2">&quot;virtio-net-pci&quot;</span>
+    <span class="n">qe</span><span class="o">.</span><span class="n">extra_qemu_args</span> <span class="o">=</span> <span class="o">%</span><span class="n">w</span><span class="p">(</span><span class="o">-</span><span class="n">accel</span> <span class="n">tcg</span><span class="p">,</span><span class="n">thread</span><span class="o">=</span><span class="n">multi</span><span class="p">,</span><span class="n">tb</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">qe</span><span class="o">.</span><span class="n">qemu_dir</span> <span class="o">=</span> <span class="s2">&quot;/usr/local/share/qemu&quot;</span>
+<span class="n">end</span>
+</pre></div>
+</div>
 </section>
 </section>
 

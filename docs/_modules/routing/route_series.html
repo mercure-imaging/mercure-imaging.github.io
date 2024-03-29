@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>routing.route_series &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.3.1-alpha.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">routing.route_series</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for routing.route_series</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">route_series.py</span>
+<span class="sd">===============</span>
+<span class="sd">Provides functions for routing/processing of series. For study-level processing, series will be pushed into study folders.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Standard python includes</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">daiquiri</span>
+
+<span class="c1"># App-specific includes</span>
+<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">common.rule_evaluation</span> <span class="k">as</span> <span class="nn">rule_evaluation</span>
+<span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
+<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
+<span class="kn">import</span> <span class="nn">common.notification</span> <span class="k">as</span> <span class="nn">notification</span>
+<span class="kn">import</span> <span class="nn">common.log_helpers</span> <span class="k">as</span> <span class="nn">log_helpers</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Rule</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">mercure_defs</span><span class="p">,</span>
+    <span class="n">mercure_names</span><span class="p">,</span>
+    <span class="n">mercure_actions</span><span class="p">,</span>
+    <span class="n">mercure_rule</span><span class="p">,</span>
+    <span class="n">mercure_options</span><span class="p">,</span>
+    <span class="n">mercure_events</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">routing.generate_taskfile</span> <span class="kn">import</span> <span class="n">create_series_task</span><span class="p">,</span> <span class="n">create_study_task</span><span class="p">,</span> <span class="n">update_study_task</span>
+<span class="kn">from</span> <span class="nn">routing.common</span> <span class="kn">import</span> <span class="n">generate_task_id</span>
+
+<span class="c1"># Create local logger instance</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+
+
+<span class="nd">@log_helpers</span><span class="o">.</span><span class="n">clear_task_decorator</span>
+<span class="k">def</span> <span class="nf">route_series</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processes the series with the given series UID from the incoming folder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setTask</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_register_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">)</span>
+
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">series_UID</span><span class="p">)</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="c1"># Series is locked, so another instance might be working on it</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Create lock file in the incoming folder and prevent other instances from working on this series</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+        <span class="c1"># Series likely already processed by other instance of router</span>
+        <span class="k">return</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t create lock file, so something must be seriously wrong</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing series </span><span class="si">{</span><span class="n">series_UID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fileList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">seriesPrefix</span> <span class="o">=</span> <span class="n">series_UID</span> <span class="o">+</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">SEPARATOR</span>
+
+    <span class="c1"># Collect all files belonging to the series</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">TAGS</span><span class="p">)</span> <span class="ow">and</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">seriesPrefix</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">stemName</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+            <span class="n">fileList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stemName</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;DICOM files found: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fileList</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">fileList</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No tags files found for series </span><span class="si">{</span><span class="n">series_UID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Use the tags file from the first slice for evaluating the routing rules</span>
+    <span class="n">tagsMasterFile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">fileList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TAGS</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tagsMasterFile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing file! </span><span class="si">{</span><span class="n">tagsMasterFile</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tagsMasterFile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">tagsList</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid tag for series </span><span class="si">{</span><span class="n">series_UID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_register_series</span><span class="p">(</span><span class="n">tagsList</span><span class="p">)</span>
+
+    <span class="c1"># Now test the routing rules and evaluate which rules have been triggered. If one of the triggered</span>
+    <span class="c1"># rules enforces discarding, discard_series will be True.</span>
+    <span class="n">discard_series</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">discard_series</span> <span class="o">=</span> <span class="n">get_triggered_rules</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">tagsList</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">REGISTER</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">fileList</span><span class="p">),</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">),</span> <span class="s2">&quot;Registered series&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">discard_series</span><span class="p">):</span>
+        <span class="c1"># If no routing rule has triggered or discarding has been enforced, discard the series</span>
+        <span class="n">push_series_complete</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">fileList</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="s2">&quot;DISCARD&quot;</span><span class="p">,</span> <span class="n">discard_series</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># File handling strategy: If only one triggered rule, move files (faster than copying). If multiple rules, copy files</span>
+        <span class="n">push_series_studylevel</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">fileList</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tagsList</span><span class="p">)</span>
+        <span class="n">push_series_serieslevel</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">fileList</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tagsList</span><span class="p">)</span>
+
+        <span class="c1"># If more than one rule has triggered, the series files need to be removed</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">remove_series</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">fileList</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+
+<div class="viewcode-block" id="get_triggered_rules"><a class="viewcode-back" href="../../routing.html#routing.route_series.get_triggered_rules">[docs]</a><span class="k">def</span> <span class="nf">get_triggered_rules</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tagList</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluates the routing rules and returns a list with triggered rules.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">discard_rule</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">fallback_rule</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1"># Iterate over all defined processing rules</span>
+    <span class="k">for</span> <span class="n">current_rule</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rule</span><span class="p">:</span> <span class="n">Rule</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span>
+
+            <span class="c1"># Check if the current rule has been disabled</span>
+            <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">disabled</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># If the current rule is flagged as fallback rule, remember the name (to avoid having to iterate over the rules again)</span>
+            <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">fallback</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">fallback_rule</span> <span class="o">=</span> <span class="n">current_rule</span>
+
+            <span class="c1"># Check if the current rule is triggered for the provided tag set</span>
+            <span class="k">if</span> <span class="n">rule_evaluation</span><span class="o">.</span><span class="n">parse_rule</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span> <span class="n">tagList</span><span class="p">):</span>
+                <span class="n">triggered_rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mercure_rule</span><span class="o">.</span><span class="n">ACTION</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">DISCARD</span><span class="p">:</span>
+                    <span class="n">discard_rule</span> <span class="o">=</span> <span class="n">current_rule</span>
+                    <span class="c1"># If the triggered rule&#39;s action is to discard, stop further iteration over the rules</span>
+                    <span class="k">break</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid rule found: </span><span class="si">{</span><span class="n">current_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">continue</span>
+
+    <span class="c1"># If no rule has triggered but a fallback rule exists, then apply this rule</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">fallback_rule</span><span class="p">):</span>
+        <span class="n">triggered_rules</span><span class="p">[</span><span class="n">fallback_rule</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">fallback_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mercure_rule</span><span class="o">.</span><span class="n">ACTION</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">DISCARD</span><span class="p">:</span>
+            <span class="n">discard_rule</span> <span class="o">=</span> <span class="n">fallback_rule</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Triggered rules:&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">discard_rule</span></div>
+
+
+<div class="viewcode-block" id="push_series_complete"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_series_complete">[docs]</a><span class="k">def</span> <span class="nf">push_series_complete</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">discard_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Moves all files of the series into either the &quot;discard&quot; or &quot;success&quot; folders, which both are periodically cleared.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define the source and target folder. Use UUID as name for the target folder in the</span>
+    <span class="c1"># discard or success directory to avoid collisions</span>
+    <span class="k">if</span> <span class="n">destination</span> <span class="o">==</span> <span class="s2">&quot;DISCARD&quot;</span><span class="p">:</span>
+        <span class="n">destination_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">discard_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">task_id</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">destination_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">success_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">task_id</span>
+
+    <span class="c1"># Create subfolder in the discard directory and validate that is has been created</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">destination_path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create outgoing folder </span><span class="si">{</span><span class="n">destination_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">destination_path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating discard folder not possible </span><span class="si">{</span><span class="n">destination_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Create lock file in destination folder (to prevent the cleaner module to work on the folder). Note that</span>
+    <span class="c1"># the DICOM series in the incoming folder has already been locked in the parent function.</span>
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destination_path</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t create lock file, so something must be seriously wrong</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create lock file </span><span class="si">{</span><span class="n">destination_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">destination</span> <span class="o">==</span> <span class="s2">&quot;DISCARD&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">discard_rule</span><span class="p">:</span>
+            <span class="n">info_text</span> <span class="o">=</span> <span class="s2">&quot;Discard by rule &quot;</span> <span class="o">+</span> <span class="n">discard_rule</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">info_text</span> <span class="o">=</span> <span class="s2">&quot;Discard by default.&quot;</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">DISCARD</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">discard_rule</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">info_text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">push_files</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Problem while moving completed files&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+
+    <span class="n">operation_name</span> <span class="o">=</span> <span class="s2">&quot;MOVE&quot;</span>
+    <span class="k">if</span> <span class="n">copy_files</span><span class="p">:</span>
+        <span class="n">operation_name</span> <span class="o">=</span> <span class="s2">&quot;COPY&quot;</span>        
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">MOVE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">destination_path</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="push_series_studylevel"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_series_studylevel">[docs]</a><span class="k">def</span> <span class="nf">push_series_studylevel</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
+    <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepeares study-level routing for the current series.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Move series into individual study-level folder for every rule</span>
+    <span class="k">for</span> <span class="n">current_rule</span> <span class="ow">in</span> <span class="n">triggered_rules</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_trigger&quot;</span><span class="p">,</span> <span class="s2">&quot;series&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">STUDY</span><span class="p">:</span>
+            <span class="n">first_series</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># Check if folder exists for buffering series until study completion. If not, create it</span>
+            <span class="n">study_UID</span> <span class="o">=</span> <span class="n">tags_list</span><span class="p">[</span><span class="s2">&quot;StudyInstanceUID&quot;</span><span class="p">]</span>
+            <span class="n">folder_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">studies_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">study_UID</span> <span class="o">+</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">SEPARATOR</span> <span class="o">+</span> <span class="n">current_rule</span>
+            <span class="n">target_folder</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder_name</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span>
+                    <span class="n">first_series</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create study folder </span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+                    <span class="k">continue</span>
+
+            <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="c1"># Can&#39;t create lock file, so something must be seriously wrong</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">first_series</span><span class="p">:</span>
+                <span class="c1"># Create task file with information on complete criteria</span>
+                <span class="n">new_task_id</span> <span class="o">=</span> <span class="n">generate_task_id</span><span class="p">()</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">create_study_task</span><span class="p">(</span><span class="n">new_task_id</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">current_rule</span><span class="p">,</span> <span class="n">study_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">ASSIGN</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">current_rule</span><span class="p">,</span> <span class="s2">&quot;Created study task&quot;</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">DELEGATE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">new_task_id</span><span class="p">,</span> <span class="n">current_rule</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">ASSIGN</span><span class="p">,</span> <span class="n">new_task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">task_id</span><span class="p">,</span> <span class="s2">&quot;Added series to study&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Add data from latest series to task file</span>
+                <span class="n">result</span><span class="p">,</span> <span class="n">new_task_id</span> <span class="o">=</span> <span class="n">update_study_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">current_rule</span><span class="p">,</span> <span class="n">study_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">ASSIGN</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">current_rule</span><span class="p">,</span> <span class="s2">&quot;Added to study task&quot;</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">DELEGATE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">new_task_id</span><span class="p">,</span> <span class="n">current_rule</span><span class="p">)</span>
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">ASSIGN</span><span class="p">,</span> <span class="n">new_task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">task_id</span><span class="p">,</span> <span class="s2">&quot;Added series to study&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Problem assigning series to study &quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+
+            <span class="c1"># Copy (or move) the files into the study folder</span>
+            <span class="n">push_files</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">folder_name</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="push_series_serieslevel"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_series_serieslevel">[docs]</a><span class="k">def</span> <span class="nf">push_series_serieslevel</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
+    <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepeares all series-level routings for the current series.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">push_serieslevel_routing</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span>
+    <span class="n">push_serieslevel_processing</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span>
+    <span class="n">push_serieslevel_notification</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="push_serieslevel_routing"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_serieslevel_routing">[docs]</a><span class="k">def</span> <span class="nf">push_serieslevel_routing</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
+    <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">selected_targets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Collect the dispatch-only targets to avoid that a series is sent twice to the</span>
+    <span class="c1"># same target due to multiple targets triggered (note: this only makes sense for routing-only</span>
+    <span class="c1"># series tasks, as study-level rules might have different completion criteria and tasks involving</span>
+    <span class="c1"># processing steps might create different results so that they cannot be pooled)</span>
+    <span class="k">for</span> <span class="n">current_rule</span> <span class="ow">in</span> <span class="n">triggered_rules</span><span class="p">:</span>
+        <span class="n">rule_definition</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">rule_definition</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_trigger&quot;</span><span class="p">,</span> <span class="s2">&quot;series&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">SERIES</span>
+            <span class="ow">and</span> <span class="n">rule_definition</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">ROUTE</span>
+        <span class="p">):</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">rule_definition</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">selected_targets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+                    <span class="n">selected_targets</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_rule</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">selected_targets</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_rule</span><span class="p">)</span>
+            <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+
+    <span class="n">push_serieslevel_outgoing</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">selected_targets</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="push_serieslevel_processing"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_serieslevel_processing">[docs]</a><span class="k">def</span> <span class="nf">push_serieslevel_processing</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
+    <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="c1"># Rules with action &quot;processing&quot; or &quot;processing &amp; routing&quot; need to be processed separately (because the processing step can create varying results).</span>
+    <span class="c1"># Thus, loop over all series-level rules that have triggered.</span>
+    <span class="k">for</span> <span class="n">current_rule</span> <span class="ow">in</span> <span class="n">triggered_rules</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_trigger&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">SERIES</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">SERIES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">PROCESS</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">BOTH</span>
+            <span class="p">):</span>
+                <span class="c1"># Determine if the files should be copied or moved. If only one rule triggered, files can</span>
+                <span class="c1"># safely be moved, otherwise files will be moved and removed in the end</span>
+                <span class="n">copy_files</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">copy_files</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">new_task_id</span> <span class="o">=</span> <span class="n">generate_task_id</span><span class="p">()</span>
+
+                <span class="n">folder_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">new_task_id</span>
+                <span class="n">target_folder</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+
+                <span class="c1"># Create processing folder</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create outgoing folder </span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating folder not possible </span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="c1"># Lock the case</span>
+                <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="c1"># Can&#39;t create lock file, so something must be seriously wrong</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">DELEGATE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">new_task_id</span><span class="p">,</span> <span class="n">current_rule</span><span class="p">)</span>
+
+                    <span class="c1"># Generate task file with processing information</span>
+                <span class="k">if</span> <span class="n">create_series_task</span><span class="p">(</span>
+                    <span class="n">new_task_id</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">current_rule</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+                <span class="p">):</span>
+                    <span class="n">monitor</span><span class="o">.</span><span class="n">send_register_task</span><span class="p">(</span><span class="n">new_task_id</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">push_files</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unable to push files into processing folder </span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span>
+                    <span class="p">)</span>  <span class="c1"># handle_error</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="push_serieslevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_serieslevel_notification">[docs]</a><span class="k">def</span> <span class="nf">push_serieslevel_notification</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
+    <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">notification_rules_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">current_rule</span> <span class="ow">in</span> <span class="n">triggered_rules</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_trigger&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">SERIES</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">SERIES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">NOTIFICATION</span><span class="p">:</span>
+                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+                <span class="n">trigger_serieslevel_notification</span><span class="p">(</span><span class="n">current_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+                <span class="n">notification_rules_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># If the current rule is &quot;notification-only&quot; and this is the only rule that has been</span>
+    <span class="c1"># triggered, then discard the files so that they end up in the discard folder. If more</span>
+    <span class="c1"># than one rule has triggered, the parent function will remove the files from the incoming</span>
+    <span class="c1"># folder. However, it multiple rules have triggered and all such rules are notifications,</span>
+    <span class="c1"># make a copy of the files into the discard folder, so that the files can be recovered</span>
+    <span class="k">if</span> <span class="n">notification_rules_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">==</span> <span class="n">notification_rules_count</span><span class="p">):</span>
+            <span class="n">push_series_complete</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="push_serieslevel_outgoing"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_serieslevel_outgoing">[docs]</a><span class="k">def</span> <span class="nf">push_serieslevel_outgoing</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
+    <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">selected_targets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Move the DICOM files of the series to a separate subfolder for each target in the outgoing folder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">source_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+
+    <span class="c1"># Determine if the files should be copied or moved. If only one rule triggered, files can</span>
+    <span class="c1"># safely be moved, otherwise files will be moved and removed in the end</span>
+    <span class="n">move_operation</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">move_operation</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">selected_targets</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid target selected </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">continue</span>
+
+        <span class="n">new_task_id</span> <span class="o">=</span> <span class="n">generate_task_id</span><span class="p">()</span>
+
+        <span class="n">folder_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">outgoing_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">new_task_id</span>
+        <span class="n">target_folder</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create outgoing folder </span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating folder not possible </span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">return</span>
+        <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Collect the rules that triggered the dispatching to the current target</span>
+        <span class="n">target_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">selected_targets</span><span class="p">[</span><span class="n">target</span><span class="p">]:</span>
+            <span class="n">target_rules</span><span class="p">[</span><span class="n">rule</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Generate task file with dispatch information</span>
+        <span class="k">if</span> <span class="n">create_series_task</span><span class="p">(</span><span class="n">new_task_id</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">target_rules</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_register_task</span><span class="p">(</span><span class="n">new_task_id</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">DELEGATE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">new_task_id</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">selected_targets</span><span class="p">[</span><span class="n">target</span><span class="p">]))</span>
+
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Callable</span>
+        <span class="k">if</span> <span class="n">move_operation</span><span class="p">:</span>
+            <span class="n">operation</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">move</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">operation</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span>
+
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">operation</span><span class="p">(</span><span class="n">source_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">DCM</span><span class="p">,</span> <span class="n">target_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">DCM</span><span class="p">)</span>
+                <span class="n">operation</span><span class="p">(</span><span class="n">source_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TAGS</span><span class="p">,</span> <span class="n">target_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TAGS</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>  <span class="c1"># handle_error</span>
+                    <span class="sa">f</span><span class="s2">&quot;Problem while pushing file to outgoing </span><span class="si">{</span><span class="n">entry</span><span class="si">}</span><span class="se">\n</span><span class="s2">Source folder </span><span class="si">{</span><span class="n">source_folder</span><span class="si">}</span><span class="se">\n</span><span class="s2">Target folder </span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">task_id</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">move_operation</span><span class="p">:</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">MOVE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">target_folder</span><span class="p">,</span> <span class="s2">&quot;Moved files&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">COPY</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">target_folder</span><span class="p">,</span> <span class="s2">&quot;Copied files&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="push_files"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_files">[docs]</a><span class="k">def</span> <span class="nf">push_files</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">target_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copies or moves the given files to the target path. If copy_files is True, files are copied, otherwise moved.</span>
+<span class="sd">    Note that this function does not create a lock file (this needs to be done by the calling function).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">operation</span><span class="p">:</span> <span class="n">Callable</span>
+    <span class="k">if</span> <span class="n">copy_files</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">move</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span>
+
+    <span class="n">source_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+    <span class="n">target_folder</span> <span class="o">=</span> <span class="n">target_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">operation</span><span class="p">(</span><span class="n">source_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">DCM</span><span class="p">,</span> <span class="n">target_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">DCM</span><span class="p">)</span>
+            <span class="n">operation</span><span class="p">(</span><span class="n">source_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TAGS</span><span class="p">,</span> <span class="n">target_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TAGS</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>  <span class="c1"># handle_error</span>
+                <span class="sa">f</span><span class="s2">&quot;Problem while pushing file to outgoing </span><span class="si">{</span><span class="n">entry</span><span class="si">}</span><span class="se">\n</span><span class="s2"> Source folder </span><span class="si">{</span><span class="n">source_folder</span><span class="si">}</span><span class="se">\n</span><span class="s2">Target folder </span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">task_id</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">copy_files</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">MOVE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">target_path</span><span class="p">,</span> <span class="s2">&quot;Moved files&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">COPY</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">target_path</span><span class="p">,</span> <span class="s2">&quot;Copied files&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="remove_series"><a class="viewcode-back" href="../../routing.html#routing.route_series.remove_series">[docs]</a><span class="k">def</span> <span class="nf">remove_series</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deletes the given files from the incoming folder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">source_folder</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">source_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TAGS</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">source_folder</span> <span class="o">+</span> <span class="n">entry</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">DCM</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error while removing file </span><span class="si">{</span><span class="n">entry</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">return</span> <span class="kc">False</span>
+ 
+    <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">REMOVE</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Removed duplicate files&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="route_error_files"><a class="viewcode-back" href="../../routing.html#routing.route_series.route_error_files">[docs]</a><span class="k">def</span> <span class="nf">route_error_files</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Looks for error files, moves these files and the corresponding DICOM files to the error folder,</span>
+<span class="sd">    and sends an alert to the bookkeeper instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_files_found</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">mercure_names</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="c1"># Check if a lock file exists. If not, create one.</span>
+            <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">LOCK</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found incoming error file </span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">error_files_found</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">error_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">dicom_filename</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+            <span class="n">dicom_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">dicom_filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dicom_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">incoming_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">dicom_filename</span><span class="p">,</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">error_folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">dicom_filename</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">error_files_found</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error parsing </span><span class="si">{</span><span class="n">error_files_found</span><span class="si">}</span><span class="s2"> incoming files&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="trigger_serieslevel_notification"><a class="viewcode-back" href="../../routing.html#routing.route_series.trigger_serieslevel_notification">[docs]</a><span class="k">def</span> <span class="nf">trigger_serieslevel_notification</span><span class="p">(</span>
+    <span class="n">current_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">event</span><span class="p">:</span> <span class="n">mercure_events</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">notification</span><span class="o">.</span><span class="n">trigger_notification_for_rule</span><span class="p">(</span>
+        <span class="n">current_rule</span><span class="p">,</span>
+        <span class="n">task_id</span><span class="p">,</span>
+        <span class="n">event</span><span class="p">,</span>
+        <span class="n">tags_list</span><span class="o">=</span><span class="n">tags_list</span><span class="p">,</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EHLH5W4KQW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
