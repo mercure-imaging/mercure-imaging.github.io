@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.notification &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-
-  
+  <title>common.notification &mdash; mercure Version 0.3.1-beta.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -38,7 +36,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-alpha.2
+                Version 0.3.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -189,7 +187,7 @@
     <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">context</span><span class="p">[</span><span class="s2">&quot;DeviceSerialNumber&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">device_serial_number</span>
     <span class="k">elif</span> <span class="n">tags_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;DeviceSerialNumber&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags_list</span><span class="p">[</span><span class="s2">&quot;DeviceSerialNumber&quot;</span><span class="p">]</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;DeviceSerialNumber&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DeviceSerialNumber&quot;</span><span class="p">)</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">rule_name</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="n">details</span><span class="p">),</span>
@@ -366,26 +364,31 @@
             <span class="s2">&quot;Announced &quot;</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="n">email_address</span> <span class="o">=</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_email&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">email_address</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">task</span><span class="p">:</span>
-            <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">acc</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span><span class="p">,</span>
-                <span class="n">mrn</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span><span class="p">,</span>
-                <span class="n">patient_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">patient_name</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">context</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">email_payload</span> <span class="o">=</span> <span class="n">parse_payload</span><span class="p">(</span>
-            <span class="n">current_rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_email_body&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">event</span><span class="p">,</span>
-            <span class="n">rule_name</span><span class="p">,</span>
-            <span class="n">task_id</span><span class="p">,</span>
-            <span class="n">details</span><span class="p">,</span>
-            <span class="n">context</span><span class="p">,</span>
-            <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
-            <span class="n">tags_list</span><span class="o">=</span><span class="n">tags_list</span><span class="p">,</span>
+    <span class="n">email_addresses</span> <span class="o">=</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_email&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">email_addresses</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">task</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">acc</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span><span class="p">,</span>
+            <span class="n">mrn</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span><span class="p">,</span>
+            <span class="n">patient_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">patient_name</span><span class="p">,</span>
         <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">email_payload</span> <span class="o">=</span> <span class="n">parse_payload</span><span class="p">(</span>
+        <span class="n">current_rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_email_body&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">event</span><span class="p">,</span>
+        <span class="n">rule_name</span><span class="p">,</span>
+        <span class="n">task_id</span><span class="p">,</span>
+        <span class="n">details</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">,</span>
+        <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
+        <span class="n">tags_list</span><span class="o">=</span><span class="n">tags_list</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">email_address</span> <span class="ow">in</span> <span class="n">email_addresses</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">):</span>
         <span class="n">send_email</span><span class="p">(</span>
             <span class="n">email_address</span><span class="p">,</span>
             <span class="n">email_payload</span><span class="p">,</span>

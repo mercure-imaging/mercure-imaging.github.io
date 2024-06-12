@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>routing.route_series &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-
-  
+  <title>routing.route_series &mdash; mercure Version 0.3.1-beta.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -38,7 +36,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-alpha.2
+                Version 0.3.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -192,11 +190,19 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing file! </span><span class="si">{</span><span class="n">tagsMasterFile</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span>
 
+    <span class="n">tagsList_encoding_error</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tagsMasterFile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
-            <span class="n">tagsList</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+        <span class="n">tagsList</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tagsMasterFile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;strict&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+                <span class="n">tagsList</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tagsMasterFile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;surrogateescape&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+                <span class="n">tagsList</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+                <span class="n">tagsList_encoding_error</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid tag for series </span><span class="si">{</span><span class="n">series_UID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid tag for series </span><span class="si">{</span><span class="n">series_UID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span>
 
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_register_series</span><span class="p">(</span><span class="n">tagsList</span><span class="p">)</span>
@@ -212,7 +218,7 @@
 
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triggered_rules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">discard_series</span><span class="p">):</span>
         <span class="c1"># If no routing rule has triggered or discarding has been enforced, discard the series</span>
-        <span class="n">push_series_complete</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">fileList</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="s2">&quot;DISCARD&quot;</span><span class="p">,</span> <span class="n">discard_series</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">push_series_complete</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">fileList</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="s2">&quot;DISCARD&quot;</span><span class="p">,</span> <span class="n">discard_series</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">tagsList_encoding_error</span> <span class="o">=</span> <span class="n">tagsList_encoding_error</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># File handling strategy: If only one triggered rule, move files (faster than copying). If multiple rules, copy files</span>
         <span class="n">push_series_studylevel</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">fileList</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="n">tagsList</span><span class="p">)</span>
@@ -253,7 +259,7 @@
                 <span class="n">fallback_rule</span> <span class="o">=</span> <span class="n">current_rule</span>
 
             <span class="c1"># Check if the current rule is triggered for the provided tag set</span>
-            <span class="k">if</span> <span class="n">rule_evaluation</span><span class="o">.</span><span class="n">parse_rule</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span> <span class="n">tagList</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">rule_evaluation</span><span class="o">.</span><span class="n">parse_rule</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span> <span class="n">tagList</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
                 <span class="n">triggered_rules</span><span class="p">[</span><span class="n">current_rule</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mercure_rule</span><span class="o">.</span><span class="n">ACTION</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">DISCARD</span><span class="p">:</span>
                     <span class="n">discard_rule</span> <span class="o">=</span> <span class="n">current_rule</span>
@@ -276,7 +282,7 @@
 
 
 <div class="viewcode-block" id="push_series_complete"><a class="viewcode-back" href="../../routing.html#routing.route_series.push_series_complete">[docs]</a><span class="k">def</span> <span class="nf">push_series_complete</span><span class="p">(</span>
-    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">discard_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">discard_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tagsList_encoding_error</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Moves all files of the series into either the &quot;discard&quot; or &quot;success&quot; folders, which both are periodically cleared.</span>
@@ -314,6 +320,9 @@
             <span class="n">info_text</span> <span class="o">=</span> <span class="s2">&quot;Discard by rule &quot;</span> <span class="o">+</span> <span class="n">discard_rule</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">info_text</span> <span class="o">=</span> <span class="s2">&quot;Discard by default.&quot;</span>
+            <span class="k">if</span> <span class="n">tagsList_encoding_error</span><span class="p">:</span>
+                <span class="n">info_text</span> <span class="o">+=</span> <span class="s2">&quot; Decoding error detected: some tags were not properly decoded, likely due to a malformed DICOM file. The expected rule may therefore not have been triggered.&quot;</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">info_text</span><span class="p">)</span>
         <span class="n">monitor</span><span class="o">.</span><span class="n">send_task_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">task_event</span><span class="o">.</span><span class="n">DISCARD</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">),</span> <span class="n">discard_rule</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">info_text</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">push_files</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">file_list</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">,</span> <span class="n">copy_files</span><span class="p">):</span>

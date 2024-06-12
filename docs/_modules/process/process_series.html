@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>process.process_series &mdash; mercure Version 0.3.1-alpha.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-
-  
+  <title>process.process_series &mdash; mercure Version 0.3.1-beta.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -38,7 +36,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-alpha.2
+                Version 0.3.1-beta.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -381,7 +379,9 @@
         <span class="c1"># In lieu of making mercure a sudoer...</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Changing the ownership of the output directory...&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">docker_client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="s2">&quot;busybox:stable-musl&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">docker_pull_throttle</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;busybox:stable-musl&quot;</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisocalendar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">86400</span><span class="p">:</span>
+                <span class="n">docker_client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="s2">&quot;busybox:stable-musl&quot;</span><span class="p">)</span>
+                <span class="n">docker_pull_throttle</span><span class="p">[</span><span class="s2">&quot;busybox:stable_musl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;could not pull busybox&quot;</span><span class="p">)</span>
 
