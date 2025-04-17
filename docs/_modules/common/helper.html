@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.helper &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>common.helper &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -113,79 +114,141 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">import</span> <span class="nn">graphyte</span>
-<span class="kn">import</span> <span class="nn">aiohttp</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">time</span> <span class="k">as</span> <span class="n">_time</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
 <span class="kn">import</span> <span class="nn">common.influxdb</span>
+<span class="kn">import</span> <span class="nn">dateutil</span>
+<span class="kn">import</span> <span class="nn">graphyte</span>
 
 <span class="c1"># Global variable to broadcast when the process should terminate</span>
 <span class="n">terminate</span> <span class="o">=</span> <span class="kc">False</span>
 
-
 <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="get_runner"><a class="viewcode-back" href="../../common.html#common.helper.get_runner">[docs]</a><span class="k">def</span> <span class="nf">get_runner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the name of the mechanism that is used for running mercure in the current installation (systemd, docker, nomad).&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="validate_folders"><a class="viewcode-back" href="../../source/common.html#common.helper.validate_folders">[docs]</a><span class="k">def</span> <span class="nf">validate_folders</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">incoming_folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">studies_folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">outgoing_folder</span><span class="p">,</span>
+                   <span class="n">config</span><span class="o">.</span><span class="n">success_folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">error_folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">discard_folder</span><span class="p">,</span>
+                   <span class="n">config</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">jobs_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created directory: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Folder </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;No read/write access to </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="localize_log_timestamps"><a class="viewcode-back" href="../../source/common.html#common.helper.localize_log_timestamps">[docs]</a><span class="k">def</span> <span class="nf">localize_log_timestamps</span><span class="p">(</span><span class="n">logstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">local_time</span> <span class="o">==</span> <span class="s2">&quot;UTC&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">logstring</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">local_tz</span> <span class="o">=</span> <span class="n">dateutil</span><span class="o">.</span><span class="n">tz</span><span class="o">.</span><span class="n">gettz</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">local_time</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">logstring</span>
+
+    <span class="n">timestamp_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(\S+)(.*?)$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">replace_timestamp</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+        <span class="n">timestamp</span><span class="p">,</span> <span class="n">rest_of_line</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed_dt</span> <span class="o">=</span> <span class="n">dateutil</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">isoparse</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">dt_localtime</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">parsed_dt</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">local_tz</span><span class="p">)</span>
+            <span class="n">localized_timestamp</span> <span class="o">=</span> <span class="n">dt_localtime</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s1">&#39;seconds&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">localized_timestamp</span><span class="si">}{</span><span class="n">rest_of_line</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Return the original line if parsing fails</span>
+
+    <span class="k">return</span> <span class="n">timestamp_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_timestamp</span><span class="p">,</span> <span class="n">logstring</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_now_str"><a class="viewcode-back" href="../../source/common.html#common.helper.get_now_str">[docs]</a><span class="k">def</span> <span class="nf">get_now_str</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the current time as string with mercure-wide formatting&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_runner"><a class="viewcode-back" href="../../source/common.html#common.helper.get_runner">[docs]</a><span class="k">def</span> <span class="nf">get_runner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the name of the mechanism that is used for running mercure</span>
+<span class="sd">       in the current installation (systemd, docker, nomad).&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_RUNNER&quot;</span><span class="p">,</span> <span class="s2">&quot;systemd&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="trigger_terminate"><a class="viewcode-back" href="../../common.html#common.helper.trigger_terminate">[docs]</a><span class="k">def</span> <span class="nf">trigger_terminate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="trigger_terminate"><a class="viewcode-back" href="../../source/common.html#common.helper.trigger_terminate">[docs]</a><span class="k">def</span> <span class="nf">trigger_terminate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Trigger that the processing loop should terminate after finishing the currently active task.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">terminate</span>
     <span class="n">terminate</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="is_terminated"><a class="viewcode-back" href="../../common.html#common.helper.is_terminated">[docs]</a><span class="k">def</span> <span class="nf">is_terminated</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="is_terminated"><a class="viewcode-back" href="../../source/common.html#common.helper.is_terminated">[docs]</a><span class="k">def</span> <span class="nf">is_terminated</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the process will terminate after the current task.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">terminate</span></div>
 
 
-<div class="viewcode-block" id="send_to_graphite"><a class="viewcode-back" href="../../common.html#common.helper.send_to_graphite">[docs]</a><span class="k">def</span> <span class="nf">send_to_graphite</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_to_graphite"><a class="viewcode-back" href="../../source/common.html#common.helper.send_to_graphite">[docs]</a><span class="k">def</span> <span class="nf">send_to_graphite</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for asynchronous graphite call to avoid wait time of main loop.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">graphyte</span><span class="o">.</span><span class="n">default_sender</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">graphyte</span><span class="o">.</span><span class="n">default_sender</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="n">graphyte</span><span class="o">.</span><span class="n">default_sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="send_to_influxdb"><a class="viewcode-back" href="../../common.html#common.helper.send_to_influxdb">[docs]</a><span class="k">def</span> <span class="nf">send_to_influxdb</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_to_influxdb"><a class="viewcode-back" href="../../source/common.html#common.helper.send_to_influxdb">[docs]</a><span class="k">def</span> <span class="nf">send_to_influxdb</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for asynchronous influxdb call to avoid wait time of main loop.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">common</span><span class="o">.</span><span class="n">influxdb</span><span class="o">.</span><span class="n">default_sender</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="n">common</span><span class="o">.</span><span class="n">influxdb</span><span class="o">.</span><span class="n">default_sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="g_log"><a class="viewcode-back" href="../../common.html#common.helper.g_log">[docs]</a><span class="k">def</span> <span class="nf">g_log</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="g_log"><a class="viewcode-back" href="../../source/common.html#common.helper.g_log">[docs]</a><span class="k">def</span> <span class="nf">g_log</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">global</span> <span class="n">loop</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sends diagnostic information to graphite (if configured).&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
         <span class="n">loop</span><span class="o">.</span><span class="n">call_soon</span><span class="p">(</span><span class="n">send_to_graphite</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">loop</span><span class="o">.</span><span class="n">call_soon</span><span class="p">(</span><span class="n">send_to_influxdb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">send_to_graphite</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">send_to_influxdb</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="AsyncTimer"><a class="viewcode-back" href="../../common.html#common.helper.AsyncTimer">[docs]</a><span class="k">class</span> <span class="nc">AsyncTimer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_is_offpeak</span><span class="p">(</span><span class="n">offpeak_start</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">offpeak_end</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">current_time</span><span class="p">:</span> <span class="n">_time</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the provided time is within the offpeak time range.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">offpeak_start</span><span class="p">,</span> <span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">offpeak_end</span><span class="p">,</span> <span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to parse offpeak time: </span><span class="si">{</span><span class="n">offpeak_start</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">offpeak_end</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">start_time</span> <span class="o">&lt;</span> <span class="n">end_time</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">current_time</span> <span class="o">&gt;=</span> <span class="n">start_time</span> <span class="ow">and</span> <span class="n">current_time</span> <span class="o">&lt;=</span> <span class="n">end_time</span>
+    <span class="c1"># End time is after midnight</span>
+    <span class="k">return</span> <span class="n">current_time</span> <span class="o">&gt;=</span> <span class="n">start_time</span> <span class="ow">or</span> <span class="n">current_time</span> <span class="o">&lt;=</span> <span class="n">end_time</span>
+
+
+<div class="viewcode-block" id="AsyncTimer"><a class="viewcode-back" href="../../source/common.html#common.helper.AsyncTimer">[docs]</a><span class="k">class</span> <span class="nc">AsyncTimer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">interval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="AsyncTimer.start"><a class="viewcode-back" href="../../common.html#common.helper.AsyncTimer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="AsyncTimer.start"><a class="viewcode-back" href="../../source/common.html#common.helper.AsyncTimer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="c1"># Start task to call func periodically:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="AsyncTimer.stop"><a class="viewcode-back" href="../../common.html#common.helper.AsyncTimer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="AsyncTimer.stop"><a class="viewcode-back" href="../../source/common.html#common.helper.AsyncTimer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Signal to stop after the current&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
@@ -202,13 +265,15 @@
             <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isawaitable</span><span class="p">(</span><span class="n">res</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()):</span>
                 <span class="k">await</span> <span class="n">res</span>
 
-<div class="viewcode-block" id="AsyncTimer.run_until_complete"><a class="viewcode-back" href="../../common.html#common.helper.AsyncTimer.run_until_complete">[docs]</a>    <span class="k">def</span> <span class="nf">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="AsyncTimer.run_until_complete"><a class="viewcode-back" href="../../source/common.html#common.helper.AsyncTimer.run_until_complete">[docs]</a>    <span class="k">def</span> <span class="nf">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unexpected error: AsyncTimer._task is None&quot;</span><span class="p">)</span>
         <span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span> <span class="ow">or</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
         <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="RepeatedTimer"><a class="viewcode-back" href="../../common.html#common.helper.RepeatedTimer">[docs]</a><span class="k">class</span> <span class="nc">RepeatedTimer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="RepeatedTimer"><a class="viewcode-back" href="../../source/common.html#common.helper.RepeatedTimer">[docs]</a><span class="k">class</span> <span class="nc">RepeatedTimer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper class for running a continuous timer that is suspended</span>
 <span class="sd">    while the worker function is running</span>
@@ -236,7 +301,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">exit_function</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="RepeatedTimer.start"><a class="viewcode-back" href="../../common.html#common.helper.RepeatedTimer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="RepeatedTimer.start"><a class="viewcode-back" href="../../source/common.html#common.helper.RepeatedTimer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Starts the timer for triggering the calllback after the defined interval.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interval</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">)</span>
@@ -244,7 +309,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="RepeatedTimer.stop"><a class="viewcode-back" href="../../common.html#common.helper.RepeatedTimer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="RepeatedTimer.stop"><a class="viewcode-back" href="../../source/common.html#common.helper.RepeatedTimer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops the timer and executes the defined exit callback function.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -253,10 +318,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">exit_function</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="FileLock"><a class="viewcode-back" href="../../common.html#common.helper.FileLock">[docs]</a><span class="k">class</span> <span class="nc">FileLock</span><span class="p">:</span>
+<div class="viewcode-block" id="FileLock"><a class="viewcode-back" href="../../source/common.html#common.helper.FileLock">[docs]</a><span class="k">class</span> <span class="nc">FileLock</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class that implements a file lock. The lock file will be removed also from the destructor so that</span>
 <span class="sd">    no spurious lock files remain if exceptions are raised.&quot;&quot;&quot;</span>
     <span class="n">lockCreated</span> <span class="o">=</span> <span class="kc">False</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_for_lockfile</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lockfile</span> <span class="o">=</span> <span class="n">path_for_lockfile</span>
         <span class="c1"># TODO: Handle case if lock file cannot be created</span>
@@ -269,9 +335,13 @@
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
 
-<div class="viewcode-block" id="FileLock.free"><a class="viewcode-back" href="../../common.html#common.helper.FileLock.free">[docs]</a>    <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="FileLock.free"><a class="viewcode-back" href="../../source/common.html#common.helper.FileLock.free">[docs]</a>    <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lockCreated</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lockfile</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lockfile</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+                <span class="c1"># Lock file was already removed by someone else</span>
+                <span class="k">pass</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lockCreated</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 </pre></div>
 
@@ -282,7 +352,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -300,18 +370,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

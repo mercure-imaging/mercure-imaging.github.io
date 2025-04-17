@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Installation &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -20,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="next" title="Usage" href="usage/index.html" />
     <link rel="prev" title="Quick Start" href="quickstart.html" />
 <a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
 
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,14 +59,14 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation-types">Installation types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-types">Installation Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-mercure">Installing mercure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#locations">Locations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dicom-reception-over-tls-connection">DICOM Reception over TLS Connection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#congratulations">Congratulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dicom-tls-support">DICOM TLS Support</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
@@ -87,8 +89,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -116,17 +117,17 @@
              
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
-<p>It is recommended to install mercure on a Linux machine running Ubuntu Server 20.04 LTS 64bit (or newer). The installer for the Ubuntu operating system can be downloaded at <a class="reference external" href="https://ubuntu.com/download/server">https://ubuntu.com/download/server</a></p>
+<p>It is recommended to install mercure on a Linux machine running Ubuntu Server 24.04 LTS 64bit (or newer). The installer for the Ubuntu operating system can be downloaded at <a class="reference external" href="https://ubuntu.com/download/server">https://ubuntu.com/download/server</a></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>mercure might run on other Linux distributions as well, but the installation script will not work without modification. When trying to install mercure on other Linux distributions, it might be best to focus on a Docker-based installation and derive a custom installation script from the script included in the repository.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>mercure servers and the web-based user interface should never be placed on the internet! mercure has been designed for use in intranet environments that are secured against unauthorized access. It has not been hardened and tested for installation on the public internet. Also, DICOM transfers should never be made over the public internet (unless encrypted and secured transfer protocols are used, e.g. based on  DICOMweb).</p>
+<p>mercure servers and the web-based user interface should <strong>NEVER</strong> be placed on the internet! mercure has been designed for use in intranet environments that are secured against unauthorized access. It has not been hardened and tested for installation on the public internet. Also, DICOM transfers should never be made over the public internet (unless encrypted and secured transfer protocols are used, e.g. based on  DICOMweb).</p>
 </div>
 <section id="installation-types">
-<h2>Installation types<a class="headerlink" href="#installation-types" title="Permalink to this heading"></a></h2>
+<h2>Installation Types<a class="headerlink" href="#installation-types" title="Permalink to this heading"></a></h2>
 <p>mercure can be installed in three different ways:</p>
 <ul class="simple">
 <li><p>Using systemd as service runner</p></li>
@@ -134,7 +135,7 @@
 <li><p>Using Nomad for orchestrating the services</p></li>
 </ul>
 <p>Which installation type should you choose? It depends on the use case. For normal users, either a Docker-based or systemd-based installation is best suited. A systemd-based installation might have a small performance advantage, while a Docker-based installation will be easier to upgrade to newer mercure versions. If you are planning to actively develop and customize mercure, a systemd-based installation should be preferred.</p>
-<p>With both systemd- and Docker-based installations, processing modules are executed sequentially, i.e. the requested processing module is launched inside a Docker container and the processor service waits until the processing has finished. With a Nomad-based installation, multiple processing modules can be executed in parallel. In this case, the processor service launches processing modules asynchronously and fetches  results from the processing containers when the processing has finished. Moreover, the processor can distribute the processing jobs across multiple compute nodes, i.e. you can operate a processing cluster. This might be important if you are planning to integrate computationally demanding processing algorithms and if you are expecting a large volume of processing jobs. It is also relevant if you are planning to operate processing modules with different hardware requirements, because the Nomad-based solution allows defining resource requirements for jobs. However, these functions may not be needed in many situations. Nomad-based installations are more complex and intended for advanced users.</p>
+<p>With both systemd- and Docker-based installations, processing modules are executed sequentially, i.e. the requested processing module is launched inside a Docker container and the processor service waits until the processing has finished. With a Nomad-based installation, multiple processing modules can be executed in parallel. In this case, the processor service launches processing modules asynchronously and fetches results from the processing containers when the processing has finished. Moreover, the processor can distribute the processing jobs across multiple compute nodes, i.e. you can operate a processing cluster. This might be important if you are planning to integrate computationally demanding processing algorithms and if you are expecting a large volume of processing jobs. It is also relevant if you are planning to operate processing modules with different hardware requirements, because the Nomad-based solution allows defining resource requirements for jobs. However, these functions may not be needed in many situations. Nomad-based installations are more complex and intended for advanced users.</p>
 </section>
 <section id="installing-mercure">
 <h2>Installing mercure<a class="headerlink" href="#installing-mercure" title="Permalink to this heading"></a></h2>
@@ -190,15 +191,24 @@
 <p>The source code located in the /app folder is directly executed only for systemd-type installations. Docker and Nomad installations execute container images instead. By default, these images are downloaded from Docker Hub. If you want to modify the mercure source code, you need to rebuild the container images for the changes to go into effect. This can be done with the script build-docker.sh.</p>
 </div>
 </section>
-<section id="dicom-reception-over-tls-connection">
-<h2>DICOM Reception over TLS Connection<a class="headerlink" href="#dicom-reception-over-tls-connection" title="Permalink to this heading"></a></h2>
+<section id="congratulations">
+<h2>Congratulations<a class="headerlink" href="#congratulations" title="Permalink to this heading"></a></h2>
+<p>If you have made it to here, then you have mastered the installation of mercure. You should now be able to access mercure’s user interface with a web browser by entering your server’s IP address and adding :8000 (e.g., 192.168.56.1:8000).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can change the port used for the web interface from 8000 to another port by editing the file webgui.env in mercure’s configuration folder. Make sure to restart the webgui service afterwards. Also, if running Docker or Nomad (or testing mercure with Vagrant), make sure to modify the port mapping to the host system as well.</p>
+</div>
+</section>
+<section id="dicom-tls-support">
+<h2>DICOM TLS Support<a class="headerlink" href="#dicom-tls-support" title="Permalink to this heading"></a></h2>
+<p>The following steps are necessary if you need encrypted DICOM communication via the DICOM-TLS protocol. This is usually not required when sending DICOMs only inside a protected intranet network. However, it is strongly recommended when sending DICOMs over unsecurced network connections.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Support for the DICOM TLS receiver mode is still experimental and should be used with care.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Due to an incompatibility in DICOM toolkit v3.6.4 and OpenSSL v1.1.1, the dcmtk and openssl versions supported by Ubuntu 20.04, only Ubuntu 22.04 mercure installs support TLS reception.</p>
+<p>Due to an incompatibility in DCMTK v3.6.4 and OpenSSL v1.1.1, the versions supported by Ubuntu 20.04, only mercure installations on Ubuntu 22.04 or newer support DICOM TLS reception.</p>
 </div>
 <p>The following environment variables must be defined to run mercure in DICOM TLS receiver mode. This can be done, for example, by adding the values to the /etc/environment file. First, set <cite>MERCURE_TLS_ENABLED</cite> to <cite>1</cite>. Next, specify the paths to your server TLS key, certificate, and CA certificate, as shown in the below sample configuration.</p>
 <table class="docutils align-default">
@@ -244,14 +254,6 @@
 <p>Remember to add both your TLS receiver private key (private_key.pem), certificate file (certificate.pem), and CA certificate file (CA_certificate.pem) to the file system of your mercure installation and specify the above environment variables to enable TLS receiver mode.</p>
 </div>
 </section>
-<section id="congratulations">
-<h2>Congratulations<a class="headerlink" href="#congratulations" title="Permalink to this heading"></a></h2>
-<p>If you have made it to here, then you have mastered the installation of mercure. You should now be able to access mercure’s user interface with a web browser by entering your server’s IP address and adding :8000 (e.g., 192.168.56.1:8000).</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>You can change the port used for the web interface from 8000 to another port by editing the file webgui.env in mercure’s configuration folder. Make sure to restart the webgui service afterwards. Also, if running Docker or Nomad (or testing mercure with Vagrant), make sure to modify the port mapping to the host system as well.</p>
-</div>
-</section>
 </section>
 
 
@@ -259,13 +261,13 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage/index.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -283,18 +285,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

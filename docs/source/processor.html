@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service processor &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Service router" href="router.html" />
+    <link rel="prev" title="Service dispatcher" href="dispatcher.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Service processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code Documentation</a></li>
+      <li class="breadcrumb-item active">Service processor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-process.processor">
+<span id="service-processor"></span><h1>Service processor<a class="headerlink" href="#module-process.processor" title="Permalink to this heading"></a></h1>
+<section id="processor-py">
+<h2>processor.py<a class="headerlink" href="#processor-py" title="Permalink to this heading"></a></h2>
+<p>mercure’ processor that executes processing modules on DICOM series filtered for processing.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="process.processor.backup_input_images">
+<span class="sig-prename descclassname"><span class="pre">process.processor.</span></span><span class="sig-name descname"><span class="pre">backup_input_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/processor.html#backup_input_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.processor.backup_input_images" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a backup of input DICOM files in an ‘as_received’ subfolder within the task folder.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>task_folder: Path to the task folder</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.processor.exit_processor">
+<span class="sig-prename descclassname"><span class="pre">process.processor.</span></span><span class="sig-name descname"><span class="pre">exit_processor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/processor.html#exit_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.processor.exit_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Callback function that is triggered when the process terminates. Stops the asyncio event loop.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.processor.main">
+<span class="sig-prename descclassname"><span class="pre">process.processor.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['-b',</span> <span class="pre">'html',</span> <span class="pre">'-d',</span> <span class="pre">'_build/doctrees',</span> <span class="pre">'.',</span> <span class="pre">'_build/html']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/processor.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.processor.main" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.processor.prioritize_tasks">
+<span class="sig-prename descclassname"><span class="pre">process.processor.</span></span><span class="sig-name descname"><span class="pre">prioritize_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sorted_tasks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/process/processor.html#prioritize_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.processor.prioritize_tasks" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the prioritized task based on the priority in the task file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.processor.run_processor">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">process.processor.</span></span><span class="sig-name descname"><span class="pre">run_processor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/processor.html#run_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.processor.run_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Main processing function that is called every second.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.processor.search_folder">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">process.processor.</span></span><span class="sig-name descname"><span class="pre">search_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counter</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/process/processor.html#search_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.processor.search_folder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.processor.terminate_process">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">process.processor.</span></span><span class="sig-name descname"><span class="pre">terminate_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signalNumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/processor.html#terminate_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.processor.terminate_process" title="Permalink to this definition"></a></dt>
+<dd><p>Triggers the shutdown of the service.</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-process.process_series"></span><section id="process-series-py">
+<h2>process_series.py<a class="headerlink" href="#process-series-py" title="Permalink to this heading"></a></h2>
+<p>Helper functions for mercure’s processor module</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.docker_runtime">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">docker_runtime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_count_begin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_processing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskProcessing" title="common.types.TaskProcessing"><span class="pre">TaskProcessing</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/process/process_series.html#docker_runtime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.docker_runtime" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.handle_processor_output">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">handle_processor_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_processing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskProcessing" title="common.types.TaskProcessing"><span class="pre">TaskProcessing</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/process/process_series.html#handle_processor_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.handle_processor_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.move_out_folder">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">move_out_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">move_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/process_series.html#move_out_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.move_out_folder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.move_results">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">move_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lock</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.helper.FileLock" title="common.helper.FileLock"><span class="pre">FileLock</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_success</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">needs_dispatching</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/process_series.html#move_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.move_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.nomad_runtime">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">nomad_runtime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_count_begin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_processing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskProcessing" title="common.types.TaskProcessing"><span class="pre">TaskProcessing</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/process/process_series.html#nomad_runtime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.nomad_runtime" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.push_input_images">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">push_input_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/process/process_series.html#push_input_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.push_input_images" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.push_input_task">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">push_input_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/process/process_series.html#push_input_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.push_input_task" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.process_series.trigger_notification">
+<span class="sig-prename descclassname"><span class="pre">process.process_series.</span></span><span class="sig-name descname"><span class="pre">trigger_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.constants.mercure_events" title="common.constants.mercure_events"><span class="pre">mercure_events</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send_always</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/process/process_series.html#trigger_notification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.process_series.trigger_notification" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-process.status"></span><section id="status-py">
+<h2>status.py<a class="headerlink" href="#status-py" title="Permalink to this heading"></a></h2>
+<p>Helper functions for mercure’s processor module</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="process.status.is_ready_for_processing">
+<span class="sig-prename descclassname"><span class="pre">process.status.</span></span><span class="sig-name descname"><span class="pre">is_ready_for_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/process/status.html#is_ready_for_processing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.status.is_ready_for_processing" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a case in the processing folder is ready for the processor.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dispatcher.html" class="btn btn-neutral float-left" title="Service dispatcher" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="router.html" class="btn btn-neutral float-right" title="Service router" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

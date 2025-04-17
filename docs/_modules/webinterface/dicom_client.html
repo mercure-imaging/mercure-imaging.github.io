@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>webinterface.dicom_client &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">webinterface.dicom_client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for webinterface.dicom_client</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">pydicom</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">pydicom.uid</span> <span class="kn">import</span> <span class="n">DeflatedExplicitVRLittleEndian</span>
+<span class="kn">from</span> <span class="nn">pynetdicom</span> <span class="kn">import</span> <span class="n">AE</span><span class="p">,</span> <span class="n">QueryRetrievePresentationContexts</span><span class="p">,</span> <span class="n">StoragePresentationContexts</span><span class="p">,</span> <span class="n">build_role</span><span class="p">,</span> <span class="n">evt</span>
+<span class="kn">from</span> <span class="nn">pynetdicom.sop_class</span> <span class="kn">import</span> <span class="n">StudyRootQueryRetrieveInformationModelFind</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">pynetdicom.sop_class</span> <span class="kn">import</span> <span class="p">(</span><span class="n">EncapsulatedMTLStorage</span><span class="p">,</span> <span class="n">EncapsulatedOBJStorage</span><span class="p">,</span> <span class="n">EncapsulatedSTLStorage</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                                  <span class="n">PatientRootQueryRetrieveInformationModelGet</span><span class="p">,</span>
+                                  <span class="n">PatientStudyOnlyQueryRetrieveInformationModelGet</span><span class="p">,</span> <span class="n">StudyRootQueryRetrieveInformationModelGet</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DicomClientCouldNotAssociate"><a class="viewcode-back" href="../../source/webgui.html#webinterface.dicom_client.DicomClientCouldNotAssociate">[docs]</a><span class="k">class</span> <span class="nc">DicomClientCouldNotAssociate</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="DicomClientCouldNotFind"><a class="viewcode-back" href="../../source/webgui.html#webinterface.dicom_client.DicomClientCouldNotFind">[docs]</a><span class="k">class</span> <span class="nc">DicomClientCouldNotFind</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="DicomClientBadStatus"><a class="viewcode-back" href="../../source/webgui.html#webinterface.dicom_client.DicomClientBadStatus">[docs]</a><span class="k">class</span> <span class="nc">DicomClientBadStatus</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<span class="n">SOP_CLASS_PREFIXES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.2&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;CT&quot;</span><span class="p">,</span> <span class="s2">&quot;CT Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.2.1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;CTE&quot;</span><span class="p">,</span> <span class="s2">&quot;Enhanced CT Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.4&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;MR&quot;</span><span class="p">,</span> <span class="s2">&quot;MR Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.4.1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;MRE&quot;</span><span class="p">,</span> <span class="s2">&quot;Enhanced MR Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.128&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;PT&quot;</span><span class="p">,</span> <span class="s2">&quot;Positron Emission Tomography Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.130&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;PTE&quot;</span><span class="p">,</span> <span class="s2">&quot;Enhanced PET Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.481.1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;RI&quot;</span><span class="p">,</span> <span class="s2">&quot;RT Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.481.2&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;RD&quot;</span><span class="p">,</span> <span class="s2">&quot;RT Dose Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.481.5&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;RP&quot;</span><span class="p">,</span> <span class="s2">&quot;RT Plan Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.481.3&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;RS&quot;</span><span class="p">,</span> <span class="s2">&quot;RT Structure Set Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;CR&quot;</span><span class="p">,</span> <span class="s2">&quot;Computed Radiography Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.6.1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;US&quot;</span><span class="p">,</span> <span class="s2">&quot;Ultrasound Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.6.2&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;USE&quot;</span><span class="p">,</span> <span class="s2">&quot;Enhanced US Volume Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.12.1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;XA&quot;</span><span class="p">,</span> <span class="s2">&quot;X-Ray Angiographic Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.12.1.1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;XAE&quot;</span><span class="p">,</span> <span class="s2">&quot;Enhanced XA Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.20&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;NM&quot;</span><span class="p">,</span> <span class="s2">&quot;Nuclear Medicine Image Storage&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;1.2.840.10008.5.1.4.1.1.7&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;SC&quot;</span><span class="p">,</span> <span class="s2">&quot;Secondary Capture Image Storage&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="SimpleDicomClient"><a class="viewcode-back" href="../../source/webgui.html#webinterface.dicom_client.SimpleDicomClient">[docs]</a><span class="k">class</span> <span class="nc">SimpleDicomClient</span><span class="p">():</span>
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">called_aet</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">called_aet</span><span class="p">,</span> <span class="n">calling_aet</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calling_aet</span> <span class="o">=</span> <span class="n">calling_aet</span> <span class="ow">or</span> <span class="s2">&quot;MERCURE&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">called_aet</span> <span class="o">=</span> <span class="n">called_aet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">out_dir</span>
+
+<div class="viewcode-block" id="SimpleDicomClient.handle_store"><a class="viewcode-back" href="../../source/webgui.html#webinterface.dicom_client.SimpleDicomClient.handle_store">[docs]</a>    <span class="k">def</span> <span class="nf">handle_store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dataset</span>
+            <span class="c1"># Remove any Group 0x0002 elements that may have been included</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mh">0x00030000</span><span class="p">:]</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mh">0x210</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sop_class</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">SOPClassUID</span>
+            <span class="c1"># sanitize filename by replacing all illegal characters with underscores</span>
+            <span class="n">sop_instance</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^\d.]&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">SOPInstanceUID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to decode the received dataset or missing &#39;SOP Class &quot;</span>
+                <span class="s2">&quot;UID&#39; and/or &#39;SOP Instance UID&#39; elements&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+            <span class="c1"># Unable to decode dataset</span>
+            <span class="k">return</span> <span class="mh">0xC210</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Get the elements we need</span>
+            <span class="n">mode_prefix</span> <span class="o">=</span> <span class="n">SOP_CLASS_PREFIXES</span><span class="p">[</span><span class="n">sop_class</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">mode_prefix</span> <span class="o">=</span> <span class="s2">&quot;UN&quot;</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">mode_prefix</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">sop_instance</span><span class="si">}</span><span class="s2">.dcm&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Storing DICOM file: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">status_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+        <span class="n">status_ds</span><span class="o">.</span><span class="n">Status</span> <span class="o">=</span> <span class="mh">0x0000</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">transfer_syntax</span> <span class="o">==</span> <span class="n">DeflatedExplicitVRLittleEndian</span><span class="p">:</span>
+                <span class="c1"># Workaround for pydicom issue  #1086</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">encoded_dataset</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># We use `write_like_original=False` to ensure that a compliant</span>
+                <span class="c1">#   File Meta Information Header is written</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">write_like_original</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="n">status_ds</span><span class="o">.</span><span class="n">Status</span> <span class="o">=</span> <span class="mh">0x0000</span>  <span class="c1"># Success</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not write file to specified directory:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+            <span class="c1"># Failed - Out of Resources - OSError</span>
+            <span class="n">status_ds</span><span class="o">.</span><span class="n">Status</span> <span class="o">=</span> <span class="mh">0xA700</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not write file to specified directory:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+            <span class="c1"># Failed - Out of Resources - Miscellaneous error</span>
+            <span class="n">status_ds</span><span class="o">.</span><span class="n">Status</span> <span class="o">=</span> <span class="mh">0xA701</span>
+
+        <span class="k">return</span> <span class="n">status_ds</span></div>
+
+<div class="viewcode-block" id="SimpleDicomClient.getscu"><a class="viewcode-back" href="../../source/webgui.html#webinterface.dicom_client.SimpleDicomClient.getscu">[docs]</a>    <span class="k">def</span> <span class="nf">getscu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search_filters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Dataset</span><span class="p">]:</span>
+        <span class="c1"># Exclude these SOP Classes</span>
+        <span class="n">_exclusion</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">EncapsulatedSTLStorage</span><span class="p">,</span>
+            <span class="n">EncapsulatedOBJStorage</span><span class="p">,</span>
+            <span class="n">EncapsulatedMTLStorage</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">store_contexts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">cx</span> <span class="k">for</span> <span class="n">cx</span> <span class="ow">in</span> <span class="n">StoragePresentationContexts</span> <span class="k">if</span> <span class="n">cx</span><span class="o">.</span><span class="n">abstract_syntax</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_exclusion</span>
+        <span class="p">]</span>
+        <span class="n">ae</span> <span class="o">=</span> <span class="n">AE</span><span class="p">(</span><span class="n">ae_title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">calling_aet</span><span class="p">)</span>
+        <span class="c1"># Create application entity</span>
+        <span class="c1"># Binding to port 0 lets the OS pick an available port</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">acse_timeout</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">dimse_timeout</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">network_timeout</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">add_requested_context</span><span class="p">(</span><span class="n">PatientRootQueryRetrieveInformationModelGet</span><span class="p">)</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">add_requested_context</span><span class="p">(</span><span class="n">StudyRootQueryRetrieveInformationModelGet</span><span class="p">)</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">add_requested_context</span><span class="p">(</span><span class="n">PatientStudyOnlyQueryRetrieveInformationModelGet</span><span class="p">)</span>
+        <span class="n">ext_neg</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">cx</span> <span class="ow">in</span> <span class="n">store_contexts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cx</span><span class="o">.</span><span class="n">abstract_syntax</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Abstract syntax must be specified for storage context </span><span class="si">{</span><span class="n">cx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">ae</span><span class="o">.</span><span class="n">add_requested_context</span><span class="p">(</span><span class="n">cx</span><span class="o">.</span><span class="n">abstract_syntax</span><span class="p">)</span>
+            <span class="c1"># Add SCP/SCU Role Selection Negotiation to the extended negotiation</span>
+            <span class="c1"># We want to act as a Storage SCP</span>
+            <span class="n">ext_neg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">build_role</span><span class="p">(</span><span class="n">cx</span><span class="o">.</span><span class="n">abstract_syntax</span><span class="p">,</span> <span class="n">scp_role</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">query_model</span> <span class="o">=</span> <span class="n">StudyRootQueryRetrieveInformationModelGet</span>
+        <span class="n">assoc</span> <span class="o">=</span> <span class="n">ae</span><span class="o">.</span><span class="n">associate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+            <span class="n">ae_title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">called_aet</span><span class="p">,</span>
+            <span class="n">ext_neg</span><span class="o">=</span><span class="n">ext_neg</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">evt_handlers</span><span class="o">=</span><span class="p">[(</span><span class="n">evt</span><span class="o">.</span><span class="n">EVT_C_STORE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_store</span><span class="p">,</span> <span class="p">[])],</span>
+            <span class="n">max_pdu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">assoc</span><span class="o">.</span><span class="n">is_established</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DicomClientCouldNotAssociate</span><span class="p">()</span>
+            <span class="c1"># Send query</span>
+
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">QueryRetrieveLevel</span> <span class="o">=</span> <span class="s1">&#39;STUDY&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">AccessionNumber</span> <span class="o">=</span> <span class="n">accession_number</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">search_filters</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">search_filters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[])))</span>
+
+        <span class="n">responses</span> <span class="o">=</span> <span class="n">assoc</span><span class="o">.</span><span class="n">send_c_get</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">query_model</span><span class="p">)</span>
+        <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">status</span><span class="p">,</span> <span class="n">rsp_identifier</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+            <span class="c1"># If `status.Status` is one of the &#39;Pending&#39; statuses then</span>
+            <span class="c1">#   `rsp_identifier` is the C-GET response&#39;s Identifier dataset</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">DicomClientBadStatus</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">Status</span> <span class="ow">in</span> <span class="p">[</span><span class="mh">0xFF00</span><span class="p">,</span> <span class="mh">0xFF01</span><span class="p">]:</span>
+                <span class="k">yield</span> <span class="n">status</span>
+                <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DicomClientCouldNotFind</span><span class="p">()</span>
+
+        <span class="n">assoc</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SimpleDicomClient.findscu"><a class="viewcode-back" href="../../source/webgui.html#webinterface.dicom_client.SimpleDicomClient.findscu">[docs]</a>    <span class="k">def</span> <span class="nf">findscu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_number</span><span class="p">,</span> <span class="n">search_filters</span><span class="o">=</span><span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dataset</span><span class="p">]:</span>
+        <span class="c1"># Create application entity</span>
+        <span class="n">ae</span> <span class="o">=</span> <span class="n">AE</span><span class="p">(</span><span class="n">ae_title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">calling_aet</span><span class="p">)</span>
+
+        <span class="c1"># Add a requested presentation context</span>
+        <span class="c1"># ae.add_requested_context(StudyRootQueryRetrieveInformationModelFind)</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">requested_contexts</span> <span class="o">=</span> <span class="n">QueryRetrievePresentationContexts</span>
+        <span class="c1"># + BasicWorklistManagementPresentationContexts</span>
+        <span class="c1"># + UnifiedProcedurePresentationContexts )</span>
+
+        <span class="c1"># Associate with the peer AE</span>
+        <span class="n">assoc</span> <span class="o">=</span> <span class="n">ae</span><span class="o">.</span><span class="n">associate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">ae_title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">called_aet</span><span class="p">,</span> <span class="n">max_pdu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ext_neg</span><span class="o">=</span><span class="p">[])</span>
+
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">QueryRetrieveLevel</span> <span class="o">=</span> <span class="s1">&#39;SERIES&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">AccessionNumber</span> <span class="o">=</span> <span class="n">accession_number</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">SeriesInstanceUID</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">StudyInstanceUID</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">Modality</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">NumberOfSeriesRelatedInstances</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">SeriesDescription</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">StudyDescription</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">search_filters</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">search_filters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[])))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">assoc</span><span class="o">.</span><span class="n">is_established</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DicomClientCouldNotAssociate</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">responses</span> <span class="o">=</span> <span class="n">assoc</span><span class="o">.</span><span class="n">send_c_find</span><span class="p">(</span>
+                <span class="n">ds</span><span class="p">,</span>
+                <span class="n">StudyRootQueryRetrieveInformationModelFind</span>
+            <span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Connection timed out, was aborted or received invalid response&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+                <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">Status</span> <span class="ow">in</span> <span class="p">[</span><span class="mh">0xFF00</span><span class="p">,</span> <span class="mh">0xFF01</span><span class="p">]</span> <span class="ow">and</span> <span class="n">identifier</span><span class="p">:</span>
+                    <span class="c1"># print(&#39;C-FIND query status: 0x{0:04x}&#39;.format(status.Status))</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+                <span class="c1"># elif status.Status == 0x0000:</span>
+                <span class="c1">#     print(&quot;Success&quot;)</span>
+                <span class="c1">#     break</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">DicomClientCouldNotFind</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">results</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">assoc</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Replace these variables with your actual values</span>
+    <span class="n">remote_host</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">remote_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">calling_aet</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">called_aet</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">accession_number</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">remote_host</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="n">remote_port</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="n">calling_aet</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="n">called_aet</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="n">accession_number</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">SimpleDicomClient</span><span class="p">(</span><span class="n">remote_host</span><span class="p">,</span> <span class="n">remote_port</span><span class="p">,</span> <span class="n">called_aet</span><span class="p">,</span> <span class="n">calling_aet</span><span class="p">,</span> <span class="s2">&quot;/tmp/test-move&quot;</span><span class="p">)</span>
+    <span class="c1"># study_uid = c.get_study_uid(accession_number)</span>
+    <span class="c1"># print(study_uid)</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">getscu</span><span class="p">(</span><span class="n">accession_number</span><span class="p">,</span> <span class="p">{})</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

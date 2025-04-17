@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.types &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>common.types &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -112,27 +113,38 @@
 <span class="sd">Definitions for using TypedDicts throughout mercure.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">TextIOWrapper</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">PathLike</span>
 <span class="c1"># Standard python includes</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TypedDict</span>
+
+<span class="kn">from</span> <span class="nn">common.event_types</span> <span class="kn">import</span> <span class="n">FailStage</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
-<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TypedDict</span>
 
 <span class="c1"># TODO: Add description for the individual classes</span>
 
 
-<div class="viewcode-block" id="Compat"><a class="viewcode-back" href="../../common.html#common.types.Compat">[docs]</a><span class="k">class</span> <span class="nc">Compat</span><span class="p">:</span>
-<div class="viewcode-block" id="Compat.get"><a class="viewcode-back" href="../../common.html#common.types.Compat.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">els</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<div class="viewcode-block" id="Compat"><a class="viewcode-back" href="../../source/common.html#common.types.Compat">[docs]</a><span class="k">class</span> <span class="nc">Compat</span><span class="p">:</span>
+<div class="viewcode-block" id="Compat.get"><a class="viewcode-back" href="../../source/common.html#common.types.Compat.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">els</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">els</span><span class="p">)</span> <span class="ow">or</span> <span class="n">els</span></div></div>
 
 
-<div class="viewcode-block" id="EmptyDict"><a class="viewcode-back" href="../../common.html#common.types.EmptyDict">[docs]</a><span class="k">class</span> <span class="nc">EmptyDict</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<div class="viewcode-block" id="EmptyDict"><a class="viewcode-back" href="../../source/common.html#common.types.EmptyDict">[docs]</a><span class="k">class</span> <span class="nc">EmptyDict</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="Target"><a class="viewcode-back" href="../../common.html#common.types.Target">[docs]</a><span class="k">class</span> <span class="nc">Target</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+<div class="viewcode-block" id="Target"><a class="viewcode-back" href="../../source/common.html#common.types.Target">[docs]</a><span class="k">class</span> <span class="nc">Target</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+    <span class="n">target_type</span><span class="p">:</span> <span class="n">Any</span>
     <span class="n">contact</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;pull&quot;</span><span class="p">,</span> <span class="s2">&quot;push&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;push&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">__get_validators__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -141,7 +153,7 @@
         <span class="c1"># the value returned from the previous validator</span>
         <span class="k">yield</span> <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span>
 
-<div class="viewcode-block" id="Target.validate"><a class="viewcode-back" href="../../common.html#common.types.Target.validate">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Target.validate"><a class="viewcode-back" href="../../source/common.html#common.types.Target.validate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the target as any of the known target types.&quot;&quot;&quot;</span>
 
@@ -150,90 +162,127 @@
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">subclass_dict</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">subclass_dict</span><span class="p">[</span><span class="n">k</span><span class="p">](</span><span class="o">**</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">pass</span>
 
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t validate target as any of&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">subclass_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
 
-<div class="viewcode-block" id="Target.get_name"><a class="viewcode-back" href="../../common.html#common.types.Target.get_name">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Target.get_name"><a class="viewcode-back" href="../../source/common.html#common.types.Target.get_name">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">construct</span><span class="p">()</span><span class="o">.</span><span class="n">target_type</span>  <span class="c1"># type: ignore</span></div></div>
 
 
-<div class="viewcode-block" id="DicomTarget"><a class="viewcode-back" href="../../common.html#common.types.DicomTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="DicomTarget"><a class="viewcode-back" href="../../source/common.html#common.types.DicomTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dicom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dicom&quot;</span>
     <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">port</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">aet_target</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">aet_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+    <span class="n">aet_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">pass_sender_aet</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">pass_receiver_aet</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="DicomTLSTarget"><a class="viewcode-back" href="../../common.html#common.types.DicomTLSTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomTLSTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="DicomTLSTarget"><a class="viewcode-back" href="../../source/common.html#common.types.DicomTLSTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomTLSTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dicomtls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dicomtls&quot;</span>
     <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">port</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">aet_target</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">aet_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">pass_sender_aet</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">pass_receiver_aet</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">tls_key</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">tls_cert</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">ca_cert</span><span class="p">:</span> <span class="nb">str</span></div>
+    <span class="n">ca_cert</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="SftpTarget"><a class="viewcode-back" href="../../common.html#common.types.SftpTarget">[docs]</a><span class="k">class</span> <span class="nc">SftpTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="DicomWebTarget"><a class="viewcode-back" href="../../source/common.html#common.types.DicomWebTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomWebTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+    <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dicomweb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dicomweb&quot;</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">qido_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">wado_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">stow_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">access_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">http_user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">http_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span></div>
+
+
+<div class="viewcode-block" id="SftpTarget"><a class="viewcode-back" href="../../source/common.html#common.types.SftpTarget">[docs]</a><span class="k">class</span> <span class="nc">SftpTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sftp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sftp&quot;</span>
     <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">user</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+    <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="RsyncTarget"><a class="viewcode-back" href="../../common.html#common.types.RsyncTarget">[docs]</a><span class="k">class</span> <span class="nc">RsyncTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="RsyncTarget"><a class="viewcode-back" href="../../source/common.html#common.types.RsyncTarget">[docs]</a><span class="k">class</span> <span class="nc">RsyncTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;rsync&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;rsync&quot;</span>
     <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">user</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">run_on_complete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+    <span class="n">run_on_complete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="XnatTarget"><a class="viewcode-back" href="../../common.html#common.types.XnatTarget">[docs]</a><span class="k">class</span> <span class="nc">XnatTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="XnatTarget"><a class="viewcode-back" href="../../source/common.html#common.types.XnatTarget">[docs]</a><span class="k">class</span> <span class="nc">XnatTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;xnat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xnat&quot;</span>
     <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">user</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span></div>
+    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span></div>
 
 
-<div class="viewcode-block" id="DicomWebTarget"><a class="viewcode-back" href="../../common.html#common.types.DicomWebTarget">[docs]</a><span class="k">class</span> <span class="nc">DicomWebTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
-    <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dicomweb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dicomweb&quot;</span>
-    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">qido_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">wado_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">stow_url_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">access_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">http_user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">http_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="S3Target"><a class="viewcode-back" href="../../common.html#common.types.S3Target">[docs]</a><span class="k">class</span> <span class="nc">S3Target</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="S3Target"><a class="viewcode-back" href="../../source/common.html#common.types.S3Target">[docs]</a><span class="k">class</span> <span class="nc">S3Target</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;s3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;s3&quot;</span>
     <span class="n">region</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">bucket</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">access_key_id</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">secret_access_key</span><span class="p">:</span> <span class="nb">str</span></div>
+    <span class="n">secret_access_key</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="FolderTarget"><a class="viewcode-back" href="../../common.html#common.types.FolderTarget">[docs]</a><span class="k">class</span> <span class="nc">FolderTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="FolderTarget"><a class="viewcode-back" href="../../source/common.html#common.types.FolderTarget">[docs]</a><span class="k">class</span> <span class="nc">FolderTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;folder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;folder&quot;</span>
-    <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span></div>
+    <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">file_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">short_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">folder</span></div>
 
 
-<div class="viewcode-block" id="DummyTarget"><a class="viewcode-back" href="../../common.html#common.types.DummyTarget">[docs]</a><span class="k">class</span> <span class="nc">DummyTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
+<div class="viewcode-block" id="DummyTarget"><a class="viewcode-back" href="../../source/common.html#common.types.DummyTarget">[docs]</a><span class="k">class</span> <span class="nc">DummyTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">target_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dummy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dummy&quot;</span></div>
 
 
-<div class="viewcode-block" id="Module"><a class="viewcode-back" href="../../common.html#common.types.Module">[docs]</a><span class="k">class</span> <span class="nc">Module</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+<div class="viewcode-block" id="Module"><a class="viewcode-back" href="../../source/common.html#common.types.Module">[docs]</a><span class="k">class</span> <span class="nc">Module</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">docker_tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">additional_volumes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">environment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -245,13 +294,18 @@
     <span class="n">resources</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">requires_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="UnsetRule"><a class="viewcode-back" href="../../common.html#common.types.UnsetRule">[docs]</a><span class="k">class</span> <span class="nc">UnsetRule</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+
+<div class="viewcode-block" id="UnsetRule"><a class="viewcode-back" href="../../source/common.html#common.types.UnsetRule">[docs]</a><span class="k">class</span> <span class="nc">UnsetRule</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
-<div class="viewcode-block" id="Rule"><a class="viewcode-back" href="../../common.html#common.types.Rule">[docs]</a><span class="k">class</span> <span class="nc">Rule</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+<span class="n">StudyTriggerCondition</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;received_series&quot;</span><span class="p">]</span>
+<span class="n">StudyForceCompletionAction</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;discard&quot;</span><span class="p">,</span> <span class="s2">&quot;proceed&quot;</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Rule"><a class="viewcode-back" href="../../source/common.html#common.types.Rule">[docs]</a><span class="k">class</span> <span class="nc">Rule</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
-    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">target</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">disabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">fallback</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">contact</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -259,11 +313,12 @@
     <span class="n">tags</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">action</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;process&quot;</span><span class="p">,</span> <span class="s2">&quot;discard&quot;</span><span class="p">,</span> <span class="s2">&quot;notification&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;route&quot;</span>
     <span class="n">action_trigger</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;series&quot;</span>
-    <span class="n">study_trigger_condition</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;received_series&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;timeout&quot;</span>
+    <span class="n">study_trigger_condition</span><span class="p">:</span> <span class="n">StudyTriggerCondition</span> <span class="o">=</span> <span class="s2">&quot;timeout&quot;</span>
+    <span class="n">study_force_completion_action</span><span class="p">:</span> <span class="n">StudyForceCompletionAction</span> <span class="o">=</span> <span class="s2">&quot;discard&quot;</span>
     <span class="n">study_trigger_series</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">priority</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span> <span class="s2">&quot;urgent&quot;</span><span class="p">,</span> <span class="s2">&quot;offpeak&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;normal&quot;</span>
-    <span class="n">processing_module</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">processing_settings</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">processing_module</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">processing_settings</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">processing_retain_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">notification_email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">notification_webhook</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -277,17 +332,54 @@
     <span class="n">notification_trigger_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="ProcessingLogsConfig"><a class="viewcode-back" href="../../common.html#common.types.ProcessingLogsConfig">[docs]</a><span class="k">class</span> <span class="nc">ProcessingLogsConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<div class="viewcode-block" id="ProcessingLogsConfig"><a class="viewcode-back" href="../../source/common.html#common.types.ProcessingLogsConfig">[docs]</a><span class="k">class</span> <span class="nc">ProcessingLogsConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">discard_logs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">logs_file_store</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="DicomReceiverConfig"><a class="viewcode-back" href="../../common.html#common.types.DicomReceiverConfig">[docs]</a><span class="k">class</span> <span class="nc">DicomReceiverConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">additional_tags</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
-    
+<div class="viewcode-block" id="DicomReceiverConfig"><a class="viewcode-back" href="../../source/common.html#common.types.DicomReceiverConfig">[docs]</a><span class="k">class</span> <span class="nc">DicomReceiverConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">additional_tags</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
 
-<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../common.html#common.types.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DicomNodeBase"><a class="viewcode-back" href="../../source/common.html#common.types.DicomNodeBase">[docs]</a><span class="k">class</span> <span class="nc">DicomNodeBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__get_validators__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="c1"># one or more validators may be yielded which will be called in the</span>
+        <span class="c1"># order to validate the input, each validator will receive as an input</span>
+        <span class="c1"># the value returned from the previous validator</span>
+        <span class="k">yield</span> <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span>
+
+<div class="viewcode-block" id="DicomNodeBase.validate"><a class="viewcode-back" href="../../source/common.html#common.types.DicomNodeBase.validate">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the target as any of the known target types.&quot;&quot;&quot;</span>
+        <span class="n">subclass_dict</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">DicomNodeBase</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">sbc</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">sbc</span> <span class="k">for</span> <span class="n">sbc</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">subclass_dict</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">subclass_dict</span><span class="p">[</span><span class="n">k</span><span class="p">](</span><span class="o">**</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t validate dicom node as any of&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">subclass_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="DicomNodeBase.get_name"><a class="viewcode-back" href="../../source/common.html#common.types.DicomNodeBase.get_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">construct</span><span class="p">()</span><span class="o">.</span><span class="n">node_type</span>  <span class="c1"># type: ignore</span></div></div>
+
+
+<div class="viewcode-block" id="DicomDestination"><a class="viewcode-back" href="../../source/common.html#common.types.DicomDestination">[docs]</a><span class="k">class</span> <span class="nc">DicomDestination</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="DicomRetrieveConfig"><a class="viewcode-back" href="../../source/common.html#common.types.DicomRetrieveConfig">[docs]</a><span class="k">class</span> <span class="nc">DicomRetrieveConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">dicom_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DicomNodeBase</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">destination_folders</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DicomDestination</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../source/common.html#common.types.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">appliance_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">appliance_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#FFF&quot;</span>
     <span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">accept_compressed_images</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">incoming_folder</span><span class="p">:</span> <span class="nb">str</span>
@@ -297,11 +389,12 @@
     <span class="n">error_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">discard_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">processing_folder</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">jobs_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">router_scan_interval</span><span class="p">:</span> <span class="nb">int</span>       <span class="c1"># in seconds</span>
     <span class="n">dispatcher_scan_interval</span><span class="p">:</span> <span class="nb">int</span>   <span class="c1"># in seconds</span>
     <span class="n">cleaner_scan_interval</span><span class="p">:</span> <span class="nb">int</span>      <span class="c1"># in seconds</span>
     <span class="n">retention</span><span class="p">:</span> <span class="nb">int</span>                  <span class="c1"># in seconds (3 days)</span>
-    <span class="n">emergency_clean_percentage</span><span class="p">:</span> <span class="nb">int</span> <span class="c1"># in % of disk space</span>
+    <span class="n">emergency_clean_percentage</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># in % of disk space</span>
     <span class="n">retry_delay</span><span class="p">:</span> <span class="nb">int</span>                <span class="c1"># in seconds (15 min)</span>
     <span class="n">retry_max</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">series_complete_trigger</span><span class="p">:</span> <span class="nb">int</span>    <span class="c1"># in seconds</span>
@@ -327,10 +420,15 @@
     <span class="n">processing_logs</span><span class="p">:</span> <span class="n">ProcessingLogsConfig</span> <span class="o">=</span> <span class="n">ProcessingLogsConfig</span><span class="p">()</span>
     <span class="n">email_notification_from</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mercure@mercure.mercure&quot;</span>
     <span class="n">support_root_modules</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">webhook_certificate_location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+    <span class="n">webhook_certificate_location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">phi_notifications</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">server_time</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;UTC&quot;</span>
+    <span class="n">local_time</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;UTC&quot;</span>
+    <span class="n">dicom_retrieve</span><span class="p">:</span> <span class="n">DicomRetrieveConfig</span> <span class="o">=</span> <span class="n">DicomRetrieveConfig</span><span class="p">()</span>
+    <span class="n">store_sample_dicom_tags</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="TaskInfo"><a class="viewcode-back" href="../../common.html#common.types.TaskInfo">[docs]</a><span class="k">class</span> <span class="nc">TaskInfo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+<div class="viewcode-block" id="TaskInfo"><a class="viewcode-back" href="../../source/common.html#common.types.TaskInfo">[docs]</a><span class="k">class</span> <span class="nc">TaskInfo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">action</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;process&quot;</span><span class="p">,</span> <span class="s2">&quot;discard&quot;</span><span class="p">,</span> <span class="s2">&quot;notification&quot;</span><span class="p">]</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">uid_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">]</span>
@@ -343,27 +441,38 @@
     <span class="n">mercure_version</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">mercure_appliance</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">mercure_server</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">device_serial_number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+    <span class="n">device_serial_number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fail_stage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FailStage</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">sender_aet</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MISSING&quot;</span>
+    <span class="n">receiver_aet</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MISSING&quot;</span></div>
 
-<div class="viewcode-block" id="TaskDispatch"><a class="viewcode-back" href="../../common.html#common.types.TaskDispatch">[docs]</a><span class="k">class</span> <span class="nc">TaskDispatch</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
-    <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="TaskDispatchStatus"><a class="viewcode-back" href="../../source/common.html#common.types.TaskDispatchStatus">[docs]</a><span class="k">class</span> <span class="nc">TaskDispatchStatus</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;waiting&quot;</span><span class="p">,</span> <span class="s2">&quot;complete&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">]</span>
+    <span class="n">time</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="TaskDispatch"><a class="viewcode-back" href="../../source/common.html#common.types.TaskDispatch">[docs]</a><span class="k">class</span> <span class="nc">TaskDispatch</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+    <span class="n">target_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+    <span class="n">status</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TaskDispatchStatus</span><span class="p">],</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">retries</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">next_retry_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="TaskStudy"><a class="viewcode-back" href="../../common.html#common.types.TaskStudy">[docs]</a><span class="k">class</span> <span class="nc">TaskStudy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+<div class="viewcode-block" id="TaskStudy"><a class="viewcode-back" href="../../source/common.html#common.types.TaskStudy">[docs]</a><span class="k">class</span> <span class="nc">TaskStudy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">complete_trigger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">complete_trigger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StudyTriggerCondition</span><span class="p">]</span>
     <span class="n">complete_required_series</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">creation_time</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">last_receive_time</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">received_series</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
     <span class="n">received_series_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
-    <span class="n">complete_force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+    <span class="n">complete_force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">complete_force_action</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StudyForceCompletionAction</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;discard&quot;</span></div>
 
 
-<div class="viewcode-block" id="TaskProcessing"><a class="viewcode-back" href="../../common.html#common.types.TaskProcessing">[docs]</a><span class="k">class</span> <span class="nc">TaskProcessing</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+<div class="viewcode-block" id="TaskProcessing"><a class="viewcode-back" href="../../source/common.html#common.types.TaskProcessing">[docs]</a><span class="k">class</span> <span class="nc">TaskProcessing</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">module_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Module</span><span class="p">]</span>
     <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -396,19 +505,35 @@
 <span class="c1">#         return PydanticFile(cls, file_name)</span>
 
 
-<div class="viewcode-block" id="Task"><a class="viewcode-back" href="../../common.html#common.types.Task">[docs]</a><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
+<div class="viewcode-block" id="Task"><a class="viewcode-back" href="../../source/common.html#common.types.Task">[docs]</a><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Compat</span><span class="p">):</span>
     <span class="n">info</span><span class="p">:</span> <span class="n">TaskInfo</span>
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">dispatch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">process</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">,</span><span class="n">List</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">process</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">study</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TaskStudy</span><span class="p">,</span> <span class="n">EmptyDict</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">nomad_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Task.Config"><a class="viewcode-back" href="../../common.html#common.types.Task.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-        <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span></div></div>
+<div class="viewcode-block" id="Task.Config"><a class="viewcode-back" href="../../source/common.html#common.types.Task.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span></div>
+
+<div class="viewcode-block" id="Task.from_file"><a class="viewcode-back" href="../../source/common.html#common.types.Task.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_or_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">TextIOWrapper</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;Task&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">,</span> <span class="n">TextIOWrapper</span><span class="p">):</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">file_or_path</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Task.to_file"><a class="viewcode-back" href="../../source/common.html#common.types.Task.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">file_or_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">TextIOWrapper</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">,</span> <span class="n">TextIOWrapper</span><span class="p">):</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">file_or_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">f</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="TaskHasStudy"><a class="viewcode-back" href="../../common.html#common.types.TaskHasStudy">[docs]</a><span class="k">class</span> <span class="nc">TaskHasStudy</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+<div class="viewcode-block" id="TaskHasStudy"><a class="viewcode-back" href="../../source/common.html#common.types.TaskHasStudy">[docs]</a><span class="k">class</span> <span class="nc">TaskHasStudy</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span> 
     <span class="n">study</span><span class="p">:</span> <span class="n">TaskStudy</span></div>
 </pre></div>
 
@@ -419,7 +544,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -437,18 +562,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

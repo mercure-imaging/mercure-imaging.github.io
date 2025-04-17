@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>webinterface.common &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>webinterface.common &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -112,27 +113,69 @@
 <span class="sd">Helper functions for the graphical user interface of mercure.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># Standard python includes</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="c1"># Standard python includes</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
+<span class="kn">import</span> <span class="nn">bleach</span>
+<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
+<span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">Redis</span>
+<span class="kn">from</span> <span class="nn">rq</span> <span class="kn">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">rq_scheduler</span> <span class="kn">import</span> <span class="n">Scheduler</span>
 <span class="c1"># Starlette-related includes</span>
 <span class="kn">from</span> <span class="nn">starlette.templating</span> <span class="kn">import</span> <span class="n">Jinja2Templates</span>
 
+<span class="n">redis</span> <span class="o">=</span> <span class="n">Redis</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;REDIS_URL&quot;</span><span class="p">,</span> <span class="s2">&quot;redis://localhost:6379/0&quot;</span><span class="p">))</span>
+<span class="n">rq_slow_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;mercure_slow&quot;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">redis</span><span class="p">)</span>
+<span class="n">rq_fast_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;mercure_fast&quot;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">redis</span><span class="p">)</span>
+<span class="n">rq_fast_scheduler</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">queue</span><span class="o">=</span><span class="n">rq_fast_queue</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">rq_fast_queue</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
 
-<span class="n">templates</span> <span class="o">=</span> <span class="n">Jinja2Templates</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s2">&quot;webinterface/templates&quot;</span><span class="p">)</span>
+<span class="n">csp_nonce</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">16</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="get_user_information"><a class="viewcode-back" href="../../webinterface.html#webinterface.common.get_user_information">[docs]</a><span class="k">def</span> <span class="nf">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="get_user_information"><a class="viewcode-back" href="../../source/webgui.html#webinterface.common.get_user_information">[docs]</a><span class="k">def</span> <span class="nf">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns dictionary of values that should always be passed to the templates when the user is logged in.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;logged_in&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">,</span>
         <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
         <span class="s2">&quot;is_admin&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_admin</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;appliance_name&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">appliance_name</span><span class="p">,</span>
+        <span class="s2">&quot;appliance_color&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">appliance_color</span><span class="p">,</span>
     <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="async_run"><a class="viewcode-back" href="../../webinterface.html#webinterface.common.async_run">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">async_run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]:</span>
+<div class="viewcode-block" id="get_mercure_version"><a class="viewcode-back" href="../../source/webgui.html#webinterface.common.get_mercure_version">[docs]</a><span class="k">def</span> <span class="nf">get_mercure_version</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="get_csp_nonce"><a class="viewcode-back" href="../../source/webgui.html#webinterface.common.get_csp_nonce">[docs]</a><span class="k">def</span> <span class="nf">get_csp_nonce</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the CSP nonce for the current request.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">csp_nonce</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;csp_nonce&quot;</span><span class="p">:</span> <span class="n">csp_nonce</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="strip_untrusted"><a class="viewcode-back" href="../../source/webgui.html#webinterface.common.strip_untrusted">[docs]</a><span class="k">def</span> <span class="nf">strip_untrusted</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="k">return</span> <span class="n">bleach</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">clean</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">strip_untrusted</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error cleaning value.&quot;</span><span class="p">)</span></div>
+
+
+<span class="n">templates</span> <span class="o">=</span> <span class="n">Jinja2Templates</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s2">&quot;webinterface/templates&quot;</span><span class="p">,</span>
+                            <span class="n">context_processors</span><span class="o">=</span><span class="p">[</span><span class="n">get_user_information</span><span class="p">,</span> <span class="n">get_mercure_version</span><span class="p">,</span> <span class="n">get_csp_nonce</span><span class="p">])</span>
+
+<span class="n">templates</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s1">&#39;strip_untrusted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strip_untrusted</span>
+
+
+<div class="viewcode-block" id="async_run"><a class="viewcode-back" href="../../source/webgui.html#webinterface.common.async_run">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">async_run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes the given command in a way compatible with ayncio.&quot;&quot;&quot;</span>
     <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_shell</span><span class="p">(</span>
         <span class="n">cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span>
@@ -142,7 +185,7 @@
     <span class="k">return</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span></div>
 
 
-<div class="viewcode-block" id="async_run_exec"><a class="viewcode-back" href="../../webinterface.html#webinterface.common.async_run_exec">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">async_run_exec</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]:</span>
+<div class="viewcode-block" id="async_run_exec"><a class="viewcode-back" href="../../source/webgui.html#webinterface.common.async_run_exec">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">async_run_exec</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes the given command in a way compatible with ayncio.&quot;&quot;&quot;</span>
     <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span>
@@ -159,7 +202,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -177,18 +220,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

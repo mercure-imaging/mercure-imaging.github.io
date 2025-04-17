@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>routing.generate_taskfile &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>routing.generate_taskfile &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -109,40 +110,31 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">generate_taskfile.py</span>
 <span class="sd">====================</span>
-<span class="sd">Helper functions for generating task files in json format, which describe the job to be done and maintain a journal of the executed actions.</span>
+<span class="sd">Helper functions for generating task files in json format,</span>
+<span class="sd">which describe the job to be done and maintain a journal of the executed actions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">daiquiri</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-
-<span class="c1"># from mypy_extensions import TypedDict</span>
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
-<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">mercure_defs</span><span class="p">,</span>
-    <span class="n">mercure_names</span><span class="p">,</span>
-    <span class="n">mercure_rule</span><span class="p">,</span>
-    <span class="n">mercure_options</span><span class="p">,</span>
-    <span class="n">mercure_actions</span><span class="p">,</span>
-<span class="p">)</span>
-
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_actions</span><span class="p">,</span> <span class="n">mercure_defs</span><span class="p">,</span> <span class="n">mercure_names</span><span class="p">,</span> <span class="n">mercure_options</span><span class="p">,</span> <span class="n">mercure_rule</span>
+<span class="kn">from</span> <span class="nn">common.helper</span> <span class="kn">import</span> <span class="n">get_now_str</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">EmptyDict</span><span class="p">,</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">TaskDispatchStatus</span><span class="p">,</span> <span class="n">TaskInfo</span><span class="p">,</span> <span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">TaskStudy</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="c1"># Create local logger instance</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="compose_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.compose_task">[docs]</a><span class="k">def</span> <span class="nf">compose_task</span><span class="p">(</span>
+<div class="viewcode-block" id="compose_task"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.compose_task">[docs]</a><span class="k">def</span> <span class="nf">compose_task</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">uid_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">],</span>
@@ -161,9 +153,9 @@
         <span class="c1"># Add general information about the job</span>
         <span class="n">info</span><span class="o">=</span><span class="n">add_info</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">uid_type</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">),</span>
         <span class="c1"># Add dispatch information -- completed only if the job includes a dispatching step</span>
-        <span class="n">dispatch</span><span class="o">=</span><span class="n">add_dispatching</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">uid</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="n">dispatch</span><span class="o">=</span><span class="n">add_dispatching</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">uid</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="c1"># Add processing information -- completed only if the job includes a processing step</span>
-        <span class="n">process</span><span class="o">=</span><span class="n">add_processing</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="n">process</span><span class="o">=</span><span class="n">add_processing</span><span class="p">(</span><span class="n">applied_rule</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="c1"># Add information about the study, included all collected series</span>
         <span class="n">study</span><span class="o">=</span><span class="n">add_study</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">uid_type</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cast</span><span class="p">(</span><span class="n">EmptyDict</span><span class="p">,</span> <span class="p">{}),</span>
     <span class="p">)</span>
@@ -173,11 +165,13 @@
     <span class="k">return</span> <span class="n">task</span></div>
 
 
-<div class="viewcode-block" id="add_processing"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.add_processing">[docs]</a><span class="k">def</span> <span class="nf">add_processing</span><span class="p">(</span><span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">,</span><span class="n">List</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">]]]:</span>
+<div class="viewcode-block" id="add_processing"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.add_processing">[docs]</a><span class="k">def</span> <span class="nf">add_processing</span><span class="p">(</span><span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">TaskProcessing</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Adds information about the desired processing step into the task file, which is evaluated by the processing module</span>
+<span class="sd">    Adds information about the desired processing step into the task file,</span>
+<span class="sd">    which is evaluated by the processing module</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># If the applied_rule name is empty, don&#39;t add processing information (rules with processing steps always have applied_rule set)</span>
+    <span class="c1"># If the applied_rule name is empty, don&#39;t add processing information</span>
+    <span class="c1"># (rules with processing steps always have applied_rule set)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">applied_rule</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -194,16 +188,18 @@
 
     <span class="c1"># Get the name of the module that should be triggered</span>
     <span class="n">module_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_module</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_module</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">module_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_module</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">module_names</span> <span class="o">=</span> <span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_module</span>
-    
+
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module: </span><span class="si">{</span><span class="n">module_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">process_infos</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">module_names</span><span class="p">):</span>
         <span class="c1"># Get the configuration of this module</span>
+        <span class="k">if</span> <span class="n">module_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2"> not found in configuration modules (</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
         <span class="n">module_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="c1"># Compose the processing settings that should be used (module level + rule level)</span>
@@ -211,14 +207,11 @@
         <span class="k">if</span> <span class="n">module_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">module_config</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
 
-        <span class="n">rule_settings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_settings</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
-            <span class="n">rule_settings</span> <span class="o">=</span> <span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_settings</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_settings</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_settings</span><span class="p">):</span>
+                <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_settings</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">rule_settings</span> <span class="o">=</span> <span class="p">[</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_settings</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">rule_settings</span><span class="p">):</span>
-            <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">rule_settings</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">applied_rule_info</span><span class="o">.</span><span class="n">processing_settings</span><span class="p">)</span>
 
         <span class="c1"># Store in the target structure</span>
         <span class="n">process_info</span><span class="p">:</span> <span class="n">TaskProcessing</span> <span class="o">=</span> <span class="n">TaskProcessing</span><span class="p">(</span>
@@ -233,7 +226,7 @@
     <span class="k">return</span> <span class="n">process_infos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="add_study"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.add_study">[docs]</a><span class="k">def</span> <span class="nf">add_study</span><span class="p">(</span>
+<div class="viewcode-block" id="add_study"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.add_study">[docs]</a><span class="k">def</span> <span class="nf">add_study</span><span class="p">(</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">uid_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">],</span> <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TaskStudy</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -252,18 +245,20 @@
         <span class="n">received_series</span><span class="o">=</span><span class="p">[</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SeriesDescription&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">INVALID</span><span class="p">)],</span>
         <span class="n">received_series_uid</span><span class="o">=</span><span class="p">[</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SeriesInstanceUID&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">INVALID</span><span class="p">)],</span>
         <span class="n">complete_force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">complete_force_action</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">applied_rule</span><span class="p">]</span><span class="o">.</span><span class="n">study_force_completion_action</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">study_info</span></div>
 
 
-<div class="viewcode-block" id="add_dispatching"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.add_dispatching">[docs]</a><span class="k">def</span> <span class="nf">add_dispatching</span><span class="p">(</span>
-    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span>
+<div class="viewcode-block" id="add_dispatching"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.add_dispatching">[docs]</a><span class="k">def</span> <span class="nf">add_dispatching</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="n">target</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TaskDispatch</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Adds information about the desired dispatching step into the task file, which is evaluated by the dispatcher. For series-level dispatching,</span>
-<span class="sd">    the target information is provided in string &quot;target&quot;, as dispatch operations from multiple rules to the same target are combined (to avoid</span>
-<span class="sd">    double sending). In all other cases, the applied_rule is provided and the target information is taken from the rule definition.</span>
+<span class="sd">    Adds information about the desired dispatching step into the task file, which is evaluated by the dispatcher.</span>
+<span class="sd">    For series-level dispatching, the target information is provided in string &quot;target&quot;, as dispatch operations</span>
+<span class="sd">    from multiple rules to the same target are combined (to avoid double sending). In all other cases, the</span>
+<span class="sd">    applied_rule is provided and the target information is taken from the rule definition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Maybe adding dispatching...&quot;</span><span class="p">)</span>
     <span class="n">perform_dispatch</span> <span class="o">=</span> <span class="kc">False</span>
@@ -273,21 +268,33 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Applied_rule and target empty. Cannot add dispatch information for UID </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">target_used</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">target</span>
+    <span class="n">targets_used</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Only insert string into list if it is not empty</span>
+        <span class="k">if</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">targets_used</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">targets_used</span> <span class="o">=</span> <span class="n">target</span>
 
-    <span class="c1"># Check if a target string is provided (i.e., job is from series-level dispatching). If so, the images should be dispatched in any case</span>
-    <span class="k">if</span> <span class="n">target_used</span><span class="p">:</span>
+    <span class="c1"># Check if a target string is provided (i.e., job is from series-level dispatching).</span>
+    <span class="c1"># If so, the images should be dispatched in any case</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets_used</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding dispatching info because series-level target </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> specified&quot;</span><span class="p">)</span>
         <span class="n">perform_dispatch</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># If no target string is provided, read the target defined in the provided applied rule</span>
-        <span class="n">target_used</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">applied_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">rule_target</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">applied_rule</span><span class="p">]</span><span class="o">.</span><span class="n">target</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_target</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">targets_used</span> <span class="o">=</span> <span class="p">[</span><span class="n">rule_target</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">targets_used</span> <span class="o">=</span> <span class="n">rule_target</span>
+
         <span class="c1"># Applied_rule involves dispatching and target has been set? Then go forward with dispatching</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">applied_rule</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mercure_rule</span><span class="o">.</span><span class="n">ACTION</span><span class="p">,</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">PROCESS</span><span class="p">)</span>
             <span class="ow">in</span> <span class="p">(</span><span class="n">mercure_actions</span><span class="o">.</span><span class="n">ROUTE</span><span class="p">,</span> <span class="n">mercure_actions</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
-        <span class="p">)</span> <span class="ow">and</span> <span class="n">target_used</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding dispatching info because rule target </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> specified&quot;</span><span class="p">)</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets_used</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding dispatching info because rule specified target </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">perform_dispatch</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1"># If dispatching should not be performed, just return</span>
@@ -295,21 +302,26 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Not adding dispatch information.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="c1"># Check if the selected target actually exists in the configuration (could have been deleted by now)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target_used</span><span class="p">,</span> <span class="p">{}):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target </span><span class="si">{</span><span class="n">target_used</span><span class="si">}</span><span class="s2"> does not exist for UID </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
-        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">target_status</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TaskDispatchStatus</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">current_time</span> <span class="o">=</span> <span class="n">get_now_str</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">target_item</span> <span class="ow">in</span> <span class="n">targets_used</span><span class="p">:</span>
+        <span class="c1"># logger.info(f&quot;Adding target {target_item} to dispatching info&quot;)</span>
+        <span class="c1"># Check if all selected targets actually exist in the configuration (could have been deleted by now)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target_item</span><span class="p">,</span> <span class="p">{}):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target </span><span class="si">{</span><span class="n">target_item</span><span class="si">}</span><span class="s2"> does not exist for UID </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">target_status</span><span class="p">[</span><span class="n">target_item</span><span class="p">]</span> <span class="o">=</span> <span class="n">TaskDispatchStatus</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;waiting&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">current_time</span><span class="p">)</span>
 
     <span class="c1"># All looks good, fill the dispatching section and return it</span>
-    <span class="n">target_info</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">target_used</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">TaskDispatch</span><span class="p">(</span>
-        <span class="n">target_name</span><span class="o">=</span><span class="n">target_used</span><span class="p">,</span>
+        <span class="n">target_name</span><span class="o">=</span><span class="n">targets_used</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">target_status</span><span class="p">,</span>
         <span class="n">retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">next_retry_at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="add_info"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.add_info">[docs]</a><span class="k">def</span> <span class="nf">add_info</span><span class="p">(</span>
+<div class="viewcode-block" id="add_info"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.add_info">[docs]</a><span class="k">def</span> <span class="nf">add_info</span><span class="p">(</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">uid_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">],</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
@@ -333,6 +345,8 @@
         <span class="n">mrn</span><span class="o">=</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PatientID&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">MISSING</span><span class="p">),</span>
         <span class="n">acc</span><span class="o">=</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AccessionNumber&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">MISSING</span><span class="p">),</span>
         <span class="n">sender_address</span><span class="o">=</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SenderAddress&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">MISSING</span><span class="p">),</span>
+        <span class="n">sender_aet</span><span class="o">=</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SenderAET&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">MISSING</span><span class="p">),</span>
+        <span class="n">receiver_aet</span><span class="o">=</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ReceiverAET&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">MISSING</span><span class="p">),</span>
         <span class="n">device_serial_number</span><span class="o">=</span><span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DeviceSerialNumber&quot;</span><span class="p">),</span>
         <span class="n">mercure_version</span><span class="o">=</span><span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span>
         <span class="n">mercure_appliance</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">appliance_name</span><span class="p">,</span>
@@ -340,10 +354,9 @@
     <span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="create_series_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.create_series_task">[docs]</a><span class="k">def</span> <span class="nf">create_series_task</span><span class="p">(</span>
+<div class="viewcode-block" id="create_series_task"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.create_series_task">[docs]</a><span class="k">def</span> <span class="nf">create_series_task</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">folder_name</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
     <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">series_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -351,17 +364,18 @@
     <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Writes a task file for the received series, containing all information needed by the processor and dispatcher. Additional information is written into the file as well</span>
+<span class="sd">    Writes a task file for the received series, containing all information needed by the processor and dispatcher.</span>
+<span class="sd">    Additional information is written into the file as well</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Compose the JSON content for the file</span>
     <span class="n">task</span> <span class="o">=</span> <span class="n">compose_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">series_UID</span><span class="p">,</span> <span class="s2">&quot;series&quot;</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_update_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 
-    <span class="n">task_filename</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+    <span class="n">task_filename</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">task_file</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">task_file</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Unable to create series task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2"> with contents </span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span>
         <span class="p">)</span>  <span class="c1"># handle_error</span>
@@ -369,9 +383,9 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="create_study_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.create_study_task">[docs]</a><span class="k">def</span> <span class="nf">create_study_task</span><span class="p">(</span>
+<div class="viewcode-block" id="create_study_task"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.create_study_task">[docs]</a><span class="k">def</span> <span class="nf">create_study_task</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">target_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
     <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">study_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -384,21 +398,20 @@
     <span class="n">task</span> <span class="o">=</span> <span class="n">compose_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">study_UID</span><span class="p">,</span> <span class="s2">&quot;study&quot;</span><span class="p">,</span> <span class="n">triggered_rules</span><span class="p">,</span> <span class="n">applied_rule</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_update_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 
-    <span class="n">task_filename</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+    <span class="n">task_filename</span> <span class="o">=</span> <span class="n">target_folder</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing study task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">task_file</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">task_file</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">task_filename</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create study task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="update_study_task"><a class="viewcode-back" href="../../routing.html#routing.generate_taskfile.update_study_task">[docs]</a><span class="k">def</span> <span class="nf">update_study_task</span><span class="p">(</span>
+<div class="viewcode-block" id="update_study_task"><a class="viewcode-back" href="../../source/router.html#routing.generate_taskfile.update_study_task">[docs]</a><span class="k">def</span> <span class="nf">update_study_task</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">triggered_rules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]],</span>
     <span class="n">applied_rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">study_UID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -409,13 +422,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">series_description</span> <span class="o">=</span> <span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SeriesDescription&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">INVALID</span><span class="p">)</span>
     <span class="n">series_uid</span> <span class="o">=</span> <span class="n">tags_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SeriesInstanceUID&quot;</span><span class="p">,</span> <span class="n">mercure_options</span><span class="o">.</span><span class="n">INVALID</span><span class="p">)</span>
-    <span class="n">task_filename</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="o">+</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
+    <span class="n">task_filename</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">TASKFILE</span>
 
     <span class="c1"># Load existing task file. Raise error if it does not exist</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">task_file</span><span class="p">:</span>
-            <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">task_file</span><span class="p">))</span>
-    <span class="k">except</span><span class="p">:</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">task_filename</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to open study task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
 
@@ -443,10 +455,9 @@
 
     <span class="c1"># Safe the updated file back to disk</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">task_filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">task_file</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">task_file</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to write task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">task_filename</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to write task file </span><span class="si">{</span><span class="n">task_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
 
     <span class="n">monitor</span><span class="o">.</span><span class="n">send_update_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
@@ -461,7 +472,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -479,18 +490,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

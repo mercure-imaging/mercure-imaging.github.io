@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.notification &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>common.notification &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -112,30 +113,26 @@
 <span class="sd">Helper functions for triggering webhook calls.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
 <span class="kn">import</span> <span class="nn">ssl</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="kn">import</span> <span class="nn">typing</span>
-<span class="kn">import</span> <span class="nn">aiohttp</span>
-<span class="kn">import</span> <span class="nn">daiquiri</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">email.message</span> <span class="kn">import</span> <span class="n">EmailMessage</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">jinja2.utils</span>
-
-<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">monitor</span>
-<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">EmptyDict</span><span class="p">,</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskProcessing</span>
-<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">loop</span>
+<span class="kn">import</span> <span class="nn">aiohttp</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">jinja2.utils</span>
+<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">monitor</span>
+<span class="c1"># App-specific includes</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_events</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskProcessing</span>
 <span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
 
-<span class="c1"># App-specific includes</span>
-<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">mercure_events</span><span class="p">,</span>
-<span class="p">)</span>
-
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">loop</span>
 
 <span class="c1"># Create local logger instance</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
@@ -143,7 +140,7 @@
 <span class="n">ssl_context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">create_default_context</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="setup"><a class="viewcode-back" href="../../common.html#common.notification.setup">[docs]</a><span class="k">def</span> <span class="nf">setup</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>   
+<div class="viewcode-block" id="setup"><a class="viewcode-back" href="../../source/common.html#common.notification.setup">[docs]</a><span class="k">def</span> <span class="nf">setup</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the SSL certificate if it is configured (after the configuration has been read).&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">ssl_context</span>
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">webhook_certificate_location</span><span class="p">:</span>
@@ -151,7 +148,7 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="post"><a class="viewcode-back" href="../../common.html#common.notification.post">[docs]</a><span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="post"><a class="viewcode-back" href="../../source/common.html#common.notification.post">[docs]</a><span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">do_post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -168,7 +165,8 @@
 
     <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">do_post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="parse_payload"><a class="viewcode-back" href="../../common.html#common.notification.parse_payload">[docs]</a><span class="k">def</span> <span class="nf">parse_payload</span><span class="p">(</span>
+
+<div class="viewcode-block" id="parse_payload"><a class="viewcode-back" href="../../source/common.html#common.notification.parse_payload">[docs]</a><span class="k">def</span> <span class="nf">parse_payload</span><span class="p">(</span>
     <span class="n">payload</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">event</span><span class="p">:</span> <span class="n">mercure_events</span><span class="p">,</span>
     <span class="n">rule_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -194,9 +192,9 @@
         <span class="o">**</span><span class="n">context</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="n">payload_parsed</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span></div>
-    
 
-<div class="viewcode-block" id="send_webhook"><a class="viewcode-back" href="../../common.html#common.notification.send_webhook">[docs]</a><span class="k">def</span> <span class="nf">send_webhook</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="send_webhook"><a class="viewcode-back" href="../../source/common.html#common.notification.send_webhook">[docs]</a><span class="k">def</span> <span class="nf">send_webhook</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
         <span class="k">return</span>
 
@@ -210,25 +208,23 @@
         <span class="c1"># if (response.status_code != 200) and (response.status_code != 204):</span>
         <span class="c1">#     logger.error(f&quot;ERROR: Webhook notification failed (status code {response.status_code})&quot;)</span>
         <span class="c1">#     logger.error(f&quot;ERROR: {response.text}&quot;)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: Webhook notification failed&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ERROR: Webhook notification failed&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
         <span class="k">return</span></div>
 
-<span class="kn">import</span> <span class="nn">smtplib</span>
-<span class="kn">from</span> <span class="nn">email.message</span> <span class="kn">import</span> <span class="n">EmailMessage</span>
 
-<div class="viewcode-block" id="send_email"><a class="viewcode-back" href="../../common.html#common.notification.send_email">[docs]</a><span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">mercure_events</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rule_type</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_email"><a class="viewcode-back" href="../../source/common.html#common.notification.send_email">[docs]</a><span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">mercure_events</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rule_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">address</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="n">subject</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Rule </span><span class="si">{</span><span class="n">rule_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">try</span><span class="p">:</span> 
+    <span class="k">try</span><span class="p">:</span>
         <span class="n">send_email_helper</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">rule_type</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: Email notification failed&quot;</span><span class="p">)</span></div>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;ERROR: Email notification failed&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="send_email_helper"><a class="viewcode-back" href="../../common.html#common.notification.send_email_helper">[docs]</a><span class="k">def</span> <span class="nf">send_email_helper</span><span class="p">(</span><span class="n">to</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">rule_type</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="send_email_helper"><a class="viewcode-back" href="../../source/common.html#common.notification.send_email_helper">[docs]</a><span class="k">def</span> <span class="nf">send_email_helper</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rule_type</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># Create a text/plain message</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">()</span>
     <span class="n">msg</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[Mercure] </span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -238,39 +234,42 @@
 
     <span class="c1"># Send the message via our own SMTP server.</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span> 
+    <span class="k">try</span><span class="p">:</span>
         <span class="n">s</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">s</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="get_task_requested_notification"><a class="viewcode-back" href="../../common.html#common.notification.get_task_requested_notification">[docs]</a><span class="k">def</span> <span class="nf">get_task_requested_notification</span><span class="p">(</span><span class="n">task</span><span class="p">:</span><span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+<div class="viewcode-block" id="get_task_requested_notification"><a class="viewcode-back" href="../../source/common.html#common.notification.get_task_requested_notification">[docs]</a><span class="k">def</span> <span class="nf">get_task_requested_notification</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="n">process_infos</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,(</span><span class="n">TaskProcessing</span><span class="p">,</span><span class="n">List</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,</span> <span class="p">(</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">List</span><span class="p">)):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">for</span> <span class="n">process</span> <span class="ow">in</span> <span class="p">(</span><span class="n">process_infos</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,</span><span class="n">List</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">process_infos</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">process</span> <span class="ow">in</span> <span class="p">(</span><span class="n">process_infos</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,</span> <span class="n">List</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">process_infos</span><span class="p">]):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">process</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">notification_info</span> <span class="o">:=</span> <span class="n">process</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__mercure_notification&quot;</span><span class="p">))</span> <span class="ow">and</span> <span class="n">notification_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requested&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="get_task_custom_notification"><a class="viewcode-back" href="../../common.html#common.notification.get_task_custom_notification">[docs]</a><span class="k">def</span> <span class="nf">get_task_custom_notification</span><span class="p">(</span><span class="n">task</span><span class="p">:</span><span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="get_task_custom_notification"><a class="viewcode-back" href="../../source/common.html#common.notification.get_task_custom_notification">[docs]</a><span class="k">def</span> <span class="nf">get_task_custom_notification</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">process_infos</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">process</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,(</span><span class="n">TaskProcessing</span><span class="p">,</span><span class="n">List</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,</span> <span class="p">(</span><span class="n">TaskProcessing</span><span class="p">,</span> <span class="n">List</span><span class="p">)):</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">for</span> <span class="n">process</span> <span class="ow">in</span> <span class="p">(</span><span class="n">process_infos</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,</span><span class="n">List</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">process_infos</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">process</span> <span class="ow">in</span> <span class="p">(</span><span class="n">process_infos</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">process_infos</span><span class="p">,</span> <span class="n">List</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">process_infos</span><span class="p">]):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">process</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">notification_info</span> <span class="o">:=</span> <span class="n">process</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__mercure_notification&quot;</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">text</span><span class="o">:=</span> <span class="n">notification_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)):</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span><span class="n">text</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">notification_info</span> <span class="o">:=</span> <span class="n">process</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__mercure_notification&quot;</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">text</span> <span class="o">:=</span> <span class="n">notification_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)):</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">process</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">str_results</span> <span class="o">=</span> <span class="p">[</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+    <span class="n">str_results</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">str_results</span><span class="p">)</span></div>
+
 
 <span class="nd">@typing</span><span class="o">.</span><span class="n">overload</span>
 <span class="k">def</span> <span class="nf">trigger_notification_for_rule</span><span class="p">(</span>
@@ -280,7 +279,7 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">,</span>
     <span class="n">details</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="n">send_always</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">send_always</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="o">...</span>
 
@@ -298,7 +297,7 @@
     <span class="o">...</span>
 
 
-<div class="viewcode-block" id="trigger_notification_for_rule"><a class="viewcode-back" href="../../common.html#common.notification.trigger_notification_for_rule">[docs]</a><span class="k">def</span> <span class="nf">trigger_notification_for_rule</span><span class="p">(</span>
+<div class="viewcode-block" id="trigger_notification_for_rule"><a class="viewcode-back" href="../../source/common.html#common.notification.trigger_notification_for_rule">[docs]</a><span class="k">def</span> <span class="nf">trigger_notification_for_rule</span><span class="p">(</span>
     <span class="n">rule_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">event</span><span class="p">:</span> <span class="n">mercure_events</span><span class="p">,</span>
@@ -322,17 +321,17 @@
     <span class="c1"># Now fire the webhook if configured</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">RECEIVED</span>
-        <span class="ow">and</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">notification_trigger_reception</span> <span class="o">==</span> <span class="kc">True</span>
+        <span class="ow">and</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">notification_trigger_reception</span> <span class="ow">is</span> <span class="kc">True</span>
     <span class="p">):</span>
         <span class="n">do_send</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="p">(</span>
         <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">COMPLETED</span>
-        <span class="ow">and</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">notification_trigger_completion</span> <span class="o">==</span> <span class="kc">True</span>
+        <span class="ow">and</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">notification_trigger_completion</span> <span class="ow">is</span> <span class="kc">True</span>
     <span class="p">):</span>
         <span class="n">do_send</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="p">(</span>
         <span class="n">event</span> <span class="o">==</span> <span class="n">mercure_events</span><span class="o">.</span><span class="n">ERROR</span>
-        <span class="ow">and</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">notification_trigger_error</span> <span class="o">==</span> <span class="kc">True</span>
+        <span class="ow">and</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">notification_trigger_error</span> <span class="ow">is</span> <span class="kc">True</span>
     <span class="p">):</span>
         <span class="n">do_send</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -343,7 +342,22 @@
 
     <span class="k">if</span> <span class="n">webhook_url</span><span class="p">:</span>
         <span class="n">body</span> <span class="o">=</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload_body&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">htmlsafe_json_dumps</span><span class="p">(</span><span class="n">parse_payload</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="p">{},</span> <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">tags_list</span><span class="o">=</span><span class="n">tags_list</span><span class="p">))[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+
+        <span class="n">phi_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">acc</span><span class="o">=</span><span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+            <span class="n">mrn</span><span class="o">=</span><span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+            <span class="n">patient_name</span><span class="o">=</span><span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">phi_notifications</span><span class="p">:</span>
+            <span class="n">phi_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">acc</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span><span class="p">,</span>
+                <span class="n">mrn</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span><span class="p">,</span>
+                <span class="n">patient_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">patient_name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">htmlsafe_json_dumps</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">parse_payload</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">phi_data</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">tags_list</span><span class="o">=</span><span class="n">tags_list</span><span class="p">))[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">phi_data</span><span class="p">)</span>
 
         <span class="n">webhook_payload</span> <span class="o">=</span> <span class="n">parse_payload</span><span class="p">(</span>
             <span class="n">current_rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
@@ -368,7 +382,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">email_addresses</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">if</span> <span class="n">task</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">phi_notifications</span><span class="p">:</span>
         <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">acc</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">acc</span><span class="p">,</span>
             <span class="n">mrn</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">mrn</span><span class="p">,</span>
@@ -413,7 +427,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -431,18 +445,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

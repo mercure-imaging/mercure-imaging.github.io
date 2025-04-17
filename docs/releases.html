@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Release History &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Release History &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,7 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
@@ -80,8 +82,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -109,9 +110,43 @@
              
   <section id="release-history">
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this heading"></a></h1>
-<section id="version-0-3-1-beta-1">
-<h2>Version 0.3.1-beta.1<a class="headerlink" href="#version-0-3-1-beta-1" title="Permalink to this heading"></a></h2>
-<p><em>Release date: 6/10/2024</em></p>
+<section id="version-0-4-0-beta-2">
+<h2>Version 0.4.0-beta.2<a class="headerlink" href="#version-0-4-0-beta-2" title="Permalink to this heading"></a></h2>
+<p><em>Release date: 4/15/2025</em></p>
+<ul class="simple">
+<li><p>Support of multiple targets for dispatching</p></li>
+<li><p>Redesign of the web UI</p></li>
+<li><p>New DICOM Query tool</p></li>
+<li><p>New DICOM Upload tool</p></li>
+<li><p>Modules can create result files</p></li>
+<li><p>Failed jobs can be restarted</p></li>
+<li><p>Timestamps in log files now shown in local time</p></li>
+<li><p>New target types</p></li>
+<li><p>New rule syntax (optional)</p></li>
+<li><p>Added email notifications</p></li>
+<li><p>Notifications based on module results</p></li>
+<li><p>Notifications now support templating</p></li>
+<li><p>Visual system tag can be shown in navbar</p></li>
+<li><p>Getdcmtags: Additional DICOM tags can be extracted</p></li>
+<li><p>Faster DICOM receive mechanism</p></li>
+<li><p>Added command-line tool manage.py for creating users</p></li>
+<li><p>Rules now honor the urgent/off-peak priority setting</p></li>
+<li><p>“Return to sender” option for DICOM targets</p></li>
+<li><p>DICOM targets can pass the incoming AET/AEC</p></li>
+<li><p>TLS support for secured DICOM transfer</p></li>
+<li><p>Processing log and results can be viewed in queue page</p></li>
+<li><p>System status flag for missing services</p></li>
+<li><p>Display of additional job information on Queue page</p></li>
+<li><p>Improved job search on the Archive Queue page with pagination</p></li>
+<li><p>Added button for duplicating rules</p></li>
+<li><p>Metabase installation option for results analyses and custom dashboards</p></li>
+<li><p>Update option in install.sh to update dependencies, services</p></li>
+<li><p>Support for Ubuntu 24.04 LTS</p></li>
+</ul>
+</section>
+<section id="version-0-3-1-beta-13">
+<h2>Version 0.3.1-beta.13<a class="headerlink" href="#version-0-3-1-beta-13" title="Permalink to this heading"></a></h2>
+<p><em>Release date: 8/23/2024</em></p>
 <ul class="simple">
 <li><p>New JSON editor for configuration and module settings</p></li>
 <li><p>Support for rsync and DICOM-TLS transfers</p></li>
@@ -197,7 +232,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -215,18 +250,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

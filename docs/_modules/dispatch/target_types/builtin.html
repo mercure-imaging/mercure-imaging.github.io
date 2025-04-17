@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dispatch.target_types.builtin &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/index.html">Code Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dispatch.target_types.builtin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dispatch.target_types.builtin</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">builtin.py</span>
+<span class="sd">==========</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">shlex</span> <span class="kn">import</span> <span class="n">split</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">DicomTarget</span><span class="p">,</span> <span class="n">DicomTLSTarget</span><span class="p">,</span> <span class="n">DummyTarget</span><span class="p">,</span> <span class="n">SftpTarget</span><span class="p">,</span> <span class="n">Task</span>
+<span class="kn">from</span> <span class="nn">pydicom</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">async_run</span>
+<span class="kn">from</span> <span class="nn">webinterface.dicom_client</span> <span class="kn">import</span> <span class="n">DicomClientCouldNotFind</span><span class="p">,</span> <span class="n">SimpleDicomClient</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">ProgressInfo</span><span class="p">,</span> <span class="n">SubprocessTargetHandler</span><span class="p">,</span> <span class="n">TargetHandler</span>
+<span class="kn">from</span> <span class="nn">.registry</span> <span class="kn">import</span> <span class="n">handler_for</span>
+
+<span class="n">DCMSEND_ERROR_CODES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_COMMANDLINE_SYNTAX_ERROR&quot;</span><span class="p">,</span>
+    <span class="mi">21</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_NO_INPUT_FILES&quot;</span><span class="p">,</span>
+    <span class="mi">22</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_INVALID_INPUT_FILE&quot;</span><span class="p">,</span>
+    <span class="mi">23</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_NO_VALID_INPUT_FILES&quot;</span><span class="p">,</span>
+    <span class="mi">43</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_CANNOT_WRITE_REPORT_FILE&quot;</span><span class="p">,</span>
+    <span class="mi">60</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_CANNOT_INITIALIZE_NETWORK&quot;</span><span class="p">,</span>
+    <span class="mi">61</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_CANNOT_NEGOTIATE_ASSOCIATION&quot;</span><span class="p">,</span>
+    <span class="mi">62</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_CANNOT_SEND_REQUEST&quot;</span><span class="p">,</span>
+    <span class="mi">65</span><span class="p">:</span> <span class="s2">&quot;EXITCODE_CANNOT_ADD_PRESENTATION_CONTEXT&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="DicomTargetHandler"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTargetHandler">[docs]</a><span class="nd">@handler_for</span><span class="p">(</span><span class="n">DicomTarget</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DicomTargetHandler</span><span class="p">(</span><span class="n">SubprocessTargetHandler</span><span class="p">[</span><span class="n">DicomTarget</span><span class="p">]):</span>
+    <span class="n">view_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicom.html&quot;</span>
+    <span class="n">edit_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicom-edit.html&quot;</span>
+    <span class="n">test_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicom-test.html&quot;</span>
+    <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;fa-database&quot;</span>
+    <span class="n">display_name</span> <span class="o">=</span> <span class="s2">&quot;DICOM&quot;</span>
+    <span class="n">can_pull</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_create_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomTarget</span><span class="p">,</span> <span class="n">source_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">):</span>
+        <span class="n">target_ip</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ip</span>
+        <span class="k">if</span> <span class="n">target_ip</span> <span class="o">==</span> <span class="s2">&quot;sender&quot;</span><span class="p">:</span>
+            <span class="c1"># If results should be looped back to the original sender of the task, insert</span>
+            <span class="c1"># the IP/address obtained from the DICOM receiver</span>
+            <span class="n">target_ip</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">sender_address</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target_ip</span><span class="p">:</span>
+            <span class="c1"># If not target ip has been provided, insert a value that allows identifying the issue</span>
+            <span class="n">target_ip</span> <span class="o">=</span> <span class="s2">&quot;target_missing&quot;</span>
+
+        <span class="n">target_port</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="mi">104</span>
+        <span class="n">target_aet_target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_target</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">target_aet_source</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_source</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">pass_sender_aet</span><span class="p">:</span>
+            <span class="n">target_aet_source</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">sender_aet</span>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">pass_receiver_aet</span><span class="p">:</span>
+            <span class="n">target_aet_target</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">receiver_aet</span>
+
+        <span class="n">dcmsend_status_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">source_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">mercure_names</span><span class="o">.</span><span class="n">SENDLOG</span><span class="p">)</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span>
+            <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;dcmsend </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_port</span><span class="si">}</span><span class="s2"> +sd </span><span class="si">{</span><span class="n">source_folder</span><span class="si">}</span><span class="s2"> -aet </span><span class="si">{</span><span class="n">target_aet_source</span><span class="si">}</span><span class="s2"> &quot;&quot;&quot;</span>
+             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;-aec </span><span class="si">{</span><span class="n">target_aet_target</span><span class="si">}</span><span class="s2"> -nuc +sp &#39;*.dcm&#39; -to 60 +crf </span><span class="si">{</span><span class="n">dcmsend_status_file</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">command</span><span class="p">,</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="DicomTargetHandler.find_from_target"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTargetHandler.find_from_target">[docs]</a>    <span class="k">def</span> <span class="nf">find_from_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomTarget</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search_filters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dataset</span><span class="p">]:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">SimpleDicomClient</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_target</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_source</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">c</span><span class="o">.</span><span class="n">findscu</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">search_filters</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">DicomClientCouldNotFind</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="DicomTargetHandler.get_from_target"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTargetHandler.get_from_target">[docs]</a>    <span class="k">def</span> <span class="nf">get_from_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomTarget</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">search_filters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">destination_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">ProgressInfo</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">SimpleDicomClient</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_target</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_source</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">getscu</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">search_filters</span><span class="p">):</span>
+            <span class="n">completed</span><span class="p">,</span> <span class="n">remaining</span> <span class="o">=</span> <span class="p">(</span><span class="n">identifier</span><span class="o">.</span><span class="n">NumberOfCompletedSuboperations</span><span class="p">,</span> <span class="n">identifier</span><span class="o">.</span><span class="n">NumberOfRemainingSuboperations</span><span class="p">)</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="w"> </span><span class="n">completed</span><span class="w"> </span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="w"> </span><span class="n">completed</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">remaining</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">yield</span> <span class="n">ProgressInfo</span><span class="p">(</span><span class="n">completed</span><span class="p">,</span> <span class="n">remaining</span><span class="p">,</span> <span class="n">progress</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DicomTargetHandler.handle_error"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTargetHandler.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="n">dcmsend_error_message</span> <span class="o">=</span> <span class="n">DCMSEND_ERROR_CODES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed command:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">because of </span><span class="si">{</span><span class="n">dcmsend_error_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dcmsend_error_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DicomTargetHandler.test_connection"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTargetHandler.test_connection">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomTarget</span><span class="p">,</span> <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">cecho_response</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">loopback_mode</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">target_ip</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ip</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">target_port</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">target_aec</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_target</span> <span class="ow">or</span> <span class="s2">&quot;ANY-SCP&quot;</span>
+        <span class="n">target_aet</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_source</span> <span class="ow">or</span> <span class="s2">&quot;ECHOSCU&quot;</span>
+
+        <span class="k">if</span> <span class="n">target_ip</span> <span class="o">==</span> <span class="s2">&quot;sender&quot;</span><span class="p">:</span>
+            <span class="n">loopback_mode</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Testing target </span><span class="si">{</span><span class="n">target_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">target_ip</span> <span class="ow">and</span> <span class="n">target_port</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">loopback_mode</span><span class="p">:</span>
+            <span class="n">ping_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ping -w 1 -c 1 </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ping_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">cecho_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;echoscu -to 2 -aec </span><span class="si">{</span><span class="n">target_aec</span><span class="si">}</span><span class="s2"> -aet </span><span class="si">{</span><span class="n">target_aet</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_port</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">cecho_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cecho_response</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ping&quot;</span><span class="p">:</span> <span class="n">ping_response</span><span class="p">,</span> <span class="s2">&quot;c-echo&quot;</span><span class="p">:</span> <span class="n">cecho_response</span><span class="p">,</span> <span class="s2">&quot;loopback_mode&quot;</span><span class="p">:</span> <span class="n">loopback_mode</span><span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="DicomTLSTargetHandler"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTLSTargetHandler">[docs]</a><span class="nd">@handler_for</span><span class="p">(</span><span class="n">DicomTLSTarget</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DicomTLSTargetHandler</span><span class="p">(</span><span class="n">SubprocessTargetHandler</span><span class="p">[</span><span class="n">DicomTLSTarget</span><span class="p">]):</span>
+    <span class="n">view_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicom-tls.html&quot;</span>
+    <span class="n">edit_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicom-tls-edit.html&quot;</span>
+    <span class="n">test_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicom-test.html&quot;</span>
+    <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;fa-database&quot;</span>
+    <span class="n">display_name</span> <span class="o">=</span> <span class="s2">&quot;DICOM+TLS&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_create_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomTLSTarget</span><span class="p">,</span> <span class="n">source_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">):</span>
+        <span class="n">target_ip</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ip</span>
+        <span class="n">target_port</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="mi">104</span>
+        <span class="n">target_aet_target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_target</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">target_aet_source</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_source</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">pass_sender_aet</span><span class="p">:</span>
+            <span class="n">target_aet_source</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">sender_aet</span>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">pass_receiver_aet</span><span class="p">:</span>
+            <span class="n">target_aet_target</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">receiver_aet</span>
+
+        <span class="n">command</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;storescu +tls </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">tls_key</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">tls_cert</span><span class="si">}</span><span class="s2"> +cf </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">ca_cert</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_port</span><span class="si">}</span><span class="s2"> &quot;&quot;&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;+sd </span><span class="si">{</span><span class="n">source_folder</span><span class="si">}</span><span class="s2"> -aet </span><span class="si">{</span><span class="n">target_aet_source</span><span class="si">}</span><span class="s2"> -aec </span><span class="si">{</span><span class="n">target_aet_target</span><span class="si">}</span><span class="s2"> +sp &#39;*.dcm&#39; -to 60&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">command</span><span class="p">,</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="DicomTLSTargetHandler.handle_error"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTLSTargetHandler.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="n">dcmsend_error_message</span> <span class="o">=</span> <span class="n">DCMSEND_ERROR_CODES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed command:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">because of </span><span class="si">{</span><span class="n">dcmsend_error_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dcmsend_error_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DicomTLSTargetHandler.test_connection"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DicomTLSTargetHandler.test_connection">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomTLSTarget</span><span class="p">,</span> <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">cecho_response</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">target_ip</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ip</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">target_port</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">target_aec</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_target</span> <span class="ow">or</span> <span class="s2">&quot;ANY-SCP&quot;</span>
+        <span class="n">target_aet</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">aet_source</span> <span class="ow">or</span> <span class="s2">&quot;ECHOSCU&quot;</span>
+        <span class="n">tls_key</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">tls_key</span>
+        <span class="n">tls_cert</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">tls_cert</span>
+        <span class="n">ca_cert</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ca_cert</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Testing TLS target </span><span class="si">{</span><span class="n">target_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">target_ip</span> <span class="ow">and</span> <span class="n">target_port</span><span class="p">:</span>
+            <span class="n">ping_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ping -w 1 -c 1 </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ping_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">cecho_command</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;echoscu -to 2 -aec </span><span class="si">{</span><span class="n">target_aec</span><span class="si">}</span><span class="s2"> -aet </span><span class="si">{</span><span class="n">target_aet</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target_ip</span><span class="si">}</span><span class="s2">&quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">target_port</span><span class="si">}</span><span class="s2"> +tls </span><span class="si">{</span><span class="n">tls_key</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">tls_cert</span><span class="si">}</span><span class="s2"> +cf </span><span class="si">{</span><span class="n">ca_cert</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Running </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">cecho_command</span><span class="p">)</span>
+            <span class="n">cecho_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="n">cecho_command</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cecho_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cecho_response</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ping&quot;</span><span class="p">:</span> <span class="n">ping_response</span><span class="p">,</span> <span class="s2">&quot;c-echo&quot;</span><span class="p">:</span> <span class="n">cecho_response</span><span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="SftpTargetHandler"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.SftpTargetHandler">[docs]</a><span class="nd">@handler_for</span><span class="p">(</span><span class="n">SftpTarget</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SftpTargetHandler</span><span class="p">(</span><span class="n">SubprocessTargetHandler</span><span class="p">[</span><span class="n">SftpTarget</span><span class="p">]):</span>
+    <span class="n">view_template</span> <span class="o">=</span> <span class="s2">&quot;targets/sftp.html&quot;</span>
+    <span class="n">edit_template</span> <span class="o">=</span> <span class="s2">&quot;targets/sftp-edit.html&quot;</span>
+    <span class="n">test_template</span> <span class="o">=</span> <span class="s2">&quot;targets/sftp-test.html&quot;</span>
+    <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;fa-server&quot;</span>
+    <span class="n">display_name</span> <span class="o">=</span> <span class="s2">&quot;SFTP&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_create_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">SftpTarget</span><span class="p">,</span> <span class="n">source_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;sftp -o StrictHostKeyChecking=no &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &quot;</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">user</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot; &quot;&quot;&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &lt;&lt;- EOF</span>
+<span class="s2">                    mkdir &quot;</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">source_folder</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">                    put -f -r &quot;</span><span class="si">{</span><span class="n">source_folder</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">                    !touch &quot;/tmp/.complete&quot;</span>
+<span class="s2">                    put -f &quot;/tmp/.complete&quot; &quot;</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">source_folder</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">/.complete&quot;</span>
+<span class="s2">EOF&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sshpass -p </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">command</span>
+        <span class="k">return</span> <span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SftpTargetHandler.test_connection"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.SftpTargetHandler.test_connection">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">SftpTarget</span><span class="p">,</span> <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ping_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ping -w 1 -c 1 </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ping_response</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">ping_result</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">stderr</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+
+        <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;sftp -o StrictHostKeyChecking=no &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &quot;</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">user</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot; &lt;&lt;&lt; &quot;&quot; &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sshpass -p </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">command</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ping</span><span class="o">=</span><span class="n">ping_response</span><span class="p">,</span> <span class="n">loggedin</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DummyTargetHandler"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.builtin.DummyTargetHandler">[docs]</a><span class="nd">@handler_for</span><span class="p">(</span><span class="n">DummyTarget</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DummyTargetHandler</span><span class="p">(</span><span class="n">TargetHandler</span><span class="p">):</span>
+    <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;fa-flask&quot;</span>
+    <span class="n">view_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dummy.html&quot;</span>
+    <span class="n">edit_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dummy-edit.html&quot;</span>
+
+    <span class="n">display_name</span> <span class="o">=</span> <span class="s2">&quot;Dummy&quot;</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

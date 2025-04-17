@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monitoring &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Monitoring &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,10 +59,10 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Monitoring</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#log-files">Log files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#log-files">Log Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#graphite">Graphite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bookkeeper-with-redash">Bookkeeper with Redash</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-redash">Installing Redash</a></li>
@@ -87,8 +89,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -118,9 +119,9 @@
 <h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this heading"></a></h1>
 <p>mercure provides three different mechanisms for monitoring the server activity and health.</p>
 <section id="log-files">
-<h2>Log files<a class="headerlink" href="#log-files" title="Permalink to this heading"></a></h2>
+<h2>Log Files<a class="headerlink" href="#log-files" title="Permalink to this heading"></a></h2>
 <p>All mercure services write detailed logging information into system log files. The most convenient way to review these logs is to use the “Logs” page of the mercure web interface. It shows a separate tab for every mercure service. The log display is updated whenever you switch between tabs or when you click the refresh button on the top-right.</p>
-<a class="border reference internal image-reference" href="_images/ui_log.png"><img alt="_images/ui_log.png" class="border align-center" src="_images/ui_log.png" style="width: 550px;" /></a>
+<a class="border reference internal image-reference" href="_images/log.png"><img alt="_images/log.png" class="border align-center" src="_images/log.png" style="width: 550px;" /></a>
 <p>Depending on your mercure installation type, you can restrict the time span shown in the log viewer
 using the From/To controls (systemd-type installations allow providing start &amp; end time, Docker-type installations allow providing a start time, Nomad-type installations don’t allow selecting the time span).</p>
 <div class="admonition note">
@@ -362,7 +363,7 @@ using the From/To controls (systemd-type installations allow providing start &am
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -380,18 +381,7 @@ using the From/To controls (systemd-type installations allow providing start &am
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

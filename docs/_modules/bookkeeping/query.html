@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bookkeeping.query &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">bookkeeping.query</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for bookkeeping.query</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">query.py</span>
+<span class="sd">========</span>
+<span class="sd">Entry functions of the bookkeeper for querying processing information.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="c1"># Standard python includes</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="c1"># App-specific includes</span>
+<span class="kn">import</span> <span class="nn">bookkeeping.database</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="kn">import</span> <span class="nn">pydicom</span>
+<span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="kn">from</span> <span class="nn">bookkeeping.helper</span> <span class="kn">import</span> <span class="n">CustomJSONResponse</span><span class="p">,</span> <span class="n">json</span>
+<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">decoRouter</span> <span class="kn">import</span> <span class="n">Router</span> <span class="k">as</span> <span class="n">decoRouter</span>
+<span class="kn">from</span> <span class="nn">pydicom.datadict</span> <span class="kn">import</span> <span class="n">keyword_for_tag</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="c1"># Starlette-related includes</span>
+<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.authentication</span> <span class="kn">import</span> <span class="n">requires</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">decoRouter</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+<span class="n">tz_conversion</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="set_timezone_conversion"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.set_timezone_conversion">[docs]</a><span class="k">def</span> <span class="nf">set_timezone_conversion</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">tz_conversion</span>
+    <span class="n">tz_conversion</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">server_time</span> <span class="o">!=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">local_time</span><span class="p">:</span>
+        <span class="n">tz_conversion</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; AT time zone &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">server_time</span><span class="si">}</span><span class="s2">&#39; at time zone &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">local_time</span><span class="si">}</span><span class="s2">&#39; &quot;</span></div>
+
+<span class="c1">###################################################################################</span>
+<span class="c1"># Query endpoints</span>
+<span class="c1">###################################################################################</span>
+
+
+<div class="viewcode-block" id="get_series"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_series">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/series&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_series</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint for retrieving series in the database.&quot;&quot;&quot;</span>
+    <span class="n">series_uid</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;series_uid&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">series_uid</span><span class="p">:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span> <span class="o">==</span> <span class="n">series_uid</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">series</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
+        <span class="n">series</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">line</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;series_uid&quot;</span><span class="p">,</span> <span class="s2">&quot;tag_seriesdescription&quot;</span><span class="p">,</span> <span class="s2">&quot;tag_modality&quot;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">series</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_tasks"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_tasks">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/tasks&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_tasks</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint for retrieving tasks in the database.&quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">tag_seriesdescription</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">tag_modality</span>
+        <span class="p">)</span>
+        <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">parent_id</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>  <span class="c1"># only show tasks without parents</span>
+        <span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="p">,</span>
+            <span class="c1"># sqlalchemy.or_(</span>
+            <span class="c1"># (dicom_series.c.study_uid == tasks_table.c.study_uid),</span>
+            <span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span> <span class="o">==</span> <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span><span class="p">),</span>
+            <span class="c1"># ),</span>
+            <span class="n">isouter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># query = sqlalchemy.text(</span>
+    <span class="c1">#     &quot;&quot;&quot; select tasks.id as task_id, tasks.time, tasks.series_uid, tasks.study_uid,</span>
+    <span class="c1">#         &quot;tag_seriesdescription&quot;, &quot;tag_modality&quot; from tasks</span>
+    <span class="c1">#         join dicom_series on tasks.study_uid = dicom_series.study_uid</span>
+    <span class="c1">#           or tasks.series_uid = dicom_series.series_uid &quot;&quot;&quot;</span>
+    <span class="c1"># )</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_test_task"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_test_task">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/tests&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_test_task</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">tests_table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tests_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">time_begin</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+    <span class="c1"># query = (</span>
+    <span class="c1">#     sqlalchemy.select(</span>
+    <span class="c1">#         tasks_table.c.id, tasks_table.c.time, dicom_series.c.tag_seriesdescription, dicom_series.c.tag_modality</span>
+    <span class="c1">#     )</span>
+    <span class="c1">#     .join(</span>
+    <span class="c1">#         dicom_series,</span>
+    <span class="c1">#         sqlalchemy.or_(</span>
+    <span class="c1">#             (dicom_series.c.study_uid == tasks_table.c.study_uid),</span>
+    <span class="c1">#             (dicom_series.c.series_uid == tasks_table.c.series_uid),</span>
+    <span class="c1">#         ),</span>
+    <span class="c1">#     )</span>
+    <span class="c1">#     .where(dicom_series.c.tag_seriesdescription == &quot;self_test_series &quot; + request.query_params.get(&quot;id&quot;, &quot;&quot;))</span>
+    <span class="c1"># )</span>
+    <span class="n">result_rows</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result_rows</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="p">[</span><span class="s2">&quot;time_end&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="s2">&quot;time_begin&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+                <span class="n">k</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_task_events"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_task_events">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/task-events&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_events</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint for getting all events related to one task.&quot;&quot;&quot;</span>
+
+    <span class="n">task_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">subtask_query</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">parent_id</span> <span class="o">==</span> <span class="n">task_id</span><span class="p">)</span>
+
+    <span class="c1"># Note: The space at the end is needed for the case that there are no subtasks</span>
+    <span class="n">subtask_ids_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">subtask_query</span><span class="p">):</span>
+        <span class="n">subtask_ids_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;,&quot;</span>
+
+    <span class="n">subtask_ids_filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">subtask_ids_str</span><span class="p">:</span>
+        <span class="n">subtask_ids_filter</span> <span class="o">=</span> <span class="s2">&quot;or task_events.task_id in (&quot;</span> <span class="o">+</span> <span class="n">subtask_ids_str</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+
+    <span class="c1"># Get all the task_events from task `task_id` or any of its subtasks</span>
+    <span class="c1"># subtask_ids = [row[0] for row in await database.fetch_all(subtask_query)]</span>
+    <span class="c1"># query = (</span>
+    <span class="c1">#     task_events.select()</span>
+    <span class="c1">#     .order_by(task_events.c.task_id, task_events.c.time)</span>
+    <span class="c1">#     .where(sqlalchemy.or_(task_events.c.task_id == task_id, task_events.c.task_id.in_(subtask_ids)))</span>
+    <span class="c1"># )</span>
+
+    <span class="n">query_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;select *, time </span><span class="si">{</span><span class="n">tz_conversion</span><span class="si">}</span><span class="s2"> as local_time from task_events</span>
+<span class="s2">        where task_events.task_id = &#39;</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">subtask_ids_filter</span><span class="si">}</span>
+<span class="s2">        order by task_events.task_id, task_events.time</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+    <span class="c1"># print(&quot;SQL Query = &quot; + query_string)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">query_string</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_dicom_files"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_dicom_files">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/dicom-files&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_dicom_files</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint for getting all events related to one series.&quot;&quot;&quot;</span>
+    <span class="n">series_uid</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;series_uid&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">dicom_files</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">dicom_files</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">series_uid</span><span class="p">:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">dicom_files</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span> <span class="o">==</span> <span class="n">series_uid</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_task_process_logs"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_task_process_logs">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/task_process_logs&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_process_logs</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint for getting all processing logs related to one series.&quot;&quot;&quot;</span>
+    <span class="n">task_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">subtask_query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">or_</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">parent_id</span> <span class="o">==</span> <span class="n">task_id</span><span class="p">))</span>
+    <span class="p">)</span>
+
+    <span class="n">subtasks</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">subtask_query</span><span class="p">)</span>
+    <span class="n">subtask_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">subtasks</span><span class="p">]</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">processor_logs_table</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">processor_logs_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">task_id</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">subtask_ids</span><span class="p">))</span>
+                                    <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">processor_logs_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;logs&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">logs_folder</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">processing_logs</span><span class="o">.</span><span class="n">logs_file_store</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;logs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">Path</span><span class="p">(</span><span class="n">logs_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;task_id&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;module_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.txt&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_task_process_results"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_task_process_results">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/task_process_results&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_process_results</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint for getting all processing results from a task.&quot;&quot;&quot;</span>
+    <span class="n">task_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">processor_outputs_table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+                                       <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">processor_outputs_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">task_id</span> <span class="o">==</span> <span class="n">task_id</span><span class="p">)</span>
+                                       <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">processor_outputs_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="find_task"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.find_task">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/find_task&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">find_task</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+    <span class="c1"># Extract DataTables parameters</span>
+    <span class="n">draw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;draw&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">))</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">))</span>
+    <span class="n">search_term</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;search[value]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># Global search value</span>
+    <span class="n">study_filter</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;study_filter&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Extract ordering information</span>
+    <span class="n">order_column_index</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order[0][column]&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">)</span>  <span class="c1"># Default to time column (index 4)</span>
+    <span class="n">order_direction</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order[0][dir]&quot;</span><span class="p">,</span> <span class="s2">&quot;desc&quot;</span><span class="p">)</span>  <span class="c1"># Default to descending</span>
+
+    <span class="c1"># Map datatable column index to database column</span>
+    <span class="n">column_mapping</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;tag_accessionnumber&quot;</span><span class="p">,</span>  <span class="c1"># ACC</span>
+        <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;tag_patientid&quot;</span><span class="p">,</span>        <span class="c1"># MRN</span>
+        <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;parent_tasks.data-&gt;&#39;info&#39;-&gt;&gt;&#39;uid_type&#39;&quot;</span><span class="p">,</span>  <span class="c1"># Scope</span>
+        <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;7&quot;</span><span class="p">,</span>    <span class="c1"># Rule</span>
+        <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;parent_tasks.time&quot;</span>     <span class="c1"># Default fallback</span>
+    <span class="p">}</span>
+
+    <span class="n">order_column</span> <span class="o">=</span> <span class="n">column_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">order_column_index</span><span class="p">,</span> <span class="n">column_mapping</span><span class="p">[</span><span class="s2">&quot;4&quot;</span><span class="p">])</span>
+    <span class="n">order_sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">order_column</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">order_direction</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">, parent_tasks.id </span><span class="si">{</span><span class="n">order_direction</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">having_term</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;HAVING (</span>
+<span class="s2">                    (tag_accessionnumber ilike :search_term || &#39;%&#39;) </span>
+<span class="s2">                    or (tag_patientid ilike :search_term || &#39;%&#39;)</span>
+<span class="s2">                    or (tag_patientname ilike &#39;%&#39; || :search_term || &#39;%&#39;)</span>
+<span class="s2">                    or bool_or(child_tasks.data-&gt;&#39;info&#39;-&gt;&gt;&#39;applied_rule&#39;::text ilike &#39;%&#39; || :search_term || &#39;%&#39;) </span>
+<span class="s2">                    or bool_or(</span>
+<span class="s2">                        array(</span>
+<span class="s2">                            select jsonb_object_keys(   </span>
+<span class="s2">                                                    child_tasks.data-&gt;&#39;info&#39;-&gt;&#39;triggered_rules&#39;</span>
+<span class="s2">                                                    )</span>
+<span class="s2">                        )::text ilike &#39;%&#39; || :search_term || &#39;%&#39;</span>
+<span class="s2">                        )</span>
+<span class="s2">                   )</span>
+<span class="s2">                   &quot;&quot;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">search_term</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">study_filter_term</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">study_filter</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+        <span class="n">study_filter_term</span> <span class="o">=</span> <span class="s2">&quot;and parent_tasks.study_uid is not null&quot;</span>
+
+    <span class="c1"># Count query (for recordsTotal and recordsFiltered)</span>
+    <span class="n">count_query_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    with base as (</span>
+<span class="s2">       SELECT</span>
+<span class="s2">        parent_tasks.id AS task_id,</span>
+<span class="s2">        tag_accessionnumber, tag_patientid, tag_patientname</span>
+<span class="s2">       FROM</span>
+<span class="s2">        tasks as parent_tasks</span>
+<span class="s2">        LEFT JOIN dicom_series ON dicom_series.series_uid = parent_tasks.series_uid</span>
+<span class="s2">        LEFT JOIN tasks as child_tasks ON (child_tasks.parent_id = parent_tasks.id)</span>
+<span class="s2">       WHERE parent_tasks.parent_id is null </span><span class="si">{</span><span class="n">study_filter_term</span><span class="si">}</span>
+<span class="s2">       GROUP BY 1,2,3,4</span>
+<span class="s2">       </span><span class="si">{</span><span class="n">having_term</span><span class="si">}</span><span class="s2"> </span>
+<span class="s2">    )</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        COUNT(DISTINCT task_id) as total_count</span>
+<span class="s2">    FROM base</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Main data query with pagination</span>
+    <span class="n">query_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        tag_accessionnumber AS acc,</span>
+<span class="s2">        tag_patientid AS mrn,</span>
+<span class="s2">        tag_patientname AS name,</span>
+<span class="s2">        parent_tasks.id AS task_id,</span>
+<span class="s2">        parent_tasks.data-&gt;&#39;info&#39;-&gt;&gt;&#39;uid_type&#39; AS scope,</span>
+<span class="s2">        parent_tasks.time::timestamp AS time,</span>
+<span class="s2">        STRING_AGG(case when coalesce(child_tasks.data-&gt;&#39;info&#39;-&gt;&gt;&#39;applied_rule&#39;,&#39;&#39;) != &#39;&#39; then  array[child_tasks.data-&gt;&#39;info&#39;-&gt;&gt;&#39;applied_rule&#39;]::text else array(select jsonb_object_keys((child_tasks.data-&gt;&#39;info&#39;-&gt;&#39;triggered_rules&#39;)))::text end, &#39;, &#39; ORDER BY child_tasks.id)</span>
+<span class="s2">        AS rule</span>
+<span class="s2">    FROM </span>
+<span class="s2">        tasks as parent_tasks</span>
+<span class="s2">        LEFT JOIN dicom_series ON dicom_series.series_uid = parent_tasks.series_uid</span>
+<span class="s2">        LEFT JOIN tasks as child_tasks ON (child_tasks.parent_id = parent_tasks.id)</span>
+<span class="s2">    WHERE parent_tasks.parent_id is null </span><span class="si">{</span><span class="n">study_filter_term</span><span class="si">}</span>
+<span class="s2">    GROUP BY </span>
+<span class="s2">        tag_accessionnumber, tag_patientid, tag_patientname, parent_tasks.id, scope, parent_tasks.time</span>
+<span class="s2">    </span><span class="si">{</span><span class="n">having_term</span><span class="si">}</span>
+<span class="s2">    ORDER BY </span>
+<span class="s2">        </span><span class="si">{</span><span class="n">order_sql</span><span class="si">}</span>
+<span class="s2">    LIMIT :length OFFSET :start</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get total count before filtering</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;search_term&quot;</span><span class="p">:</span> <span class="n">search_term</span><span class="p">}</span> <span class="k">if</span> <span class="n">search_term</span> <span class="k">else</span> <span class="p">{}</span>
+
+    <span class="n">count_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_one</span><span class="p">(</span><span class="n">count_query_string</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">total_count</span> <span class="o">=</span> <span class="n">count_result</span><span class="p">[</span><span class="s2">&quot;total_count&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">count_result</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">filtered_count</span> <span class="o">=</span> <span class="n">total_count</span>  <span class="c1"># In this case, total and filtered are the same since we&#39;re not implementing separate filtering</span>
+
+    <span class="c1"># Execute main query with pagination parameters</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="n">length</span> <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">})</span>
+    <span class="n">result_rows</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query_string</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result_rows</span><span class="p">]</span>
+
+    <span class="c1"># Format data for DataTables</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">task_id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;task_id&quot;</span><span class="p">]</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;acc&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">mrn</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;mrn&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">job_scope</span> <span class="o">=</span> <span class="s2">&quot;STUDY&quot;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scope&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;study&quot;</span> <span class="k">else</span> <span class="s2">&quot;SERIES&quot;</span>
+
+        <span class="c1"># if item.get(&quot;rule&quot;):</span>
+        <span class="c1">#     item[&quot;rule&quot;] = item[&quot;rule&quot;].strip()</span>
+        <span class="c1">#     if item[&quot;rule&quot;] == &quot;,&quot;:</span>
+        <span class="c1">#         item[&quot;rule&quot;] = &quot;&quot;</span>
+
+        <span class="c1"># rule_information = &quot;&quot;</span>
+        <span class="c1"># if item.get(&quot;rule&quot;):</span>
+        <span class="c1">#     rule_information = item[&quot;rule&quot;]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     if item.get(&quot;triggered_rules&quot;):</span>
+        <span class="c1">#         try:</span>
+        <span class="c1">#             json_data = json.loads(&quot;[&quot; + item[&quot;triggered_rules&quot;] + &quot;]&quot;)</span>
+        <span class="c1">#             for entry in json_data:</span>
+        <span class="c1">#                 rule_information += &quot;, &quot;.join(list(entry.keys())) + &quot;, &quot;</span>
+        <span class="c1">#             if rule_information:</span>
+        <span class="c1">#                 rule_information = rule_information[:-2]</span>
+        <span class="c1">#         except json.JSONDecodeError:</span>
+        <span class="c1">#             rule_information = &quot;ERROR&quot;</span>
+        <span class="c1"># Format row as an array for DataTables</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;DT_RowId&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;task_</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># Add DataTables row identifier</span>
+            <span class="s2">&quot;ACC&quot;</span><span class="p">:</span> <span class="n">acc</span><span class="p">,</span>
+            <span class="s2">&quot;MRN&quot;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
+            <span class="s2">&quot;Scope&quot;</span><span class="p">:</span> <span class="n">job_scope</span><span class="p">,</span>
+            <span class="s2">&quot;Time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s1">&#39;seconds&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">),</span>
+            <span class="s2">&quot;Rule&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">task_id</span>  <span class="c1"># Include task_id for actions/links</span>
+        <span class="p">})</span>
+
+    <span class="c1"># Return response in DataTables expected format</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;draw&quot;</span><span class="p">:</span> <span class="n">draw</span><span class="p">,</span>  <span class="c1"># Echo back the draw parameter</span>
+        <span class="s2">&quot;recordsTotal&quot;</span><span class="p">:</span> <span class="n">total_count</span><span class="p">,</span>  <span class="c1"># Total records before filtering</span>
+        <span class="s2">&quot;recordsFiltered&quot;</span><span class="p">:</span> <span class="n">filtered_count</span><span class="p">,</span>  <span class="c1"># Total records after filtering</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span>  <span class="c1"># The data to be displayed</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="convert_key"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.convert_key">[docs]</a><span class="k">def</span> <span class="nf">convert_key</span><span class="p">(</span><span class="n">tag_key</span><span class="p">):</span>
+    <span class="c1"># Remove any leading/trailing whitespace and parentheses</span>
+    <span class="n">tag_key</span> <span class="o">=</span> <span class="n">tag_key</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;()&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Convert tag string to integer tuple format</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Get human-readable keyword</span>
+        <span class="n">keyword</span> <span class="o">=</span> <span class="n">keyword_for_tag</span><span class="p">(</span><span class="n">tag_key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">keyword</span> <span class="k">if</span> <span class="n">keyword</span> <span class="k">else</span> <span class="n">tag_key</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error converting tag </span><span class="si">{</span><span class="n">tag_key</span><span class="si">}</span><span class="s2"> to keyword&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tag_key</span></div>
+
+
+<div class="viewcode-block" id="dicom_to_readable_json"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.dicom_to_readable_json">[docs]</a><span class="k">def</span> <span class="nf">dicom_to_readable_json</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a DICOM file to a human-readable JSON format.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): Path to the DICOM file.</span>
+<span class="sd">        output_file_path (str): Path to save the JSON output.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">convert_to_serializable</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error converting DICOM to readable JSON: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="convert_to_serializable"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.convert_to_serializable">[docs]</a><span class="k">def</span> <span class="nf">convert_to_serializable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts non-serializable objects to serializable types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">keyword_for_tag</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span> <span class="ow">or</span> <span class="n">el</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">json_key</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;,&quot;</span><span class="o">+</span><span class="n">el</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">json_key</span><span class="p">[</span><span class="mi">4</span><span class="p">:]:</span> <span class="n">obj</span><span class="p">[</span><span class="n">el</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">elements</span><span class="p">()}</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">dataelem</span><span class="o">.</span><span class="n">DataElement</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">maxBytesToDisplay</span> <span class="o">=</span> <span class="mi">500</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">descripWidth</span> <span class="o">=</span> <span class="mi">500</span>
+            <span class="c1"># see if the representation of this element can be converted to JSON</span>
+            <span class="c1"># this will convert eg lists to python lists, numbers to python numbers, etc</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">evaled</span> <span class="o">:=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">repval</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">evaled</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">repval</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Object of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not JSON serializable&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_task_info"><a class="viewcode-back" href="../../source/bookkeeper.html#bookkeeping.query.get_task_info">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/get_task_info&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_info</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">task_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">task_id</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="c1"># First, get general information about the series/study</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">select</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">select_from</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">dicom_series</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span> <span class="o">==</span> <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">series_uid</span><span class="p">,</span> <span class="n">isouter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">task_id</span><span class="p">,</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">parent_id</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_one</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="c1"># info_rows = await db.database.fetch_all(info_query)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">rename</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;series_uid&quot;</span><span class="p">:</span> <span class="s2">&quot;SeriesUID&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;study_uid&quot;</span><span class="p">:</span> <span class="s2">&quot;StudyUID&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_patientname&quot;</span><span class="p">:</span> <span class="s2">&quot;PatientName&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_patientid&quot;</span><span class="p">:</span> <span class="s2">&quot;PatientID&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_accessionnumber&quot;</span><span class="p">:</span> <span class="s2">&quot;AccessionNumber&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_seriesnumber&quot;</span><span class="p">:</span> <span class="s2">&quot;SeriesNumber&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_studyid&quot;</span><span class="p">:</span> <span class="s2">&quot;StudyID&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_patientbirthdate&quot;</span><span class="p">:</span> <span class="s2">&quot;PatientBirthDate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_patientsex&quot;</span><span class="p">:</span> <span class="s2">&quot;PatientSex&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_acquisitiondate&quot;</span><span class="p">:</span> <span class="s2">&quot;AcquisitionDate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_acquisitiontime&quot;</span><span class="p">:</span> <span class="s2">&quot;AcquisitionTime&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_modality&quot;</span><span class="p">:</span> <span class="s2">&quot;Modality&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_bodypartexamined&quot;</span><span class="p">:</span> <span class="s2">&quot;BodyPartExamined&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_studydescription&quot;</span><span class="p">:</span> <span class="s2">&quot;StudyDescription&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_seriesdescription&quot;</span><span class="p">:</span> <span class="s2">&quot;SeriesDescription&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_protocolname&quot;</span><span class="p">:</span> <span class="s2">&quot;ProtocolName&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_codevalue&quot;</span><span class="p">:</span> <span class="s2">&quot;CodeValue&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_codemeaning&quot;</span><span class="p">:</span> <span class="s2">&quot;CodeMeaning&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_sequencename&quot;</span><span class="p">:</span> <span class="s2">&quot;SequenceName&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_scanningsequence&quot;</span><span class="p">:</span> <span class="s2">&quot;ScanningSequence&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_sequencevariant&quot;</span><span class="p">:</span> <span class="s2">&quot;SequenceVariant&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_slicethickness&quot;</span><span class="p">:</span> <span class="s2">&quot;SliceThickness&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_contrastbolusagent&quot;</span><span class="p">:</span> <span class="s2">&quot;ContrastBolusAgent&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_referringphysicianname&quot;</span><span class="p">:</span> <span class="s2">&quot;ReferringPhysicianName&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_manufacturer&quot;</span><span class="p">:</span> <span class="s2">&quot;Manufacturer&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_manufacturermodelname&quot;</span><span class="p">:</span> <span class="s2">&quot;ManufacturerModelName&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_magneticfieldstrength&quot;</span><span class="p">:</span> <span class="s2">&quot;MagneticFieldStrength&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_deviceserialnumber&quot;</span><span class="p">:</span> <span class="s2">&quot;DeviceSerialNumber&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_softwareversions&quot;</span><span class="p">:</span> <span class="s2">&quot;SoftwareVersions&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag_stationname&quot;</span><span class="p">:</span> <span class="s2">&quot;StationName&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">response</span><span class="p">[</span><span class="s2">&quot;information&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">rename</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="n">result_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">result_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">in</span> <span class="n">result_dict</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">tags</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">ds</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
+                        <span class="n">response</span><span class="p">[</span><span class="s2">&quot;sample_tags_received&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dicom_to_readable_json</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Error parsing data&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Now, get the task files embedded into the task or its subtasks</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">or_</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">tasks_table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">parent_id</span> <span class="o">==</span> <span class="n">task_id</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="n">result_rows</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result_rows</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">!=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">}:</span>
+            <span class="n">task_id</span> <span class="o">=</span> <span class="s2">&quot;task &quot;</span> <span class="o">+</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="n">response</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+
+        <span class="n">task_folder</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">success_folder</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">error_folder</span><span class="p">)]:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">found_folder</span> <span class="o">:=</span> <span class="n">k</span> <span class="o">/</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">task_folder</span> <span class="o">=</span> <span class="n">found_folder</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sample_file</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">task_folder</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*.dcm&quot;</span><span class="p">))</span>
+            <span class="n">tags</span> <span class="o">=</span> <span class="n">dicom_to_readable_json</span><span class="p">(</span><span class="n">pydicom</span><span class="o">.</span><span class="n">dcmread</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span> <span class="n">stop_before_pixels</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">task_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">response</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">response</span><span class="p">[</span><span class="n">task_id</span><span class="p">][</span><span class="s2">&quot;sample_tags_result&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">StopIteration</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">CustomJSONResponse</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
+
+<span class="n">query_app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">router</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

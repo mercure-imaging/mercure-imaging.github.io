@@ -1,9 +1,42 @@
 Release History
 ===============
 
-Version 0.3.1-beta.1
---------------------
-*Release date: 6/10/2024*
+Version 0.4.0-beta.2
+---------------------
+*Release date: 4/15/2025*
+
+* Support of multiple targets for dispatching
+* Redesign of the web UI
+* New DICOM Query tool
+* New DICOM Upload tool
+* Modules can create result files
+* Failed jobs can be restarted
+* Timestamps in log files now shown in local time
+* New target types
+* New rule syntax (optional)
+* Added email notifications
+* Notifications based on module results
+* Notifications now support templating
+* Visual system tag can be shown in navbar
+* Getdcmtags: Additional DICOM tags can be extracted
+* Faster DICOM receive mechanism
+* Added command-line tool manage.py for creating users
+* Rules now honor the urgent/off-peak priority setting
+* "Return to sender" option for DICOM targets
+* DICOM targets can pass the incoming AET/AEC
+* TLS support for secured DICOM transfer
+* Processing log and results can be viewed in queue page
+* System status flag for missing services
+* Display of additional job information on Queue page
+* Improved job search on the Archive Queue page with pagination
+* Added button for duplicating rules
+* Metabase installation option for results analyses and custom dashboards
+* Update option in install.sh to update dependencies, services
+* Support for Ubuntu 24.04 LTS
+
+Version 0.3.1-beta.13
+---------------------
+*Release date: 8/23/2024*
 
 * New JSON editor for configuration and module settings
 * Support for rsync and DICOM-TLS transfers

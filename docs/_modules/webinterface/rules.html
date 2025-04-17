@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>webinterface.rules &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>webinterface.rules &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -112,27 +113,25 @@
 <span class="sd">Rules page for the graphical user interface of mercure.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># Standard python includes</span>
-<span class="kn">import</span> <span class="nn">daiquiri</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="c1"># Standard python includes</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Set</span>
 
-<span class="c1"># Starlette-related includes</span>
-<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
-<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PlainTextResponse</span><span class="p">,</span> <span class="n">RedirectResponse</span>
-<span class="kn">from</span> <span class="nn">starlette.authentication</span> <span class="kn">import</span> <span class="n">requires</span>
-
-<span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
-<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
+<span class="kn">import</span> <span class="nn">common.rule_evaluation</span> <span class="k">as</span> <span class="nn">rule_evaluation</span>
+<span class="kn">import</span> <span class="nn">common.tagslist</span> <span class="k">as</span> <span class="nn">tagslist</span>
 <span class="kn">from</span> <span class="nn">common.tags_rule_interface</span> <span class="kn">import</span> <span class="n">TagNotFoundException</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Rule</span>
-<span class="kn">import</span> <span class="nn">common.rule_evaluation</span> <span class="k">as</span> <span class="nn">rule_evaluation</span>
-<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
-<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">common.tagslist</span> <span class="k">as</span> <span class="nn">tagslist</span>
 <span class="kn">from</span> <span class="nn">decoRouter</span> <span class="kn">import</span> <span class="n">Router</span> <span class="k">as</span> <span class="n">decoRouter</span>
+<span class="c1"># Starlette-related includes</span>
+<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.authentication</span> <span class="kn">import</span> <span class="n">requires</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span><span class="p">,</span> <span class="n">RedirectResponse</span><span class="p">,</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">strip_untrusted</span><span class="p">,</span> <span class="n">templates</span>
+<span class="kn">from</span> <span class="nn">webinterface.modules</span> <span class="kn">import</span> <span class="n">BadRequestResponse</span>
+
 <span class="n">router</span> <span class="o">=</span> <span class="n">decoRouter</span><span class="p">()</span>
 
 
@@ -140,41 +139,65 @@
 
 
 <span class="c1">###################################################################################</span>
-<span class="c1">## Rules endpoints</span>
+<span class="c1"># Rules endpoints</span>
 <span class="c1">###################################################################################</span>
 
-<div class="viewcode-block" id="show_rules"><a class="viewcode-back" href="../../webinterface.html#webinterface.rules.show_rules">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="rules"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.rules">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">show_rules</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">rules</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show all defined routing rules. Can be executed by all logged-in users.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;rules.html&quot;</span>
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
-        <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span>
         <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="s2">&quot;rules&quot;</span><span class="p">,</span>
         <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="add_rule"><a class="viewcode-back" href="../../webinterface.html#webinterface.rules.add_rule">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="duplicate_rule"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.duplicate_rule">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/duplicate&quot;</span><span class="p">)</span>
+<span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">duplicate_rule</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Duplicates an existing routing rule.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+    <span class="n">new_name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;new_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s2">&quot;[0-9a-zA-Z_\-]+&quot;</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span><span class="s2">&quot;Invalid rule name provided&quot;</span><span class="p">)</span>
+
+    <span class="n">old_name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;old_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">old_name</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">new_name</span> <span class="ow">or</span> <span class="n">old_name</span> <span class="o">==</span> <span class="n">new_name</span> <span class="ow">or</span> <span class="n">new_name</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Invalid input or duplicate name.&quot;</span><span class="p">)</span>
+
+    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">new_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">old_name</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="c1"># return RedirectResponse(url=&quot;/rules&quot;, status_code=303)</span>
+    <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/rules/edit/&quot;</span> <span class="o">+</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="add_rule"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.add_rule">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">add_rule</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a new routing rule and forwards the user to the rule edit page.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
 
     <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
 
     <span class="n">newrule</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s2">&quot;[0-9a-zA-Z_\-]+&quot;</span><span class="p">,</span> <span class="n">newrule</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span><span class="s2">&quot;Invalid rule name provided&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">newrule</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Rule already exists.&quot;</span><span class="p">)</span>
 
@@ -191,11 +214,13 @@
 <span class="s2">Details:</span>
 <span class="s2">{{ details }}</span>
 <span class="s2">{</span><span class="si">% e</span><span class="s2">ndif %}&quot;&quot;&quot;</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">newrule</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span><span class="n">notification_payload_body</span><span class="o">=</span><span class="n">default_payload_body</span><span class="p">,</span> <span class="n">notification_email_body</span><span class="o">=</span><span class="n">default_email_body</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">newrule</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+                                         <span class="n">notification_payload_body</span><span class="o">=</span><span class="n">default_payload_body</span><span class="p">,</span>
+                                         <span class="n">notification_email_body</span><span class="o">=</span><span class="n">default_email_body</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write configuration. Try again.&quot;</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created rule </span><span class="si">{</span><span class="n">newrule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -203,16 +228,18 @@
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/rules/edit/&quot;</span> <span class="o">+</span> <span class="n">newrule</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rules_edit"><a class="viewcode-back" href="../../webinterface.html#webinterface.rules.rules_edit">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{rule}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="rules_edit"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.rules_edit">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{rule}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">rules_edit</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Shows the edit page for the given routing rule.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
 
     <span class="n">rule</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">rule</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Rule does not exist anymore.&quot;</span><span class="p">)</span>
 
     <span class="n">settings_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">rule</span><span class="p">]</span><span class="o">.</span><span class="n">processing_settings</span><span class="p">:</span>
@@ -220,95 +247,75 @@
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
-        <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span>
         <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="s2">&quot;rules&quot;</span><span class="p">,</span>
         <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">,</span>
-        <span class="s2">&quot;targets&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
+        <span class="s2">&quot;targets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">direction</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;push&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">)],</span>
         <span class="s2">&quot;modules&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">,</span>
         <span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">rule</span><span class="p">,</span>
         <span class="s2">&quot;alltags&quot;</span><span class="p">:</span> <span class="n">tagslist</span><span class="o">.</span><span class="n">alltags</span><span class="p">,</span>
         <span class="s2">&quot;sortedtags&quot;</span><span class="p">:</span> <span class="n">tagslist</span><span class="o">.</span><span class="n">sortedtags</span><span class="p">,</span>
         <span class="s2">&quot;processing_settings&quot;</span><span class="p">:</span> <span class="n">settings_string</span><span class="p">,</span>
-        <span class="s2">&quot;process_runner&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">process_runner</span>
+        <span class="s2">&quot;process_runner&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">process_runner</span><span class="p">,</span>
+        <span class="s2">&quot;phi_notifications&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">phi_notifications</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;rules_edit.html&quot;</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rules_edit_post"><a class="viewcode-back" href="../../webinterface.html#webinterface.rules.rules_edit_post">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{rule}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="rules_edit_post"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.rules_edit_post">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{rule}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">rules_edit_post</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Updates the settings for the given routing rule.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
 
     <span class="n">editrule</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">editrule</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">editrule</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Rule does not exist anymore.&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">form_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">form_data</span><span class="p">)</span>
+        <span class="n">target_list</span> <span class="o">=</span> <span class="n">form_data</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Invalid form data.&quot;</span><span class="p">)</span>
 
-    <span class="n">old_rule</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">rules</span><span class="p">[</span><span class="n">editrule</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s2">&quot;[^&lt;]+&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Invalid tag name provided&quot;</span><span class="p">)</span>
+
     <span class="c1"># Ensure that the processing settings are valid. Should happen on the client side too, but can&#39;t hurt</span>
     <span class="c1"># to check again</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">new_processing_settings</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processing_settings&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">))</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">new_processing_settings</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="c1"># new_rule = Rule(</span>
-    <span class="c1">#     disabled=form[&quot;status_disabled&quot;],</span>
-    <span class="c1">#     fallback=form[&quot;status_fallback&quot;],</span>
-    <span class="c1">#     processing_settings=new_processing_settings,</span>
-    <span class="c1">#     **{</span>
-    <span class="c1">#         k: form[k]</span>
-    <span class="c1">#         for k in (</span>
-    <span class="c1">#             &quot;rule&quot;,</span>
-    <span class="c1">#             &quot;target&quot;,</span>
-    <span class="c1">#             &quot;contact&quot;,</span>
-    <span class="c1">#             &quot;comment&quot;,</span>
-    <span class="c1">#             &quot;tags&quot;,</span>
-    <span class="c1">#             &quot;action&quot;,</span>
-    <span class="c1">#             &quot;action_trigger&quot;,</span>
-    <span class="c1">#             &quot;study_trigger_condition&quot;,</span>
-    <span class="c1">#             &quot;study_trigger_series&quot;,</span>
-    <span class="c1">#             &quot;priority&quot;,</span>
-    <span class="c1">#             &quot;processing_module&quot;,</span>
-    <span class="c1">#             &quot;processing_retain_images&quot;,</span>
-    <span class="c1">#             &quot;notification_webhook&quot;,</span>
-    <span class="c1">#             &quot;notification_payload&quot;,</span>
-    <span class="c1">#             &quot;notification_trigger_reception&quot;,</span>
-    <span class="c1">#             &quot;notification_trigger_completion&quot;,</span>
-    <span class="c1">#             &quot;notification_trigger_error&quot;,</span>
-    <span class="c1">#         )</span>
-    <span class="c1">#     },</span>
-    <span class="c1"># )</span>
     <span class="k">if</span> <span class="s2">&quot;processing_module_list&quot;</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
-        <span class="n">processing_module</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processing_module_list&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">processing_module</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processing_module_list&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">processing_module</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]:</span>
             <span class="n">processing_module</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">processing_module</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processing_module&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        
+
     <span class="n">notification_payload</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">notification_payload</span> <span class="o">=</span> <span class="n">notification_payload</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
 
     <span class="n">new_rule</span><span class="p">:</span> <span class="n">Rule</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span>
         <span class="n">rule</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
-        <span class="n">target</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">target_list</span><span class="p">,</span>
         <span class="n">disabled</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status_disabled&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
         <span class="n">fallback</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status_fallback&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
         <span class="n">contact</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">comment</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-        <span class="n">tags</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">tags</span><span class="o">=</span><span class="n">strip_untrusted</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
         <span class="n">action</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;route&quot;</span><span class="p">),</span>
         <span class="n">action_trigger</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_trigger&quot;</span><span class="p">,</span> <span class="s2">&quot;series&quot;</span><span class="p">),</span>
         <span class="n">study_trigger_condition</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;study_trigger_condition&quot;</span><span class="p">,</span> <span class="s2">&quot;timeout&quot;</span><span class="p">),</span>
         <span class="n">study_trigger_series</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;study_trigger_series&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">study_force_completion_action</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;study_force_completion_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">priority</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;priority&quot;</span><span class="p">,</span> <span class="s2">&quot;normal&quot;</span><span class="p">),</span>
         <span class="n">processing_module</span><span class="o">=</span><span class="n">processing_module</span><span class="p">,</span>
         <span class="n">processing_settings</span><span class="o">=</span><span class="n">new_processing_settings</span><span class="p">,</span>
@@ -318,7 +325,7 @@
         <span class="n">notification_payload</span><span class="o">=</span><span class="n">notification_payload</span><span class="p">,</span>
         <span class="n">notification_payload_body</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_payload_body&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">notification_email_body</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_email_body&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-        <span class="n">notification_email_type</span><span class="o">=</span><span class="s2">&quot;html&quot;</span> <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_email_html&quot;</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;plain&quot;</span><span class="p">,</span>
+        <span class="n">notification_email_type</span><span class="o">=</span><span class="s2">&quot;html&quot;</span> <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_email_html&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;plain&quot;</span><span class="p">,</span>
         <span class="n">notification_trigger_reception</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_trigger_reception&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
         <span class="n">notification_trigger_completion</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_trigger_completion&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
         <span class="n">notification_trigger_completion_on_request</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notification_trigger_completion_on_request&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">),</span>
@@ -328,7 +335,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write configuration. Try again.&quot;</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited rule </span><span class="si">{</span><span class="n">editrule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -336,13 +343,13 @@
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/rules&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rules_delete_post"><a class="viewcode-back" href="../../webinterface.html#webinterface.rules.rules_delete_post">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{rule}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="rules_delete_post"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.rules_delete_post">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{rule}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">rules_delete_post</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Deletes the given routing rule&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span><span class="p">)</span>
 
     <span class="n">deleterule</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]</span>
@@ -352,7 +359,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write configuration. Try again.&quot;</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted rule </span><span class="si">{</span><span class="n">deleterule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -360,46 +367,66 @@
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/rules&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rules_test"><a class="viewcode-back" href="../../webinterface.html#webinterface.rules.rules_test">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/test&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="rules_test"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.rules_test">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/test&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">rules_test</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evalutes if a given routing rule is valid. The rule and testing dictionary have to be passed as form parameters.&quot;&quot;&quot;</span>
+    <span class="n">noresult</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">attrs_accessed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
         <span class="n">testrule</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]</span>
         <span class="n">testvalues</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;testvalues&quot;</span><span class="p">])</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;span class=&quot;tag is-warning is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-bug&quot;&gt;&lt;/i&gt;&amp;nbsp;Error&lt;/span&gt;&amp;nbsp;&amp;nbsp;Invalid test values&#39;</span>
+            <span class="p">(</span><span class="s1">&#39;&lt;span class=&quot;tag is-warning is-medium ruleresult&quot;&gt;&#39;</span>
+             <span class="s1">&#39;&lt;i class=&quot;fas fa-bug&quot;&gt;&lt;/i&gt;&amp;nbsp;Error&lt;/span&gt;&amp;nbsp;&amp;nbsp;Invalid test values&#39;</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">rule_evaluation</span><span class="o">.</span><span class="n">eval_rule</span><span class="p">(</span><span class="n">testrule</span><span class="p">,</span> <span class="n">testvalues</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">attrs_accessed</span> <span class="o">=</span> <span class="n">rule_evaluation</span><span class="o">.</span><span class="n">eval_rule</span><span class="p">(</span><span class="n">testrule</span><span class="p">,</span> <span class="n">testvalues</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;&lt;span class=&quot;tag is-success is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-thumbs-up&quot;&gt;&lt;/i&gt;&amp;nbsp;Trigger&lt;/span&gt;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;pre style=&quot;display:inline; margin-left: 1em&quot;&gt;</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">&lt;/pre&gt;&#39;</span> <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;success&quot;</span>
+            <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;thumbs-up&quot;</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Trigger&quot;</span>
+            <span class="n">inline</span> <span class="o">=</span> <span class="n">result</span> <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span> <span class="k">else</span> <span class="n">noresult</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;&lt;span class=&quot;tag is-info is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-thumbs-down&quot;&gt;&lt;/i&gt;&amp;nbsp;Reject&lt;/span&gt;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;pre style=&quot;display:inline; margin-left: 1em&quot;&gt;</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">&lt;/pre&gt;&#39;</span> <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
+            <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;thumbs-down&quot;</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Reject&quot;</span>
+            <span class="n">inline</span> <span class="o">=</span> <span class="n">result</span> <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span> <span class="k">else</span> <span class="n">noresult</span>
+
     <span class="k">except</span> <span class="n">TagNotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;&lt;span class=&quot;tag is-info is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-thumbs-down&quot;&gt;&lt;/i&gt;&amp;nbsp;Reject&lt;/span&gt;&lt;span&gt;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&lt;/span&gt;&#39;</span>
-            <span class="p">)</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;thumbs-down&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Reject&quot;</span>
+        <span class="n">inline</span> <span class="o">=</span> <span class="n">e</span>
+
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;&lt;span class=&quot;tag is-danger is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-bug&quot;&gt;&lt;/i&gt;&amp;nbsp;Error&lt;/span&gt;&amp;nbsp;&amp;nbsp;Invalid rule: &lt;pre style=&quot;display:inline; margin-left: 1em&quot;&gt;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&lt;/pre&gt;&#39;</span>
-        <span class="p">)</span></div>
+        <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;danger&quot;</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;bug&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        <span class="n">inline</span> <span class="o">=</span> <span class="n">e</span>
+
+    <span class="n">attrs_accessed_info</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> = </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">testvalues</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">attrs_accessed</span><span class="p">])</span>
+                           <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attrs_accessed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">_inline</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">inline</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inline</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">inline</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;span class=&quot;tag is-</span><span class="si">{</span><span class="n">style</span><span class="si">}</span><span class="s1"> is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-</span><span class="si">{</span><span class="n">icon</span><span class="si">}</span><span class="s1">&quot;&gt;&lt;/i&gt;&amp;nbsp;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/span&gt;&#39;</span>  <span class="c1"># noqa: E501</span>
+                             <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;pre style=&quot;display:inline; margin-left: 1em&quot;&gt;</span><span class="si">{</span><span class="n">_inline</span><span class="si">}</span><span class="s1">&lt;/pre&gt;&#39;</span>
+                                <span class="k">if</span> <span class="n">inline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">noresult</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                             <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;pre style=&quot;margin: 1em&quot;&gt;Tags evaluated:</span><span class="se">\n</span><span class="si">{</span><span class="n">attrs_accessed_info</span><span class="si">}</span><span class="s1">&lt;/pre&gt;&#39;</span> <span class="k">if</span> <span class="n">attrs_accessed_info</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># noqa: E501</span>
+                             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rules_test_completionseries"><a class="viewcode-back" href="../../webinterface.html#webinterface.rules.rules_test_completionseries">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/test_completionseries&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="rules_test_completionseries"><a class="viewcode-back" href="../../source/webgui.html#webinterface.rules.rules_test_completionseries">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/test_completionseries&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">rules_test_completionseries</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evalutes if a given value for the series list for study completion is valid.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
         <span class="n">test_series_list</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;study_trigger_series&quot;</span><span class="p">]</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
             <span class="s1">&#39;&lt;span class=&quot;tag is-warning is-medium ruleresult&quot;&gt;&lt;i class=&quot;fas fa-bug&quot;&gt;&lt;/i&gt;&amp;nbsp;Error&lt;/span&gt;&amp;nbsp;&amp;nbsp;Invalid&#39;</span>
         <span class="p">)</span>
@@ -423,7 +450,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -441,18 +468,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

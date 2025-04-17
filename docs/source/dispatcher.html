@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service dispatcher &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Service processor" href="processor.html" />
+    <link rel="prev" title="Package common" href="common.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processor.html">Service processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code Documentation</a></li>
+      <li class="breadcrumb-item active">Service dispatcher</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dispatch.dispatcher">
+<span id="service-dispatcher"></span><h1>Service dispatcher<a class="headerlink" href="#module-dispatch.dispatcher" title="Permalink to this heading"></a></h1>
+<section id="dispatcher-py">
+<h2>dispatcher.py<a class="headerlink" href="#dispatcher-py" title="Permalink to this heading"></a></h2>
+<p>The dispatcher service of mercure that executes the DICOM transfer to the different targets.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.dispatcher.dispatch">
+<span class="sig-prename descclassname"><span class="pre">dispatch.dispatcher.</span></span><span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/dispatch/dispatcher.html#dispatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.dispatcher.dispatch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.dispatcher.exit_dispatcher">
+<span class="sig-prename descclassname"><span class="pre">dispatch.dispatcher.</span></span><span class="sig-name descname"><span class="pre">exit_dispatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/dispatch/dispatcher.html#exit_dispatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.dispatcher.exit_dispatcher" title="Permalink to this definition"></a></dt>
+<dd><p>Stop the asyncio event loop.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.dispatcher.main">
+<span class="sig-prename descclassname"><span class="pre">dispatch.dispatcher.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['-b',</span> <span class="pre">'html',</span> <span class="pre">'-d',</span> <span class="pre">'_build/doctrees',</span> <span class="pre">'.',</span> <span class="pre">'_build/html']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/dispatch/dispatcher.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.dispatcher.main" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.dispatcher.terminate_process">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.dispatcher.</span></span><span class="sig-name descname"><span class="pre">terminate_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signalNumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/dispatch/dispatcher.html#terminate_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.dispatcher.terminate_process" title="Permalink to this definition"></a></dt>
+<dd><p>Triggers the shutdown of the service.</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.process_dcmsend_result"></span><dl class="py function">
+<dt class="sig sig-object py" id="dispatch.process_dcmsend_result.create_arg_parser">
+<span class="sig-prename descclassname"><span class="pre">dispatch.process_dcmsend_result.</span></span><span class="sig-name descname"><span class="pre">create_arg_parser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ArgumentParser</span></span></span><a class="reference internal" href="../_modules/dispatch/process_dcmsend_result.html#create_arg_parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.process_dcmsend_result.create_arg_parser" title="Permalink to this definition"></a></dt>
+<dd><p>Creates and returns the ArgumentParser object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.process_dcmsend_result.parse">
+<span class="sig-prename descclassname"><span class="pre">dispatch.process_dcmsend_result.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result_file</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/dispatch/process_dcmsend_result.html#parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.process_dcmsend_result.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parses the dcmsend result file and returns a python dictionary.</p>
+</dd></dl>
+
+<span class="target" id="module-dispatch.retry"></span><dl class="py function">
+<dt class="sig sig-object py" id="dispatch.retry.increase_retry">
+<span class="sig-prename descclassname"><span class="pre">dispatch.retry.</span></span><span class="sig-name descname"><span class="pre">increase_retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_delay</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/dispatch/retry.html#increase_retry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.retry.increase_retry" title="Permalink to this definition"></a></dt>
+<dd><p>Increases the retries counter and set the wait counter to a new time
+in the future.
+:return True if increase has been successful or False if maximum retries
+has been reached</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.retry.update_dispatch_status">
+<span class="sig-prename descclassname"><span class="pre">dispatch.retry.</span></span><span class="sig-name descname"><span class="pre">update_dispatch_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="common.html#common.types.TaskDispatchStatus" title="common.types.TaskDispatchStatus"><span class="pre">TaskDispatchStatus</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="common.html#common.types.EmptyDict" title="common.types.EmptyDict"><span class="pre">EmptyDict</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/dispatch/retry.html#update_dispatch_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.retry.update_dispatch_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-dispatch.send"></span><section id="send-py">
+<h2>send.py<a class="headerlink" href="#send-py" title="Permalink to this heading"></a></h2>
+<p>The functions for sending DICOM series
+to target destinations.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.send.update_fail_stage">
+<span class="sig-prename descclassname"><span class="pre">dispatch.send.</span></span><span class="sig-name descname"><span class="pre">update_fail_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_stage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.event_types.FailStage" title="common.event_types.FailStage"><span class="pre">FailStage</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/dispatch/send.html#update_fail_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.send.update_fail_stage" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.status"></span><section id="status-py">
+<h2>status.py<a class="headerlink" href="#status-py" title="Permalink to this heading"></a></h2>
+<p>Helper functions for dispatching processed cases</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.status.is_ready_for_sending">
+<span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_ready_for_sending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/status.html#is_ready_for_sending"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_ready_for_sending" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a case in the outgoing folder is ready for sending by the dispatcher.</p>
+<p>No lock file (.lock) should be in sending folder and no error file (.error),
+if there is one copy/move is not done yet. Also at least some dicom files
+should be there for sending. Also checks for a task.json file and if it is
+valid.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.status.is_target_json_valid">
+<span class="sig-prename descclassname"><span class="pre">dispatch.status.</span></span><span class="sig-name descname"><span class="pre">is_target_json_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/status.html#is_target_json_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.status.is_target_json_valid" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the task.json file exists and is valid. Returns the content
+of the file (or None if the file is invalid)</p>
+</dd></dl>
+
+</section>
+<section id="module-dispatch.target_types.base">
+<span id="target-types"></span><h2>Target types<a class="headerlink" href="#module-dispatch.target_types.base" title="Permalink to this heading"></a></h2>
+<section id="base-py">
+<h3>base.py<a class="headerlink" href="#base-py" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.base.ProgressInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.base.</span></span><span class="sig-name descname"><span class="pre">ProgressInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remaining</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#ProgressInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.ProgressInfo" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.base.ProgressInfo.completed">
+<span class="sig-name descname"><span class="pre">completed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dispatch.target_types.base.ProgressInfo.completed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.base.ProgressInfo.progress">
+<span class="sig-name descname"><span class="pre">progress</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#dispatch.target_types.base.ProgressInfo.progress" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.base.ProgressInfo.remaining">
+<span class="sig-name descname"><span class="pre">remaining</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dispatch.target_types.base.ProgressInfo.remaining" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.base.SubprocessTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.base.</span></span><span class="sig-name descname"><span class="pre">SubprocessTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#SubprocessTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.SubprocessTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetHandler</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">TargetTypeVar</span></code>]</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.SubprocessTargetHandler.handle_error">
+<span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CalledProcessError</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#SubprocessTargetHandler.handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.SubprocessTargetHandler.handle_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.SubprocessTargetHandler.send_to_target">
+<span class="sig-name descname"><span class="pre">send_to_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TargetTypeVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">TaskDispatch</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#SubprocessTargetHandler.send_to_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.SubprocessTargetHandler.send_to_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.base.</span></span><span class="sig-name descname"><span class="pre">TargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">TargetTypeVar</span></code>]</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.NoSuchTagException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NoSuchTagException</span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler.NoSuchTagException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.NoSuchTagException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.can_pull">
+<span class="sig-name descname"><span class="pre">can_pull</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.can_pull" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.find_from_target">
+<span class="sig-name descname"><span class="pre">find_from_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TargetTypeVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dataset</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler.find_from_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.find_from_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.from_form">
+<span class="sig-name descname"><span class="pre">from_form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TargetTypeVar</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler.from_form"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.from_form" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.get_from_target">
+<span class="sig-name descname"><span class="pre">get_from_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TargetTypeVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dispatch.target_types.base.ProgressInfo" title="dispatch.target_types.base.ProgressInfo"><span class="pre">ProgressInfo</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler.get_from_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.get_from_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.handle_error">
+<span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler.handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.handle_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.info_short">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info_short</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.info_short" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.send_to_target">
+<span class="sig-name descname"><span class="pre">send_to_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TargetTypeVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">TaskDispatch</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler.send_to_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.send_to_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TargetTypeVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/base.html#TargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.base.TargetHandler.test_template">
+<span class="sig-name descname"><span class="pre">test_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/base-test.html'</span></em><a class="headerlink" href="#dispatch.target_types.base.TargetHandler.test_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.target_types.builtin"></span><section id="builtin-py">
+<h3>builtin.py<a class="headerlink" href="#builtin-py" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.builtin.</span></span><span class="sig-name descname"><span class="pre">DicomTLSTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTLSTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.SubprocessTargetHandler" title="dispatch.target_types.base.SubprocessTargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubprocessTargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.DicomTLSTarget" title="common.types.DicomTLSTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">DicomTLSTarget</span></code></a>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DICOM+TLS'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicom-tls-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler.handle_error">
+<span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTLSTargetHandler.handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler.handle_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-database'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomTLSTarget" title="common.types.DicomTLSTarget"><span class="pre">DicomTLSTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTLSTargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler.test_template">
+<span class="sig-name descname"><span class="pre">test_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicom-test.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler.test_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTLSTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicom-tls.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTLSTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.builtin.</span></span><span class="sig-name descname"><span class="pre">DicomTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.SubprocessTargetHandler" title="dispatch.target_types.base.SubprocessTargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubprocessTargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.DicomTarget" title="common.types.DicomTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">DicomTarget</span></code></a>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.can_pull">
+<span class="sig-name descname"><span class="pre">can_pull</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.can_pull" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DICOM'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicom-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.find_from_target">
+<span class="sig-name descname"><span class="pre">find_from_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomTarget" title="common.types.DicomTarget"><span class="pre">DicomTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dataset</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTargetHandler.find_from_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.find_from_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.get_from_target">
+<span class="sig-name descname"><span class="pre">get_from_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomTarget" title="common.types.DicomTarget"><span class="pre">DicomTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dispatch.target_types.base.ProgressInfo" title="dispatch.target_types.base.ProgressInfo"><span class="pre">ProgressInfo</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTargetHandler.get_from_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.get_from_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.handle_error">
+<span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTargetHandler.handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.handle_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-database'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomTarget" title="common.types.DicomTarget"><span class="pre">DicomTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DicomTargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.test_template">
+<span class="sig-name descname"><span class="pre">test_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicom-test.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.test_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DicomTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicom.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DicomTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DummyTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.builtin.</span></span><span class="sig-name descname"><span class="pre">DummyTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#DummyTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.DummyTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetHandler</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DummyTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Dummy'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DummyTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DummyTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dummy-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DummyTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DummyTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-flask'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DummyTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.DummyTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dummy.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.DummyTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.SftpTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.builtin.</span></span><span class="sig-name descname"><span class="pre">SftpTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#SftpTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.SftpTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.SubprocessTargetHandler" title="dispatch.target_types.base.SubprocessTargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubprocessTargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.SftpTarget" title="common.types.SftpTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">SftpTarget</span></code></a>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.SftpTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SFTP'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.SftpTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.SftpTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/sftp-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.SftpTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.SftpTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-server'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.SftpTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.SftpTargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.SftpTarget" title="common.types.SftpTarget"><span class="pre">SftpTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/builtin.html#SftpTargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.builtin.SftpTargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.SftpTargetHandler.test_template">
+<span class="sig-name descname"><span class="pre">test_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/sftp-test.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.SftpTargetHandler.test_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.builtin.SftpTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/sftp.html'</span></em><a class="headerlink" href="#dispatch.target_types.builtin.SftpTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.target_types.dicomweb"></span><section id="dicomweb-py">
+<h3>dicomweb.py<a class="headerlink" href="#dicomweb-py" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.dicomweb.</span></span><span class="sig-name descname"><span class="pre">DicomWebTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/dicomweb.html#DicomWebTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">DicomWebTarget</span></code></a>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.can_pull">
+<span class="sig-name descname"><span class="pre">can_pull</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.can_pull" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.create_client">
+<span class="sig-name descname"><span class="pre">create_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">DICOMfileClient</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DICOMwebClient</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/dicomweb.html#DicomWebTargetHandler.create_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.create_client" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DICOMweb'</span></em><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicomweb-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.find_from_target">
+<span class="sig-name descname"><span class="pre">find_from_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dataset</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/dicomweb.html#DicomWebTargetHandler.find_from_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.find_from_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.from_form">
+<span class="sig-name descname"><span class="pre">from_form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_target</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a></span></span><a class="reference internal" href="../_modules/dispatch/target_types/dicomweb.html#DicomWebTargetHandler.from_form"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.from_form" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.get_from_target">
+<span class="sig-name descname"><span class="pre">get_from_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dispatch.target_types.base.ProgressInfo" title="dispatch.target_types.base.ProgressInfo"><span class="pre">ProgressInfo</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/dicomweb.html#DicomWebTargetHandler.get_from_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.get_from_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-share-alt'</span></em><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.send_to_target">
+<span class="sig-name descname"><span class="pre">send_to_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">TaskDispatch</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/dicomweb.html#DicomWebTargetHandler.send_to_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.send_to_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/dicomweb.html#DicomWebTargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.dicomweb.DicomWebTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/dicomweb.html'</span></em><a class="headerlink" href="#dispatch.target_types.dicomweb.DicomWebTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.target_types.folder"></span><section id="folder-py">
+<h3>folder.py<a class="headerlink" href="#folder-py" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.folder.</span></span><span class="sig-name descname"><span class="pre">FolderTargetTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/folder.html#FolderTargetTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.FolderTarget" title="common.types.FolderTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">FolderTarget</span></code></a>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Folder'</span></em><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/folder-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler.from_form">
+<span class="sig-name descname"><span class="pre">from_form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.FolderTarget" title="common.types.FolderTarget"><span class="pre">FolderTarget</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="common.html#common.types.FolderTarget" title="common.types.FolderTarget"><span class="pre">FolderTarget</span></a></span></span><a class="reference internal" href="../_modules/dispatch/target_types/folder.html#FolderTargetTargetHandler.from_form"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler.from_form" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-folder'</span></em><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler.send_to_target">
+<span class="sig-name descname"><span class="pre">send_to_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.FolderTarget" title="common.types.FolderTarget"><span class="pre">FolderTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">TaskDispatch</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/folder.html#FolderTargetTargetHandler.send_to_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler.send_to_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.FolderTarget" title="common.types.FolderTarget"><span class="pre">FolderTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/folder.html#FolderTargetTargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.folder.FolderTargetTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/folder.html'</span></em><a class="headerlink" href="#dispatch.target_types.folder.FolderTargetTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.target_types.registry"></span><section id="registry-py">
+<h3>registry.py<a class="headerlink" href="#registry-py" title="Permalink to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.target_types.registry.get_handler">
+<span class="sig-prename descclassname"><span class="pre">dispatch.target_types.registry.</span></span><span class="sig-name descname"><span class="pre">get_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Target" title="common.types.Target"><span class="pre">Target</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Target" title="common.types.Target"><span class="pre">Target</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><span class="pre">TargetHandler</span></a></span></span><a class="reference internal" href="../_modules/dispatch/target_types/registry.html#get_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.registry.get_handler" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.target_types.registry.handler_for">
+<span class="sig-prename descclassname"><span class="pre">dispatch.target_types.registry.</span></span><span class="sig-name descname"><span class="pre">handler_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Target" title="common.types.Target"><span class="pre">Target</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><span class="pre">TargetHandler</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><span class="pre">TargetHandler</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/registry.html#handler_for"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.registry.handler_for" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.target_types.registry.target_types">
+<span class="sig-prename descclassname"><span class="pre">dispatch.target_types.registry.</span></span><span class="sig-name descname"><span class="pre">target_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">KeysView</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Target" title="common.types.Target"><span class="pre">Target</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/registry.html#target_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.registry.target_types" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.target_types.registry.type_from_name">
+<span class="sig-prename descclassname"><span class="pre">dispatch.target_types.registry.</span></span><span class="sig-name descname"><span class="pre">type_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.Target" title="common.types.Target"><span class="pre">Target</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/registry.html#type_from_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.registry.type_from_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.target_types.rsync"></span><section id="rsync-py">
+<h3>rsync.py<a class="headerlink" href="#rsync-py" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.rsync.</span></span><span class="sig-name descname"><span class="pre">RsyncTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/rsync.html#RsyncTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.SubprocessTargetHandler" title="dispatch.target_types.base.SubprocessTargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubprocessTargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.RsyncTarget" title="common.types.RsyncTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">RsyncTarget</span></code></a>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'rsync'</span></em><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/rsync-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler.get_commands">
+<span class="sig-name descname"><span class="pre">get_commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/rsync.html#RsyncTargetHandler.get_commands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler.get_commands" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-server'</span></em><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.RsyncTarget" title="common.types.RsyncTarget"><span class="pre">RsyncTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/rsync.html#RsyncTargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler.test_template">
+<span class="sig-name descname"><span class="pre">test_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/rsync-test.html'</span></em><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler.test_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.rsync.RsyncTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/rsync.html'</span></em><a class="headerlink" href="#dispatch.target_types.rsync.RsyncTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.target_types.s3"></span><section id="s3-py">
+<h3>s3.py<a class="headerlink" href="#s3-py" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.s3.</span></span><span class="sig-name descname"><span class="pre">S3TargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/s3.html#S3TargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.S3Target" title="common.types.S3Target"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Target</span></code></a>]</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.create_client">
+<span class="sig-name descname"><span class="pre">create_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.S3Target" title="common.types.S3Target"><span class="pre">S3Target</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/s3.html#S3TargetHandler.create_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.create_client" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'S3'</span></em><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/s3-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.from_form">
+<span class="sig-name descname"><span class="pre">from_form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.S3Target" title="common.types.S3Target"><span class="pre">S3Target</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="common.html#common.types.S3Target" title="common.types.S3Target"><span class="pre">S3Target</span></a></span></span><a class="reference internal" href="../_modules/dispatch/target_types/s3.html#S3TargetHandler.from_form"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.from_form" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-cloud'</span></em><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.send_to_target">
+<span class="sig-name descname"><span class="pre">send_to_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.S3Target" title="common.types.S3Target"><span class="pre">S3Target</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">TaskDispatch</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/s3.html#S3TargetHandler.send_to_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.send_to_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.S3Target" title="common.types.S3Target"><span class="pre">S3Target</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/s3.html#S3TargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.s3.S3TargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/s3.html'</span></em><a class="headerlink" href="#dispatch.target_types.s3.S3TargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-dispatch.target_types.xnat"></span><section id="xnat-py">
+<h3>xnat.py<a class="headerlink" href="#xnat-py" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.InterfaceManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.xnat.</span></span><span class="sig-name descname"><span class="pre">InterfaceManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#InterfaceManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.InterfaceManager" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manager for <cite>pyxnat.Interface</cite> that enables the use of the <cite>with</cite> python context.
+Using the InterfaceManager along the <cite>with</cite> python context avoids having to call the <cite>disconnect()</cite> method
+after each connection.
+<strong>Methods</strong>
+- <cite>open()</cite>: to use along the <cite>with</cite> context, yields an instance of <cite>pyxnat.Interface</cite> and disconnects automatically</p>
+<blockquote>
+<div><p>when the context ends.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt><cite>open_persistent()</cite>: returns a persistent instance of <cite>pyxnat.Interface</cite>. User must use the <cite>disconnect()</cite> method</dt><dd><p>when the use of the session is finished.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+interface = InterfaceManager(server=’www.myxnat.org’, user=’user’, password=’password’)
+with interface.open() as session:</p>
+<blockquote>
+<div><p>session.get(…)</p>
+</div></blockquote>
+<p>session = interface.open_persistent()
+session.get(…)
+session.disconnect()
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.InterfaceManager.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#InterfaceManager.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.InterfaceManager.open" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.InterfaceManager.open_persistent">
+<span class="sig-name descname"><span class="pre">open_persistent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#InterfaceManager.open_persistent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.InterfaceManager.open_persistent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dispatch.target_types.xnat.</span></span><span class="sig-name descname"><span class="pre">XnatTargetHandler</span></span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#XnatTargetHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dispatch.target_types.base.TargetHandler" title="dispatch.target_types.base.TargetHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetHandler</span></code></a>[<a class="reference internal" href="common.html#common.types.XnatTarget" title="common.types.XnatTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">XnatTarget</span></code></a>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'XNAT'</span></em><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.display_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.edit_template">
+<span class="sig-name descname"><span class="pre">edit_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/xnat-edit.html'</span></em><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.edit_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.handle_error">
+<span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#XnatTargetHandler.handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.handle_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fa-hdd'</span></em><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.icon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.send_to_target">
+<span class="sig-name descname"><span class="pre">send_to_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.XnatTarget" title="common.types.XnatTarget"><span class="pre">XnatTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.TaskDispatch" title="common.types.TaskDispatch"><span class="pre">TaskDispatch</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.Task" title="common.types.Task"><span class="pre">Task</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#XnatTargetHandler.send_to_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.send_to_target" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.test_connection">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#common.types.XnatTarget" title="common.types.XnatTarget"><span class="pre">XnatTarget</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#XnatTargetHandler.test_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.test_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.test_template">
+<span class="sig-name descname"><span class="pre">test_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/xnat-test.html'</span></em><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.test_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.XnatTargetHandler.view_template">
+<span class="sig-name descname"><span class="pre">view_template</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'targets/xnat.html'</span></em><a class="headerlink" href="#dispatch.target_types.xnat.XnatTargetHandler.view_template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dispatch.target_types.xnat.get_domain">
+<span class="sig-prename descclassname"><span class="pre">dispatch.target_types.xnat.</span></span><span class="sig-name descname"><span class="pre">get_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/dispatch/target_types/xnat.html#get_domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dispatch.target_types.xnat.get_domain" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="common.html" class="btn btn-neutral float-left" title="Package common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="processor.html" class="btn btn-neutral float-right" title="Service processor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dispatch.target_types.xnat &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/index.html">Code Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dispatch.target_types.xnat</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dispatch.target_types.xnat</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">xnat.py</span>
+<span class="sd">=======</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">pyxnat</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">XnatTarget</span>
+<span class="kn">from</span> <span class="nn">pydicom</span> <span class="kn">import</span> <span class="n">dcmread</span>
+<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">async_run</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">TargetHandler</span>
+<span class="kn">from</span> <span class="nn">.registry</span> <span class="kn">import</span> <span class="n">handler_for</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_domain"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.get_domain">[docs]</a><span class="k">def</span> <span class="nf">get_domain</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="XnatTargetHandler"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.XnatTargetHandler">[docs]</a><span class="nd">@handler_for</span><span class="p">(</span><span class="n">XnatTarget</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">XnatTargetHandler</span><span class="p">(</span><span class="n">TargetHandler</span><span class="p">[</span><span class="n">XnatTarget</span><span class="p">]):</span>
+    <span class="n">view_template</span> <span class="o">=</span> <span class="s2">&quot;targets/xnat.html&quot;</span>
+    <span class="n">edit_template</span> <span class="o">=</span> <span class="s2">&quot;targets/xnat-edit.html&quot;</span>
+    <span class="n">test_template</span> <span class="o">=</span> <span class="s2">&quot;targets/xnat-test.html&quot;</span>
+    <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;fa-hdd&quot;</span>
+    <span class="n">display_name</span> <span class="o">=</span> <span class="s2">&quot;XNAT&quot;</span>
+
+<div class="viewcode-block" id="XnatTargetHandler.send_to_target"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.XnatTargetHandler.send_to_target">[docs]</a>    <span class="k">def</span> <span class="nf">send_to_target</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">XnatTarget</span><span class="p">,</span>
+        <span class="n">dispatch_info</span><span class="p">:</span> <span class="n">TaskDispatch</span><span class="p">,</span>
+        <span class="n">source_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">task</span><span class="p">:</span> <span class="n">Task</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_send_dicom_to_xnat</span><span class="p">(</span>
+                <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="n">source_folder</span><span class="p">,</span> <span class="n">dispatch_info</span><span class="o">=</span><span class="n">dispatch_info</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="XnatTargetHandler.handle_error"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.XnatTargetHandler.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatTargetHandler.test_connection"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.XnatTargetHandler.test_connection">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">XnatTarget</span><span class="p">,</span> <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">/data/auth&quot;</span>
+
+        <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+            <span class="n">ping_ok</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
+                <span class="n">ping_result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_run</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;ping -w 1 -c 1 </span><span class="si">{</span><span class="n">get_domain</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">ping_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">ping_ok</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">BasicAuth</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+                    <span class="n">response_ok</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">200</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">response_ok</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+                    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ping</span><span class="o">=</span><span class="n">ping_ok</span><span class="p">,</span> <span class="n">loggedin</span><span class="o">=</span><span class="n">response_ok</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ping</span><span class="o">=</span><span class="n">ping_ok</span><span class="p">,</span> <span class="n">loggedin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_send_dicom_to_xnat</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">XnatTarget</span><span class="p">,</span> <span class="n">dispatch_info</span><span class="p">:</span> <span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Connecting to </span><span class="si">{</span><span class="n">dispatch_info</span><span class="o">.</span><span class="n">target_name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">) XNAT server...&quot;</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="n">InterfaceManager</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                          <span class="n">password</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">password</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="n">project_id</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">project_id</span>
+        <span class="n">dicom_file_path</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;*.dcm&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dcmFile</span> <span class="o">=</span> <span class="n">dcmread</span><span class="p">(</span><span class="n">dicom_file_path</span><span class="p">,</span> <span class="n">stop_before_pixels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">subject_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dcmFile</span><span class="o">.</span><span class="n">PatientID</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="c1"># TODO make experiment_id more generic.</span>
+        <span class="n">experiment_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dcmFile</span><span class="o">.</span><span class="n">StudyDate</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploading </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">dispatch_info</span><span class="o">.</span><span class="n">target_name</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+        <span class="n">_upload_dicom_session_to_xnat</span><span class="p">(</span>
+            <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+            <span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="n">subject_id</span><span class="o">=</span><span class="n">subject_id</span><span class="p">,</span>
+            <span class="n">experiment_label</span><span class="o">=</span><span class="n">experiment_id</span><span class="p">,</span>
+            <span class="n">dicom_path</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+            <span class="n">overwrite_dicom</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_upload_dicom_session_to_xnat</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">:</span> <span class="n">pyxnat</span><span class="o">.</span><span class="n">Interface</span><span class="p">,</span>
+    <span class="n">project_id</span><span class="p">,</span>
+    <span class="n">subject_id</span><span class="p">,</span>
+    <span class="n">experiment_label</span><span class="p">,</span>
+    <span class="n">dicom_path</span><span class="p">,</span>
+    <span class="n">overwrite_dicom</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uploads the dicoms from the given path to an XNAT server using the Image Session Import Service API.</span>
+<span class="sd">    If the dicom_path contains more than one scan, all will be uploaded to the session.</span>
+<span class="sd">    :param session: a pyxnat.Interface instance</span>
+<span class="sd">    :param project_id: (str) XNAT&#39;s project ID or label</span>
+<span class="sd">    :param subject_id: (str) XNAT&#39;s subject ID or label</span>
+<span class="sd">    :param experiment_label: (str) XNAT&#39;s experiment label or ID</span>
+<span class="sd">    :param dicom_path: path to directory containing dicom scan(s)</span>
+<span class="sd">    :param scan_type: the value for the xnat:mrScanData/type field</span>
+<span class="sd">    :param overwrite_dicom: if True, it will delete any existing Scan with same ID before uploading</span>
+<span class="sd">    :return: a list of the uploaded scan_uris</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a zip file with the dicom_path in a temporary directory</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_path</span><span class="p">:</span>
+        <span class="n">zip_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;dicom.zip&quot;</span><span class="p">)</span>
+        <span class="c1"># rename *.dcm files of dicom_path incrementaly and zip them</span>
+        <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dicom_path</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.dcm&quot;</span><span class="p">):</span>
+                        <span class="n">zip_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.dcm&quot;</span><span class="p">)</span>
+                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Upload zip file to XNAT server using the Image Session Import API</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">zip_filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;/data/services/import&quot;</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;PROJECT_ID&quot;</span><span class="p">:</span> <span class="n">project_id</span><span class="p">,</span>
+                    <span class="s2">&quot;SUBJECT_ID&quot;</span><span class="p">:</span> <span class="n">subject_id</span><span class="p">,</span>
+                    <span class="s2">&quot;EXPT_LABEL&quot;</span><span class="p">:</span> <span class="n">experiment_label</span><span class="p">,</span>
+                    <span class="s2">&quot;rename&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;overwrite&quot;</span><span class="p">:</span> <span class="s2">&quot;delete&quot;</span> <span class="k">if</span> <span class="n">overwrite_dicom</span> <span class="k">else</span> <span class="s2">&quot;append&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;inbody&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/zip&quot;</span><span class="p">},</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Response not 200 OK while uploading DICOM with Image Session Import Service API. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Response code: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Response: </span><span class="si">{</span><span class="n">resp</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+
+<div class="viewcode-block" id="InterfaceManager"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.InterfaceManager">[docs]</a><span class="k">class</span> <span class="nc">InterfaceManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manager for `pyxnat.Interface` that enables the use of the `with` python context.</span>
+<span class="sd">    Using the InterfaceManager along the `with` python context avoids having to call the `disconnect()` method</span>
+<span class="sd">    after each connection.</span>
+<span class="sd">    **Methods**</span>
+<span class="sd">    - `open()`: to use along the `with` context, yields an instance of `pyxnat.Interface` and disconnects automatically</span>
+<span class="sd">        when the context ends.</span>
+<span class="sd">    - `open_persistent()`: returns a persistent instance of `pyxnat.Interface`. User must use the `disconnect()` method</span>
+<span class="sd">        when the use of the session is finished.</span>
+<span class="sd">    ```python</span>
+<span class="sd">    interface = InterfaceManager(server=&#39;www.myxnat.org&#39;, user=&#39;user&#39;, password=&#39;password&#39;)</span>
+<span class="sd">    with interface.open() as session:</span>
+<span class="sd">         session.get(...)</span>
+<span class="sd">    session = interface.open_persistent()</span>
+<span class="sd">    session.get(...)</span>
+<span class="sd">    session.disconnect()</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psswd</span> <span class="o">=</span> <span class="n">password</span>
+
+<div class="viewcode-block" id="InterfaceManager.open"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.InterfaceManager.open">[docs]</a>    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sess</span> <span class="o">=</span> <span class="n">pyxnat</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span>
+                <span class="n">server</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">psswd</span>
+            <span class="p">)</span>
+            <span class="k">yield</span> <span class="n">sess</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="InterfaceManager.open_persistent"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.xnat.InterfaceManager.open_persistent">[docs]</a>    <span class="k">def</span> <span class="nf">open_persistent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pyxnat</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">psswd</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

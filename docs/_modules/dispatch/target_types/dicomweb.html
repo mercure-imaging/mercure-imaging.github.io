@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dispatch.target_types.dicomweb &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/index.html">Code Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dispatch.target_types.dicomweb</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dispatch.target_types.dicomweb</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">dicomweb.py</span>
+<span class="sd">===========</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">pydicom</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">DicomWebTarget</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">TaskDispatch</span>
+<span class="kn">from</span> <span class="nn">dicomweb_client</span> <span class="kn">import</span> <span class="n">DICOMfileClient</span>
+<span class="kn">from</span> <span class="nn">dicomweb_client.api</span> <span class="kn">import</span> <span class="n">DICOMwebClient</span>
+<span class="kn">from</span> <span class="nn">dicomweb_client.session_utils</span> <span class="kn">import</span> <span class="n">create_session_from_user_pass</span>
+<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="n">HTTPError</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">ProgressInfo</span><span class="p">,</span> <span class="n">TargetHandler</span>
+<span class="kn">from</span> <span class="nn">.registry</span> <span class="kn">import</span> <span class="n">handler_for</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="DicomWebTargetHandler"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.dicomweb.DicomWebTargetHandler">[docs]</a><span class="nd">@handler_for</span><span class="p">(</span><span class="n">DicomWebTarget</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DicomWebTargetHandler</span><span class="p">(</span><span class="n">TargetHandler</span><span class="p">[</span><span class="n">DicomWebTarget</span><span class="p">]):</span>
+    <span class="n">view_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicomweb.html&quot;</span>
+    <span class="n">edit_template</span> <span class="o">=</span> <span class="s2">&quot;targets/dicomweb-edit.html&quot;</span>
+    <span class="c1"># test_template = &quot;targets/dicomweb-test.html&quot;</span>
+    <span class="n">icon</span> <span class="o">=</span> <span class="s2">&quot;fa-share-alt&quot;</span>
+    <span class="n">display_name</span> <span class="o">=</span> <span class="s2">&quot;DICOMweb&quot;</span>
+    <span class="n">can_pull</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="DicomWebTargetHandler.create_client"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.dicomweb.DicomWebTargetHandler.create_client">[docs]</a>    <span class="k">def</span> <span class="nf">create_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomWebTarget</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">DICOMfileClient</span><span class="p">,</span> <span class="n">DICOMwebClient</span><span class="p">]:</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;file://&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">DICOMfileClient</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">in_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">update_db</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span><span class="p">:</span>
+                <span class="c1"># if sqlite3.OperationalError, try in-memory database</span>
+                <span class="c1"># Todo: store the db elsewhere if we don&#39;t have write access to this folder</span>
+                <span class="c1"># This also makes it possible to run tests under pyfakefs since it can&#39;t patch sqlite3</span>
+                <span class="k">return</span> <span class="n">DICOMfileClient</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">in_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update_db</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">http_user</span> <span class="ow">and</span> <span class="n">target</span><span class="o">.</span><span class="n">http_password</span><span class="p">:</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="n">create_session_from_user_pass</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">http_user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">http_password</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">target</span><span class="o">.</span><span class="n">access_token</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">access_token</span><span class="p">)}</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">DICOMwebClient</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">qido_url_prefix</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">qido_url_prefix</span><span class="p">,</span>
+            <span class="n">wado_url_prefix</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">wado_url_prefix</span><span class="p">,</span>
+            <span class="n">stow_url_prefix</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">stow_url_prefix</span><span class="p">,</span>
+            <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">set_http_retry_params</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">wait_exponential_multiplier</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">client</span></div>
+
+<div class="viewcode-block" id="DicomWebTargetHandler.find_from_target"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.dicomweb.DicomWebTargetHandler.find_from_target">[docs]</a>    <span class="k">def</span> <span class="nf">find_from_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomWebTarget</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search_filters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">pydicom</span><span class="o">.</span><span class="n">Dataset</span><span class="p">]:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">find_from_target</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">accession</span><span class="p">,</span> <span class="n">search_filters</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">use_filters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;AccessionNumber&#39;</span><span class="p">:</span> <span class="n">accession</span><span class="p">}</span>
+
+        <span class="c1"># If there more one value per filter, just get metadata for the entire accession and filter it after.</span>
+        <span class="c1"># Some DICOM servers do actually support filtering on lists, but DICOMwebClient does not seem to support this.</span>
+        <span class="c1"># See: https://dicom.nema.org/medical/dicom/current/output/html/part18.html#sect_8.3.4.6</span>
+        <span class="k">for</span> <span class="n">filter_values</span> <span class="ow">in</span> <span class="n">search_filters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">use_filters</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">search_filters</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_for_series</span><span class="p">(</span><span class="n">search_filters</span><span class="o">=</span><span class="n">use_filters</span><span class="p">,</span> <span class="n">get_remaining</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;StudyInstanceUID&#39;</span><span class="p">,</span>
+                                                    <span class="s1">&#39;SeriesInstanceUID&#39;</span><span class="p">,</span>
+                                                    <span class="s1">&#39;NumberOfSeriesRelatedInstances&#39;</span><span class="p">,</span>
+                                                    <span class="s1">&#39;StudyDescription&#39;</span><span class="p">,</span> <span class="s1">&#39;SeriesDescription&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">search_filters</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">meta_datasets</span> <span class="o">=</span> <span class="p">[</span><span class="n">pydicom</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># In case the server didn&#39;t filter as strictly as we expected it to, filter again</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">meta_datasets</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">search_filters</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">search_filters</span><span class="p">[</span><span class="nb">filter</span><span class="p">]:</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="DicomWebTargetHandler.get_from_target"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.dicomweb.DicomWebTargetHandler.get_from_target">[docs]</a>    <span class="k">def</span> <span class="nf">get_from_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomWebTarget</span><span class="p">,</span> <span class="n">accession</span><span class="p">,</span> <span class="n">search_filters</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">:</span> <span class="nb">str</span>
+                        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">ProgressInfo</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_from_target</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">accession</span><span class="p">,</span> <span class="n">search_filters</span><span class="o">=</span><span class="n">search_filters</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">series</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No series found with accession number </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accession</span><span class="p">))</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">remaining</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">NumberOfSeriesRelatedInstances</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">series</span><span class="p">])</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">series</span><span class="p">:</span>
+            <span class="n">instances</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">retrieve_series</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">StudyInstanceUID</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">SeriesInstanceUID</span><span class="p">)</span>
+            <span class="c1"># remaining += len(instances)</span>
+            <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
+                <span class="n">sop_instance_uid</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SOPInstanceUID&#39;</span><span class="p">)</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">destination_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">sop_instance_uid</span><span class="si">}</span><span class="s2">.dcm&quot;</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">remaining</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">ProgressInfo</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">remaining</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1"> / </span><span class="si">{</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">remaining</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DicomWebTargetHandler.send_to_target"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.dicomweb.DicomWebTargetHandler.send_to_target">[docs]</a>    <span class="k">def</span> <span class="nf">send_to_target</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomWebTarget</span><span class="p">,</span> <span class="n">dispatch_info</span><span class="p">:</span> <span class="n">TaskDispatch</span><span class="p">,</span> <span class="n">source_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="n">pydicom</span><span class="o">.</span><span class="n">dcmread</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">source_folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*.dcm&quot;</span><span class="p">)]</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store_instances</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">ReferencedSOPSequence</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Did not store all datasets&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="DicomWebTargetHandler.from_form"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.dicomweb.DicomWebTargetHandler.from_form">[docs]</a>    <span class="k">def</span> <span class="nf">from_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="n">current_target</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DicomWebTarget</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;qido_url_prefix&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;wado_url_prefix&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;stow_url_prefix&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;http_user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;http_password&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;access_token&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">form</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">form</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span>
+                <span class="n">form</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">DicomWebTarget</span><span class="p">(</span><span class="o">**</span><span class="n">form</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DicomWebTargetHandler.test_connection"><a class="viewcode-back" href="../../../source/dispatcher.html#dispatch.target_types.dicomweb.DicomWebTargetHandler.test_connection">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">DicomWebTarget</span><span class="p">,</span> <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+
+        <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">DICOMwebClient</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">client</span><span class="o">.</span><span class="n">_http_get</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">except</span> <span class="n">HTTPError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">DICOMfileClient</span><span class="p">):</span>
+            <span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">folder</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No such folder </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">elif</span> <span class="n">target</span><span class="o">.</span><span class="n">direction</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pull&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span><span class="p">):</span>
+                <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No read access to folder </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">elif</span> <span class="n">target</span><span class="o">.</span><span class="n">direction</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;push&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">):</span>
+                <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No write access to folder </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">results</span><span class="p">[</span><span class="s2">&quot;Authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">search_for_studies</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;QIDO query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="n">HTTPError</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;QIDO query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">results</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

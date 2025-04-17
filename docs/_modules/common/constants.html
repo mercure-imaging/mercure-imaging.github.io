@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.constants &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>common.constants &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -114,15 +115,16 @@
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
+
 <span class="kn">from</span> <span class="nn">common.version</span> <span class="kn">import</span> <span class="n">mercure_version</span>
 
 
-<div class="viewcode-block" id="mercure_defs"><a class="viewcode-back" href="../../common.html#common.constants.mercure_defs">[docs]</a><span class="k">class</span> <span class="nc">mercure_defs</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_defs"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_defs">[docs]</a><span class="k">class</span> <span class="nc">mercure_defs</span><span class="p">:</span>
     <span class="n">VERSION</span> <span class="o">=</span> <span class="n">mercure_version</span><span class="o">.</span><span class="n">get_version_string</span><span class="p">()</span>
     <span class="n">SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_names"><a class="viewcode-back" href="../../common.html#common.constants.mercure_names">[docs]</a><span class="k">class</span> <span class="nc">mercure_names</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_names"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_names">[docs]</a><span class="k">class</span> <span class="nc">mercure_names</span><span class="p">:</span>
     <span class="n">LOCK</span> <span class="o">=</span> <span class="s2">&quot;.lock&quot;</span>
     <span class="n">PROCESSING</span> <span class="o">=</span> <span class="s2">&quot;.processing&quot;</span>
     <span class="n">RUNNING</span> <span class="o">=</span> <span class="s2">&quot;.running&quot;</span>
@@ -136,7 +138,7 @@
     <span class="n">FORCE_COMPLETE</span> <span class="o">=</span> <span class="s2">&quot;.force-complete&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_sections"><a class="viewcode-back" href="../../common.html#common.constants.mercure_sections">[docs]</a><span class="k">class</span> <span class="nc">mercure_sections</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_sections"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_sections">[docs]</a><span class="k">class</span> <span class="nc">mercure_sections</span><span class="p">:</span>
     <span class="n">INFO</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
     <span class="n">DISPATCH</span> <span class="o">=</span> <span class="s2">&quot;dispatch&quot;</span>
     <span class="n">PROCESS</span> <span class="o">=</span> <span class="s2">&quot;process&quot;</span>
@@ -146,13 +148,13 @@
     <span class="n">STUDY</span> <span class="o">=</span> <span class="s2">&quot;study&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_config"><a class="viewcode-back" href="../../common.html#common.constants.mercure_config">[docs]</a><span class="k">class</span> <span class="nc">mercure_config</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_config"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_config">[docs]</a><span class="k">class</span> <span class="nc">mercure_config</span><span class="p">:</span>
     <span class="n">RULES</span> <span class="o">=</span> <span class="s2">&quot;rules&quot;</span>
     <span class="n">TARGETS</span> <span class="o">=</span> <span class="s2">&quot;targets&quot;</span>
     <span class="n">MODULES</span> <span class="o">=</span> <span class="s2">&quot;modules&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_folders"><a class="viewcode-back" href="../../common.html#common.constants.mercure_folders">[docs]</a><span class="k">class</span> <span class="nc">mercure_folders</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_folders"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_folders">[docs]</a><span class="k">class</span> <span class="nc">mercure_folders</span><span class="p">:</span>
     <span class="n">INCOMING</span> <span class="o">=</span> <span class="s2">&quot;incoming_folder&quot;</span>
     <span class="n">STUDIES</span> <span class="o">=</span> <span class="s2">&quot;studies_folder&quot;</span>
     <span class="n">OUTGOING</span> <span class="o">=</span> <span class="s2">&quot;outgoing_folder&quot;</span>
@@ -162,7 +164,7 @@
     <span class="n">PROCESSING</span> <span class="o">=</span> <span class="s2">&quot;processing_folder&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_actions"><a class="viewcode-back" href="../../common.html#common.constants.mercure_actions">[docs]</a><span class="k">class</span> <span class="nc">mercure_actions</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_actions"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_actions">[docs]</a><span class="k">class</span> <span class="nc">mercure_actions</span><span class="p">:</span>
     <span class="n">ROUTE</span> <span class="o">=</span> <span class="s2">&quot;route&quot;</span>
     <span class="n">BOTH</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
     <span class="n">PROCESS</span> <span class="o">=</span> <span class="s2">&quot;process&quot;</span>
@@ -170,11 +172,12 @@
     <span class="n">NOTIFICATION</span> <span class="o">=</span> <span class="s2">&quot;notification&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_rule"><a class="viewcode-back" href="../../common.html#common.constants.mercure_rule">[docs]</a><span class="k">class</span> <span class="nc">mercure_rule</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_rule"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_rule">[docs]</a><span class="k">class</span> <span class="nc">mercure_rule</span><span class="p">:</span>
     <span class="n">RULE</span> <span class="o">=</span> <span class="s2">&quot;rule&quot;</span>
     <span class="n">ACTION</span> <span class="o">=</span> <span class="s2">&quot;action&quot;</span>
     <span class="n">ACTION_TRIGGER</span> <span class="o">=</span> <span class="s2">&quot;action_trigger&quot;</span>
     <span class="n">STUDY_TRIGGER_CONDITION</span> <span class="o">=</span> <span class="s2">&quot;study_trigger_condition&quot;</span>
+    <span class="n">STUDY_FORCE_COMPLETION_ACTION</span> <span class="o">=</span> <span class="s2">&quot;study_force_completion_action&quot;</span>
     <span class="n">STUDY_TRIGGER_CONDITION_TIMEOUT</span> <span class="o">=</span> <span class="s2">&quot;timeout&quot;</span>
     <span class="n">STUDY_TRIGGER_CONDITION_RECEIVED_SERIES</span> <span class="o">=</span> <span class="s2">&quot;received_series&quot;</span>
     <span class="n">STUDY_TRIGGER</span> <span class="o">=</span> <span class="s2">&quot;study_trigger&quot;</span>
@@ -191,17 +194,18 @@
     <span class="n">PROCESSING_MODULE</span> <span class="o">=</span> <span class="s2">&quot;processing_module&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_study"><a class="viewcode-back" href="../../common.html#common.constants.mercure_study">[docs]</a><span class="k">class</span> <span class="nc">mercure_study</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_study"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_study">[docs]</a><span class="k">class</span> <span class="nc">mercure_study</span><span class="p">:</span>
     <span class="n">STUDY_UID</span> <span class="o">=</span> <span class="s2">&quot;study_uid&quot;</span>
     <span class="n">CREATION_TIME</span> <span class="o">=</span> <span class="s2">&quot;creation_time&quot;</span>
     <span class="n">LAST_RECEIVE_TIME</span> <span class="o">=</span> <span class="s2">&quot;last_receive_time&quot;</span>
     <span class="n">RECEIVED_SERIES</span> <span class="o">=</span> <span class="s2">&quot;received_series&quot;</span>
     <span class="n">COMPLETE_TRIGGER</span> <span class="o">=</span> <span class="s2">&quot;complete_trigger&quot;</span>
     <span class="n">COMPLETE_REQUIRED_SERIES</span> <span class="o">=</span> <span class="s2">&quot;complete_required_series&quot;</span>
-    <span class="n">COMPLETE_FORCE</span> <span class="o">=</span> <span class="s2">&quot;complete_force&quot;</span></div>
+    <span class="n">COMPLETE_FORCE</span> <span class="o">=</span> <span class="s2">&quot;complete_force&quot;</span>
+    <span class="n">COMPLETE_FORCE_ACTION</span> <span class="o">=</span> <span class="s2">&quot;complete_force_action&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_info"><a class="viewcode-back" href="../../common.html#common.constants.mercure_info">[docs]</a><span class="k">class</span> <span class="nc">mercure_info</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_info"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_info">[docs]</a><span class="k">class</span> <span class="nc">mercure_info</span><span class="p">:</span>
     <span class="n">ACTION</span> <span class="o">=</span> <span class="s2">&quot;action&quot;</span>
     <span class="n">UID</span> <span class="o">=</span> <span class="s2">&quot;uid&quot;</span>
     <span class="n">UID_TYPE</span> <span class="o">=</span> <span class="s2">&quot;uid_type&quot;</span>
@@ -213,7 +217,7 @@
     <span class="n">MERCURE_SERVER</span> <span class="o">=</span> <span class="s2">&quot;mercure_server&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_options"><a class="viewcode-back" href="../../common.html#common.constants.mercure_options">[docs]</a><span class="k">class</span> <span class="nc">mercure_options</span><span class="p">:</span>
+<div class="viewcode-block" id="mercure_options"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_options">[docs]</a><span class="k">class</span> <span class="nc">mercure_options</span><span class="p">:</span>
     <span class="n">TRUE</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
     <span class="n">FALSE</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
     <span class="n">SERIES</span> <span class="o">=</span> <span class="s2">&quot;series&quot;</span>
@@ -225,7 +229,7 @@
     <span class="n">INVALID</span> <span class="o">=</span> <span class="s2">&quot;#@INVALID@#&quot;</span></div>
 
 
-<div class="viewcode-block" id="mercure_events"><a class="viewcode-back" href="../../common.html#common.constants.mercure_events">[docs]</a><span class="k">class</span> <span class="nc">mercure_events</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="mercure_events"><a class="viewcode-back" href="../../source/common.html#common.constants.mercure_events">[docs]</a><span class="k">class</span> <span class="nc">mercure_events</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">RECEIVED</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">COMPLETED</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">2</span></div>
@@ -238,7 +242,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -256,18 +260,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

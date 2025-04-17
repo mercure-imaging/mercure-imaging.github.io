@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>common.config &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>common.config &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -109,35 +110,43 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">config.py</span>
 <span class="sd">=========</span>
-<span class="sd">mercure&#39;s configuration management, used by various mercure modules </span>
+<span class="sd">mercure&#39;s configuration management, used by various mercure modules</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
-<span class="kn">import</span> <span class="nn">daiquiri</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">cast</span>
-<span class="kn">import</span> <span class="nn">re</span>
 
+<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
 <span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.monitor</span> <span class="k">as</span> <span class="nn">monitor</span>
-<span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
-<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
-<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Config</span>
-<span class="kn">from</span> <span class="nn">common.log_helpers</span> <span class="kn">import</span> <span class="n">get_logger</span>
 <span class="kn">import</span> <span class="nn">common.tagslist</span> <span class="k">as</span> <span class="nn">tagslist</span>
-
+<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_names</span>
+<span class="kn">from</span> <span class="nn">common.log_helpers</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="c1"># Create local logger instance</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
 <span class="n">configuration_timestamp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">configuration_filename</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/mercure.json&quot;</span>
+<span class="n">_os_config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FILE&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">_os_config_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">configuration_filename</span> <span class="o">=</span> <span class="n">_os_config_file</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">configuration_filename</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_CONFIG_FOLDER&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;/opt/mercure/config&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/mercure.json&quot;</span>
+
+<span class="n">_os_mercure_basepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MERCURE_BASEPATH&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">_os_mercure_basepath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">app_basepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">app_basepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">_os_mercure_basepath</span><span class="p">)</span>
 
 <span class="n">mercure_defaults</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;appliance_name&quot;</span><span class="p">:</span> <span class="s2">&quot;master&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;appliance_color&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFF&quot;</span><span class="p">,</span>
     <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">11112</span><span class="p">,</span>
     <span class="s2">&quot;accept_compressed_images&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;incoming_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/incoming&quot;</span><span class="p">,</span>
@@ -147,11 +156,12 @@
     <span class="s2">&quot;error_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/error&quot;</span><span class="p">,</span>
     <span class="s2">&quot;discard_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/discard&quot;</span><span class="p">,</span>
     <span class="s2">&quot;processing_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/processing&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;jobs_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/mercure/data/jobs&quot;</span><span class="p">,</span>
     <span class="s2">&quot;router_scan_interval&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># in seconds</span>
     <span class="s2">&quot;dispatcher_scan_interval&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># in seconds</span>
     <span class="s2">&quot;cleaner_scan_interval&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># in seconds</span>
     <span class="s2">&quot;retention&quot;</span><span class="p">:</span> <span class="mi">259200</span><span class="p">,</span>  <span class="c1"># in seconds (3 days)</span>
-    <span class="s2">&quot;emergency_clean_percentage&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>  <span class="c1"># in % of disk space </span>
+    <span class="s2">&quot;emergency_clean_percentage&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>  <span class="c1"># in % of disk space</span>
     <span class="s2">&quot;retry_delay&quot;</span><span class="p">:</span> <span class="mi">900</span><span class="p">,</span>  <span class="c1"># in seconds (15 min)</span>
     <span class="s2">&quot;retry_max&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
     <span class="s2">&quot;series_complete_trigger&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># in seconds</span>
@@ -173,14 +183,17 @@
     <span class="s2">&quot;modules&quot;</span><span class="p">:</span> <span class="p">{},</span>
     <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;dummy_target&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
     <span class="s2">&quot;processing_logs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;discard_logs&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s2">&quot;email_notification_from&quot;</span><span class="p">:</span><span class="s2">&quot;mercure@mercure.mercure&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;support_root_modules&quot;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="s2">&quot;email_notification_from&quot;</span><span class="p">:</span> <span class="s2">&quot;mercure@mercure.mercure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;support_root_modules&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;phi_notifications&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;server_time&quot;</span><span class="p">:</span> <span class="s2">&quot;UTC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;local_time&quot;</span><span class="p">:</span> <span class="s2">&quot;UTC&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">mercure</span><span class="p">:</span> <span class="n">Config</span>
 
 
-<div class="viewcode-block" id="read_config"><a class="viewcode-back" href="../../common.html#common.config.read_config">[docs]</a><span class="k">def</span> <span class="nf">read_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
+<div class="viewcode-block" id="read_config"><a class="viewcode-back" href="../../source/common.html#common.config.read_config">[docs]</a><span class="k">def</span> <span class="nf">read_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads the configuration settings (rules, targets, general settings) from the configuration file. The configuration will</span>
 <span class="sd">    only be updated if the file has changed compared the the last function call. If the configuration file is locked by</span>
 <span class="sd">    another process, an exception will be raised.&quot;&quot;&quot;</span>
@@ -194,53 +207,53 @@
     <span class="k">if</span> <span class="n">lock_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file locked: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">configuration_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="c1"># Get the modification date/time of the configuration file</span>
-        <span class="n">stat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">configuration_filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">configuration_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file not found: </span><span class="si">{</span><span class="n">configuration_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get the modification date/time of the configuration file</span>
+    <span class="n">stat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">configuration_filename</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_mtime</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Check if the configuration file is newer than the version</span>
+    <span class="c1"># loaded into memory. If not, return</span>
+    <span class="k">if</span> <span class="n">timestamp</span> <span class="o">&lt;=</span> <span class="n">configuration_timestamp</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mercure</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading configuration from: </span><span class="si">{</span><span class="n">configuration_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">loaded_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+        <span class="c1"># Reset configuration to default values (to ensure all needed</span>
+        <span class="c1"># keys are present in the configuration)</span>
+        <span class="n">merged</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">mercure_defaults</span><span class="p">,</span> <span class="o">**</span><span class="n">loaded_config</span><span class="p">}</span>
+        <span class="n">mercure</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="o">**</span><span class="n">merged</span><span class="p">)</span>
+
+        <span class="c1"># TODO: Check configuration for errors (esp targets and rules)</span>
+
+        <span class="c1"># Check if directories exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_folders</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Configured folders missing&quot;</span><span class="p">)</span>
+
+        <span class="c1"># logger.info(&quot;&quot;)</span>
+        <span class="c1"># logger.info(&quot;Active configuration: &quot;)</span>
+        <span class="c1"># logger.info(json.dumps(mercure, indent=4))</span>
+        <span class="c1"># logger.info(&quot;&quot;)</span>
+
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_mtime</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">timestamp</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">read_tagslist</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unable to parse list of additional tags. Check configuration file.&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Check if the configuration file is newer than the version</span>
-        <span class="c1"># loaded into memory. If not, return</span>
-        <span class="k">if</span> <span class="n">timestamp</span> <span class="o">&lt;=</span> <span class="n">configuration_timestamp</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">mercure</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading configuration from: </span><span class="si">{</span><span class="n">configuration_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
-            <span class="n">loaded_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
-            <span class="c1"># Reset configuration to default values (to ensure all needed</span>
-            <span class="c1"># keys are present in the configuration)</span>
-            <span class="n">merged</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">mercure_defaults</span><span class="p">,</span> <span class="o">**</span><span class="n">loaded_config</span><span class="p">}</span>
-            <span class="n">mercure</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="o">**</span><span class="n">merged</span><span class="p">)</span>
-
-            <span class="c1"># TODO: Check configuration for errors (esp targets and rules)</span>
-
-            <span class="c1"># Check if directories exist</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">check_folders</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Configured folders missing&quot;</span><span class="p">)</span>
-
-            <span class="c1"># logger.info(&quot;&quot;)</span>
-            <span class="c1"># logger.info(&quot;Active configuration: &quot;)</span>
-            <span class="c1"># logger.info(json.dumps(mercure, indent=4))</span>
-            <span class="c1"># logger.info(&quot;&quot;)</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">read_tagslist</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unable to parse list of additional tags. Check configuration file.&quot;</span><span class="p">)</span>
-
-            <span class="n">configuration_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
-            <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;Configuration updated&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">mercure</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file not found: </span><span class="si">{</span><span class="n">configuration_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="n">configuration_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">monitor</span><span class="o">.</span><span class="n">m_events</span><span class="o">.</span><span class="n">CONFIG_UPDATE</span><span class="p">,</span> <span class="n">monitor</span><span class="o">.</span><span class="n">severity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;Configuration updated&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mercure</span></div>
 
 
-<div class="viewcode-block" id="save_config"><a class="viewcode-back" href="../../common.html#common.config.save_config">[docs]</a><span class="k">def</span> <span class="nf">save_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="save_config"><a class="viewcode-back" href="../../source/common.html#common.config.save_config">[docs]</a><span class="k">def</span> <span class="nf">save_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Saves the current configuration in a file on the disk. Raises an exception if the file has</span>
 <span class="sd">    been locked by another process.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">configuration_timestamp</span><span class="p">,</span> <span class="n">mercure</span>
@@ -254,7 +267,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to lock configuration file: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
@@ -271,14 +284,14 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
         <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="write_configfile"><a class="viewcode-back" href="../../common.html#common.config.write_configfile">[docs]</a><span class="k">def</span> <span class="nf">write_configfile</span><span class="p">(</span><span class="n">json_content</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="write_configfile"><a class="viewcode-back" href="../../source/common.html#common.config.write_configfile">[docs]</a><span class="k">def</span> <span class="nf">write_configfile</span><span class="p">(</span><span class="n">json_content</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rewrites the config file using the JSON data passed as argument. Used by the config editor of the webgui.&quot;&quot;&quot;</span>
     <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">configuration_filename</span><span class="p">)</span>
 
@@ -290,7 +303,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">FileLock</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ResourceWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to lock configuration file: </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
@@ -301,14 +314,14 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
         <span class="c1"># Can&#39;t delete lock file, so something must be seriously wrong</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to remove lock file </span><span class="si">{</span><span class="n">lock_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># handle_error</span>
         <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="check_folders"><a class="viewcode-back" href="../../common.html#common.config.check_folders">[docs]</a><span class="k">def</span> <span class="nf">check_folders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="check_folders"><a class="viewcode-back" href="../../source/common.html#common.config.check_folders">[docs]</a><span class="k">def</span> <span class="nf">check_folders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if all required folders for handling the DICOM files exist.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">mercure</span>
 
@@ -344,7 +357,7 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="read_tagslist"><a class="viewcode-back" href="../../common.html#common.config.read_tagslist">[docs]</a><span class="k">def</span> <span class="nf">read_tagslist</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="read_tagslist"><a class="viewcode-back" href="../../source/common.html#common.config.read_tagslist">[docs]</a><span class="k">def</span> <span class="nf">read_tagslist</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads the list of supported DICOM tags with example values, displayed the UI.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">mercure</span>
     <span class="n">tagslist</span><span class="o">.</span><span class="n">alltags</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">tagslist</span><span class="o">.</span><span class="n">default_tags</span><span class="p">,</span> <span class="o">**</span><span class="n">mercure</span><span class="o">.</span><span class="n">dicom_receiver</span><span class="o">.</span><span class="n">additional_tags</span><span class="p">}</span>
@@ -358,7 +371,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -376,18 +389,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>webinterface.modules &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <title>webinterface.modules &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
               <img src="../../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dashboards.html">Dashboard Gallery</a></li>
@@ -77,8 +79,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -114,64 +115,60 @@
 
 <span class="c1"># Standard python includes</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
-
-<span class="c1"># Starlette-related includes</span>
-<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
-<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PlainTextResponse</span><span class="p">,</span> <span class="n">RedirectResponse</span>
-<span class="kn">from</span> <span class="nn">starlette.authentication</span> <span class="kn">import</span> <span class="n">requires</span>
 
 <span class="c1"># App-specific includes</span>
 <span class="kn">import</span> <span class="nn">common.config</span> <span class="k">as</span> <span class="nn">config</span>
 <span class="kn">import</span> <span class="nn">common.helper</span> <span class="k">as</span> <span class="nn">helper</span>
-<span class="kn">from</span> <span class="nn">common.constants</span> <span class="kn">import</span> <span class="n">mercure_defs</span>
 <span class="kn">from</span> <span class="nn">common.types</span> <span class="kn">import</span> <span class="n">Module</span>
-
-<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">get_user_information</span>
-<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">templates</span>
+<span class="kn">from</span> <span class="nn">decoRouter</span> <span class="kn">import</span> <span class="n">Router</span> <span class="k">as</span> <span class="n">decoRouter</span>
+<span class="c1"># Starlette-related includes</span>
+<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.authentication</span> <span class="kn">import</span> <span class="n">requires</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span><span class="p">,</span> <span class="n">RedirectResponse</span>
+<span class="kn">from</span> <span class="nn">webinterface.common</span> <span class="kn">import</span> <span class="n">strip_untrusted</span><span class="p">,</span> <span class="n">templates</span>
 
 <span class="kn">import</span> <span class="nn">docker</span>
-
-<span class="kn">from</span> <span class="nn">decoRouter</span> <span class="kn">import</span> <span class="n">Router</span> <span class="k">as</span> <span class="n">decoRouter</span>
 
 <span class="n">router</span> <span class="o">=</span> <span class="n">decoRouter</span><span class="p">()</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
 <span class="c1">###################################################################################</span>
-<span class="c1">## Common functions</span>
+<span class="c1"># Common functions</span>
 <span class="c1">###################################################################################</span>
 
 
-<div class="viewcode-block" id="ServerErrorResponse"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.ServerErrorResponse">[docs]</a><span class="k">class</span> <span class="nc">ServerErrorResponse</span><span class="p">(</span><span class="n">PlainTextResponse</span><span class="p">):</span>
+<div class="viewcode-block" id="ServerErrorResponse"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.ServerErrorResponse">[docs]</a><span class="k">class</span> <span class="nc">ServerErrorResponse</span><span class="p">(</span><span class="n">PlainTextResponse</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="mi">500</span></div>
 
 
-<div class="viewcode-block" id="BadRequestResponse"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.BadRequestResponse">[docs]</a><span class="k">class</span> <span class="nc">BadRequestResponse</span><span class="p">(</span><span class="n">PlainTextResponse</span><span class="p">):</span>
+<div class="viewcode-block" id="BadRequestResponse"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.BadRequestResponse">[docs]</a><span class="k">class</span> <span class="nc">BadRequestResponse</span><span class="p">(</span><span class="n">PlainTextResponse</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="mi">400</span></div>
 
 
-<div class="viewcode-block" id="save_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.save_module">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">save_module</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="save_module"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.save_module">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">save_module</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the settings for the module with the given name.&quot;&quot;&quot;</span>
 
     <span class="c1"># Ensure that the module settings are valid. Should happen on the client side too, but can&#39;t hurt to check again.</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">new_settings</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;settings&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">))</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">new_settings</span> <span class="o">=</span> <span class="p">{}</span>
-
     <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Module</span><span class="p">(</span>
         <span class="n">docker_tag</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;docker_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
         <span class="n">additional_volumes</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;additional_volumes&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">environment</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;environment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">docker_arguments</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;docker_arguments&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">new_settings</span><span class="p">,</span>
-        <span class="n">contact</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-        <span class="n">comment</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">contact</span><span class="o">=</span><span class="n">strip_untrusted</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+        <span class="n">comment</span><span class="o">=</span><span class="n">strip_untrusted</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
         <span class="n">constraints</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;constraints&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">resources</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resources&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="n">requires_root</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requires_root&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -181,18 +178,18 @@
 
 
 <span class="c1">###################################################################################</span>
-<span class="c1">## Modules endpoints</span>
+<span class="c1"># Modules endpoints</span>
 <span class="c1">###################################################################################</span>
 
 
-<div class="viewcode-block" id="show_modules"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.show_modules">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="show_modules"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.show_modules">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_modules</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Shows all installed modules&quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
             <span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span>
         <span class="p">)</span>
@@ -209,33 +206,35 @@
     <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;modules.html&quot;</span>
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
-        <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span>
+
         <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="s2">&quot;modules&quot;</span><span class="p">,</span>
         <span class="s2">&quot;modules&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">,</span>
         <span class="s2">&quot;used_modules&quot;</span><span class="p">:</span> <span class="n">used_modules</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="add_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.add_module">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="add_module"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.add_module">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">add_module</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a new module and forwards the user to the module edit page.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
             <span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span>
         <span class="p">)</span>
 
     <span class="n">form</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">())</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">form</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">form</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">form</span><span class="p">[</span><span class="s2">&quot;docker_tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;docker_tag&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s2">&quot;[0-9a-zA-Z_\-]+&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span><span class="s2">&quot;Invalid module name provided.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s2">&quot;[a-zA-Z0-9-:/_.@]+&quot;</span><span class="p">,</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;docker_tag&quot;</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span><span class="s2">&quot;Invalid docker_tag provided.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span><span class="s2">&quot;A module with this name already exists.&quot;</span><span class="p">)</span>
@@ -249,7 +248,7 @@
         <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">APIError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">403</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ServerErrorResponse</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;A Docker container with this tag does not exist locally or in the Docker Hub registry.&quot;</span>
+                    <span class="s2">&quot;A Docker container with this tag does not exist locally or in the Docker Hub registry.&quot;</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
@@ -273,10 +272,12 @@
         <span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">form</span><span class="p">[</span><span class="s2">&quot;container_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;monai&quot;</span>
-        <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">support_root_modules</span> <span class="o">!=</span> <span class="kc">True</span>
+        <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">support_root_modules</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;MONAI modules must run as root user, but the setting &#39;Support Root Modules&#39; is disabled in the mercure configuration. Enable it on the Configuration page before installing MONAI modules.&quot;</span>
+            <span class="s2">&quot;MONAI modules must run as root user, but the setting &#39;Support Root Modules&#39; &quot;</span>
+            <span class="s2">&quot;is disabled in the mercure configuration.&quot;</span>
+            <span class="s2">&quot;Enable it on the Configuration page before installing MONAI modules.&quot;</span>
         <span class="p">)</span>
     <span class="c1"># logger.info(f&#39;Created rule {name}&#39;)</span>
     <span class="c1"># monitor.send_webgui_event(monitor.w_events.RULE_CREATE, request.user.display_name, name)</span>
@@ -289,14 +290,14 @@
     <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;HX-Refresh&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="edit_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.edit_module">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="edit_module"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.edit_module">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">(</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">edit_module</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the module edit page for the given module name.&quot;&quot;&quot;</span>
     <span class="n">module</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s2">&quot;module&quot;</span><span class="p">]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
             <span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span>
         <span class="p">)</span>
@@ -312,7 +313,7 @@
     <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;modules_edit.html&quot;</span>
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
-        <span class="s2">&quot;mercure_version&quot;</span><span class="p">:</span> <span class="n">mercure_defs</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span>
+
         <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="s2">&quot;modules&quot;</span><span class="p">,</span>
         <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module</span><span class="p">],</span>
         <span class="s2">&quot;module_name&quot;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span>
@@ -320,17 +321,16 @@
         <span class="s2">&quot;runtime&quot;</span><span class="p">:</span> <span class="n">runtime</span><span class="p">,</span>
         <span class="s2">&quot;support_root_modules&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">support_root_modules</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_user_information</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="edit_module_POST"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.edit_module_POST">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="edit_module_POST"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.edit_module_POST">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">edit_module_POST</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the settings for the given module name.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
             <span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span>
         <span class="p">)</span>
@@ -341,6 +341,12 @@
     <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">mercure</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Invalid module name - perhaps it was deleted?&quot;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s2">&quot;[0-9a-zA-Z_\-]+&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span><span class="s2">&quot;Invalid module name provided.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="s2">&quot;[a-zA-Z0-9-:/_.@]+&quot;</span><span class="p">,</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;docker_tag&quot;</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">BadRequestResponse</span><span class="p">(</span><span class="s2">&quot;Invalid docker_tag provided.&quot;</span><span class="p">)</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="k">await</span> <span class="n">save_module</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -350,13 +356,13 @@
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;/modules/&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="delete_module"><a class="viewcode-back" href="../../webinterface.html#webinterface.modules.delete_module">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="delete_module"><a class="viewcode-back" href="../../source/webgui.html#webinterface.modules.delete_module">[docs]</a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{module}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nd">@requires</span><span class="p">([</span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">],</span> <span class="n">redirect</span><span class="o">=</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_module</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Deletes the module with the given module name.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">read_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span>
             <span class="s2">&quot;Configuration is being updated. Try again in a minute.&quot;</span>
         <span class="p">)</span>
@@ -367,7 +373,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;ERROR: Unable to write configuration. Try again.&quot;</span><span class="p">)</span>
     <span class="c1"># logger.info(f&#39;Created rule {newrule}&#39;)</span>
     <span class="c1"># monitor.send_webgui_event(monitor.w_events.RULE_CREATE, request.user.display_name, newrule)</span>
@@ -384,7 +390,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -402,18 +408,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

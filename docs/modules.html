@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module Development &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Module Development &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,7 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
@@ -80,8 +82,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -114,7 +115,7 @@
 <p>A simple Python-based demo module can be found in the following Git repository. This repository can be used as template for own module developments:
 <a class="reference external" href="https://github.com/mercure-imaging/mercure-testmodule">https://github.com/mercure-imaging/mercure-testmodule</a></p>
 <section id="dicom-naming-convention">
-<h2>DICOM naming convention<a class="headerlink" href="#dicom-naming-convention" title="Permalink to this heading"></a></h2>
+<h2>DICOM Naming Convention<a class="headerlink" href="#dicom-naming-convention" title="Permalink to this heading"></a></h2>
 <p>Depending on whether the rule that triggers the processing is a series-level or study-level rule, the folder with the incoming files (MERCURE_IN_DIR) contains the DICOM images from a single series or from all series that belong to the study. As usual for DICOM images, each image slice is stored in a separate file (multi-frame DICOM files aren’t really used in practice). In order to make parsing the files easy, mercure prepends the series UID to the filename of all images belonging to the same series, followed by the separator character #:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span>[series_UID]#[file_UID].dcm
 </pre></div>
@@ -122,12 +123,12 @@
 <p>Thus, by splitting the filename at #, images belonging to the same series can be identified. The ordering of the images within one series needs to be taken from the DICOM tags. These can be either read from the DICOM files (e.g., using a library such as pydicom) or they can be read from the corresponding .tags file, which is a JSON file containing the most relevant DICOM tags extracted from each file.</p>
 </section>
 <section id="creating-annotations">
-<h2>Creating annotations<a class="headerlink" href="#creating-annotations" title="Permalink to this heading"></a></h2>
+<h2>Creating Annotations<a class="headerlink" href="#creating-annotations" title="Permalink to this heading"></a></h2>
 <p>When integrating AI-supported CAD algorithms, it is often necessary to mark findings in the DICOM series. mercure is providing a Python support library for this purpose, called <a class="reference internal" href="dcmannotate.html"><span class="doc">DCMAnnotate</span></a>.</p>
 <p>Additional mechanisms for reporting findings and analysis results will be added over time.</p>
 </section>
 <section id="distributing-modules">
-<h2>Distributing modules<a class="headerlink" href="#distributing-modules" title="Permalink to this heading"></a></h2>
+<h2>Distributing Modules<a class="headerlink" href="#distributing-modules" title="Permalink to this heading"></a></h2>
 <p>There are two different ways of distributing mercure processing modules: a) sharing the module code, and b) uploading the container image to <a class="reference external" href="https://hub.docker.com">Docker Hub</a>.</p>
 <p>When sharing the module code (e.g., by making the source code available via GitHub), users need to build the container locally first before the module can be used. Hence, users need to checkout the repository onto the mercure server and call the “make” command. Afterwards, the module can be configured via the mercure UI.</p>
 <p>When uploading the container image to Docker Hub, users don’t have to build the container themselves. The module can be configured right away in the mercure UI, and mercure will automatically download the container image from Docker Hub when processing with the module is requested. mercure will also automatically update the container image if a newer version has been published on Docker Hub. This makes it very easy to distribute developed processing algorithms on a large scale.</p>
@@ -146,7 +147,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -164,18 +165,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

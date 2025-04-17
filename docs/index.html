@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mercure DICOM Orchestrator &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>mercure DICOM Orchestrator &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -38,7 +40,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,7 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is mercure?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
@@ -79,8 +81,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -134,37 +135,38 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#including-orthanc-and-ohif">Including Orthanc and OHIF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#first-steps">First steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#other-installation-modes">Other installation modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#first-steps">First Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#other-installation-modes">Other Installation Modes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#installation-types">Installation types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installation-types">Installation Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#installing-mercure">Installing mercure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#locations">Locations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#dicom-reception-over-tls-connection">DICOM Reception over TLS Connection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#congratulations">Congratulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#dicom-tls-support">DICOM TLS Support</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#web-interface">Web interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#user-management">User management</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#system-status-and-control">System status and control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#configuring-targets">Configuring targets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#installing-modules">Installing modules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#defining-rules">Defining rules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#queue-management">Queue management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage/targets.html">Targets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/modules.html">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/rules.html">Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/queue.html">Queue Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/query.html">Query Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/index.html#web-interface">Web Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/index.html#user-management">User Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/index.html#system-status-and-control">System Status and Control</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#configuration-files">Configuration files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#additional-settings">Additional settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#scaling-services">Scaling services</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#installation-on-apple-macs-with-arm-processors">Installation on Apple Macs with ARM processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#configuration-files">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#additional-settings">Additional Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#scaling-services">Scaling Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#installation-on-apple-macs-with-arm-processors">Installation on Apple Macs with ARM Processors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="monitoring.html#log-files">Log files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#log-files">Log Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html#graphite">Graphite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html#bookkeeper-with-redash">Bookkeeper with Redash</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html#installing-redash">Installing Redash</a></li>
@@ -207,21 +209,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
-<li class="toctree-l2"><a class="reference internal" href="processor.html">Service processor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dispatch.html">Package dispatch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="process.html">Package process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="routing.html">Package routing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webinterface.html">Package webinterface</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/index.html">Code Documentation</a></li>
 </ul>
 </div>
 </section>
@@ -236,7 +224,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -254,18 +242,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

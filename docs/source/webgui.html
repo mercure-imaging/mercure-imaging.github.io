@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service webgui &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Service router" href="router.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bookkeeper.html">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processor.html">Service processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Service webgui</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code Documentation</a></li>
+      <li class="breadcrumb-item active">Service webgui</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-webgui">
+<span id="service-webgui"></span><h1>Service webgui<a class="headerlink" href="#module-webgui" title="Permalink to this heading"></a></h1>
+<section id="webgui-py">
+<h2>webgui.py<a class="headerlink" href="#webgui-py" title="Permalink to this heading"></a></h2>
+<p>The web-based graphical user interface of mercure.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webgui.CSPMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">CSPMiddleware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Awaitable</span><span class="p"><span class="pre">[</span></span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Awaitable</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Awaitable</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Request</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Request</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Awaitable</span><span class="p"><span class="pre">[</span></span><span class="pre">Response</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Awaitable</span><span class="p"><span class="pre">[</span></span><span class="pre">Response</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#CSPMiddleware"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.CSPMiddleware" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHTTPMiddleware</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="webgui.CSPMiddleware.dispatch">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_next</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#CSPMiddleware.dispatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.CSPMiddleware.dispatch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="webgui.DEBUG_MODE">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">DEBUG_MODE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#webgui.DEBUG_MODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webgui.ExtendedUser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">ExtendedUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_admin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#ExtendedUser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.ExtendedUser" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleUser</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="webgui.ExtendedUser.is_admin">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#webgui.ExtendedUser.is_admin" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="webgui.SECRET_KEY">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">SECRET_KEY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Secret</span></em><a class="headerlink" href="#webgui.SECRET_KEY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webgui.SessionAuthBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">SessionAuthBackend</span></span><a class="reference internal" href="../_modules/webgui.html#SessionAuthBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.SessionAuthBackend" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AuthenticationBackend</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="webgui.SessionAuthBackend.authenticate">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#SessionAuthBackend.authenticate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.SessionAuthBackend.authenticate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="webgui.WEBGUI_HOST">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">WEBGUI_HOST</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#webgui.WEBGUI_HOST" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="webgui.WEBGUI_PORT">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">WEBGUI_PORT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#webgui.WEBGUI_PORT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.configuration">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.configuration" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the current configuration of the mercure appliance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.configuration_edit">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">configuration_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#configuration_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.configuration_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows a configuration editor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.configuration_edit_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">configuration_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#configuration_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.configuration_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the configuration after post from editor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.control_services">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">control_services</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#control_services"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.control_services" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.create_app">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">create_app</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Starlette</span></span></span><a class="reference internal" href="../_modules/webgui.html#create_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.create_app" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.delete_old_tests">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">delete_old_tests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#delete_old_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.delete_old_tests" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.emergency_response">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">emergency_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#emergency_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.emergency_response" title="Permalink to this definition"></a></dt>
+<dd><p>Shows emergency message about invalid configuration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.error">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.error" title="Permalink to this definition"></a></dt>
+<dd><p>An example error. Switch the <cite>debug</cite> setting to see either tracebacks or 500 pages.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.get_nomad_logs">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">get_nomad_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../_modules/webgui.html#get_nomad_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.get_nomad_logs" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the service log when running a nomad-type installation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.get_service_status">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">get_service_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">runtime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webgui.html#get_service_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.get_service_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.homepage">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">homepage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#homepage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.homepage" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the index page that shows information about the system status.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.launch_emergency_app">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">launch_emergency_app</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webgui.html#launch_emergency_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.launch_emergency_app" title="Permalink to this definition"></a></dt>
+<dd><p>Launches a minimal application to inform the user about the incorrect configuration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.lifespan">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">lifespan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#lifespan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.lifespan" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.login">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.login" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the login page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.login_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">login_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#login_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.login_post" title="Permalink to this definition"></a></dt>
+<dd><p>Evaluate the submitted login information. Redirects to index page if login information valid, otherwise back to login.
+On the first login, the user will be directed to the settings page and asked to change the password.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.logout">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.logout" title="Permalink to this definition"></a></dt>
+<dd><p>Logouts the users by clearing the session cookie.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.main">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['-b',</span> <span class="pre">'html',</span> <span class="pre">'-d',</span> <span class="pre">'_build/doctrees',</span> <span class="pre">'.',</span> <span class="pre">'_build/html']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webgui.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.main" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.not_found">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">not_found</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#not_found"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.not_found" title="Permalink to this definition"></a></dt>
+<dd><p>Return an HTTP 404 page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.read_webgui_config">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">read_webgui_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Config</span></span></span><a class="reference internal" href="../_modules/webgui.html#read_webgui_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.read_webgui_config" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.self_test">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">self_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#self_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.self_test" title="Permalink to this definition"></a></dt>
+<dd><p>generate a test rule</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.self_test_cleanup">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">self_test_cleanup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webgui.html#self_test_cleanup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.self_test_cleanup" title="Permalink to this definition"></a></dt>
+<dd><p>Delete the rules and targets for this test after a delay</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.self_test_notification">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">self_test_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#self_test_notification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.self_test_notification" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.server_error">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">server_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#server_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.server_error" title="Permalink to this definition"></a></dt>
+<dd><p>Return an HTTP 500 page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.settings_edit">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">settings_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#settings_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.settings_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the settings for the current user.
+Renders the same template as the normal user edit, but with parameter own_settings=True.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.show_first_log">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">show_first_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#show_first_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.show_first_log" title="Permalink to this definition"></a></dt>
+<dd><p>Get the first service entry and forward to corresponding log entry point.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.show_log">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">show_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webgui.html#show_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.show_log" title="Permalink to this definition"></a></dt>
+<dd><p>Render the log for the given service. The time range can be specified via URL parameters.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.shutdown">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webgui.html#shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.shutdown" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webgui.startup">
+<span class="sig-prename descclassname"><span class="pre">webgui.</span></span><span class="sig-name descname"><span class="pre">startup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Starlette</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webgui.html#startup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webgui.startup" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.api"></span><section id="api-py">
+<h2>api.py<a class="headerlink" href="#api-py" title="Permalink to this heading"></a></h2>
+<p>API backend functions for AJAX querying from the web frontend.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.find_tasks">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">find_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#find_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.find_tasks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.get_series">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">get_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#get_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.get_series" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.get_series_events">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">get_series_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#get_series_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.get_series_events" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.get_task_info">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">get_task_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#get_task_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.get_task_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.get_tasks">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">get_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#get_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.get_tasks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.get_tests">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">get_tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#get_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.get_tests" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.task_process_logs">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">task_process_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#task_process_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.task_process_logs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.task_process_results">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">task_process_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#task_process_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.task_process_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.api.test">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.api.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/api.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.api.test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.common"></span><section id="common-py">
+<h2>common.py<a class="headerlink" href="#common-py" title="Permalink to this heading"></a></h2>
+<p>Helper functions for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.async_run">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">async_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webinterface/common.html#async_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.async_run" title="Permalink to this definition"></a></dt>
+<dd><p>Executes the given command in a way compatible with ayncio.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.async_run_exec">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">async_run_exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webinterface/common.html#async_run_exec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.async_run_exec" title="Permalink to this definition"></a></dt>
+<dd><p>Executes the given command in a way compatible with ayncio.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.get_csp_nonce">
+<span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">get_csp_nonce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/common.html#get_csp_nonce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.get_csp_nonce" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the CSP nonce for the current request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.get_mercure_version">
+<span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">get_mercure_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/webinterface/common.html#get_mercure_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.get_mercure_version" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.get_user_information">
+<span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">get_user_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/webinterface/common.html#get_user_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.get_user_information" title="Permalink to this definition"></a></dt>
+<dd><p>Returns dictionary of values that should always be passed to the templates when the user is logged in.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.common.strip_untrusted">
+<span class="sig-prename descclassname"><span class="pre">webinterface.common.</span></span><span class="sig-name descname"><span class="pre">strip_untrusted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/common.html#strip_untrusted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.common.strip_untrusted" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.dicom_client"></span><dl class="py exception">
+<dt class="sig sig-object py" id="webinterface.dicom_client.DicomClientBadStatus">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dicom_client.</span></span><span class="sig-name descname"><span class="pre">DicomClientBadStatus</span></span><a class="reference internal" href="../_modules/webinterface/dicom_client.html#DicomClientBadStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dicom_client.DicomClientBadStatus" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="webinterface.dicom_client.DicomClientCouldNotAssociate">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dicom_client.</span></span><span class="sig-name descname"><span class="pre">DicomClientCouldNotAssociate</span></span><a class="reference internal" href="../_modules/webinterface/dicom_client.html#DicomClientCouldNotAssociate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dicom_client.DicomClientCouldNotAssociate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="webinterface.dicom_client.DicomClientCouldNotFind">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dicom_client.</span></span><span class="sig-name descname"><span class="pre">DicomClientCouldNotFind</span></span><a class="reference internal" href="../_modules/webinterface/dicom_client.html#DicomClientCouldNotFind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dicom_client.DicomClientCouldNotFind" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dicom_client.</span></span><span class="sig-name descname"><span class="pre">SimpleDicomClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">called_aet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calling_aet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dicom_client.html#SimpleDicomClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient.called_aet">
+<span class="sig-name descname"><span class="pre">called_aet</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient.called_aet" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient.findscu">
+<span class="sig-name descname"><span class="pre">findscu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accession_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dataset</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webinterface/dicom_client.html#SimpleDicomClient.findscu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient.findscu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient.getscu">
+<span class="sig-name descname"><span class="pre">getscu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accession_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Dataset</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webinterface/dicom_client.html#SimpleDicomClient.getscu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient.getscu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient.handle_store">
+<span class="sig-name descname"><span class="pre">handle_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dicom_client.html#SimpleDicomClient.handle_store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient.handle_store" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient.host">
+<span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient.host" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient.output_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dicom_client.SimpleDicomClient.port">
+<span class="sig-name descname"><span class="pre">port</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#webinterface.dicom_client.SimpleDicomClient.port" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-webinterface.modules"></span><section id="modules-py">
+<h2>modules.py<a class="headerlink" href="#modules-py" title="Permalink to this heading"></a></h2>
+<p>Modules page for the graphical user interface of mercure.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.modules.BadRequestResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">BadRequestResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/modules.html#BadRequestResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.BadRequestResponse" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PlainTextResponse</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.modules.ServerErrorResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">ServerErrorResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/modules.html#ServerErrorResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.ServerErrorResponse" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PlainTextResponse</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.add_module">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">add_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/modules.html#add_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.add_module" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new module and forwards the user to the module edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.delete_module">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">delete_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/modules.html#delete_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.delete_module" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the module with the given module name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.edit_module">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">edit_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/modules.html#edit_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.edit_module" title="Permalink to this definition"></a></dt>
+<dd><p>Show the module edit page for the given module name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.edit_module_POST">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">edit_module_POST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/modules.html#edit_module_POST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.edit_module_POST" title="Permalink to this definition"></a></dt>
+<dd><p>Save the settings for the given module name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.save_module">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">save_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webinterface/modules.html#save_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.save_module" title="Permalink to this definition"></a></dt>
+<dd><p>Save the settings for the module with the given name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.modules.show_modules">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.modules.</span></span><span class="sig-name descname"><span class="pre">show_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/modules.html#show_modules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.modules.show_modules" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all installed modules</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.queue"></span><section id="queue-py">
+<h2>queue.py<a class="headerlink" href="#queue-py" title="Permalink to this heading"></a></h2>
+<p>Queue page for the graphical user interface of mercure.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">RestartTaskErrors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#RestartTaskErrors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.RestartTaskErrors" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.CURRENTLY_PROCESSING">
+<span class="sig-name descname"><span class="pre">CURRENTLY_PROCESSING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'currently_processing'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.CURRENTLY_PROCESSING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.FAILED_TO_ADD_PROCESSING">
+<span class="sig-name descname"><span class="pre">FAILED_TO_ADD_PROCESSING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'failed_to_add_processing'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.FAILED_TO_ADD_PROCESSING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.NO_AS_RECEIVED">
+<span class="sig-name descname"><span class="pre">NO_AS_RECEIVED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'no_as_received'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.NO_AS_RECEIVED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.NO_DISPATCH_STATUS">
+<span class="sig-name descname"><span class="pre">NO_DISPATCH_STATUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'no_dispatch_status'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.NO_DISPATCH_STATUS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.NO_RULE_APPLIED">
+<span class="sig-name descname"><span class="pre">NO_RULE_APPLIED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'no_rule_applied'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.NO_RULE_APPLIED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.NO_TASK_FILE">
+<span class="sig-name descname"><span class="pre">NO_TASK_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'no_task_file'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.NO_TASK_FILE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.TASK_NOT_READY">
+<span class="sig-name descname"><span class="pre">TASK_NOT_READY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'not_ready'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.TASK_NOT_READY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.queue.RestartTaskErrors.WRONG_JOB_TYPE">
+<span class="sig-name descname"><span class="pre">WRONG_JOB_TYPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wrong_type'</span></em><a class="headerlink" href="#webinterface.queue.RestartTaskErrors.WRONG_JOB_TYPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.force_study_complete">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">force_study_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#force_study_complete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.force_study_complete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.get_fail_stage">
+<span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">get_fail_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taskfile_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/webinterface/queue.html#get_fail_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.get_fail_stage" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.get_jobinfo">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">get_jobinfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#get_jobinfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.get_jobinfo" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.is_dispatch_failure">
+<span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">is_dispatch_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taskfile_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/webinterface/queue.html#is_dispatch_failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.is_dispatch_failure" title="Permalink to this definition"></a></dt>
+<dd><p>Determines if a task in the error folder is a dispatch failure.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.restart_dispatch">
+<span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">restart_dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taskfile_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outgoing_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/webinterface/queue.html#restart_dispatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.restart_dispatch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.restart_job">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">restart_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#restart_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.restart_job" title="Permalink to this definition"></a></dt>
+<dd><p>Restarts a failed job. This endpoint handles both dispatch and processing failures.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.restart_processing_task">
+<span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">restart_processing_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/webinterface/queue.html#restart_processing_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.restart_processing_task" title="Permalink to this definition"></a></dt>
+<dd><p>Restarts a processing task by moving it from the source folder (error or success) to the processing folder.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>task_id: The ID of the task to restart
+source_folder: Path to the task folder in the source directory (error or success)
+is_error: Whether the source folder is the error folder (True) or success folder (False)</p>
+</dd>
+<dt>Returns:</dt><dd><p>Dict with success or error information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.set_queues_status">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">set_queues_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#set_queues_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.set_queues_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_fail">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_fail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#show_jobs_fail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_fail" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_processing">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#show_jobs_processing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_processing" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_routing">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_routing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#show_jobs_routing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_routing" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_jobs_studies">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_jobs_studies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#show_jobs_studies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_jobs_studies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_queues">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_queues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#show_queues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_queues" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all installed modules</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.queue.show_queues_status">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.queue.</span></span><span class="sig-name descname"><span class="pre">show_queues_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/queue.html#show_queues_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.queue.show_queues_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.rules"></span><section id="rules-py">
+<h2>rules.py<a class="headerlink" href="#rules-py" title="Permalink to this heading"></a></h2>
+<p>Rules page for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.add_rule">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">add_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#add_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.add_rule" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new routing rule and forwards the user to the rule edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.duplicate_rule">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">duplicate_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#duplicate_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.duplicate_rule" title="Permalink to this definition"></a></dt>
+<dd><p>Duplicates an existing routing rule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#rules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules" title="Permalink to this definition"></a></dt>
+<dd><p>Show all defined routing rules. Can be executed by all logged-in users.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_delete_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_delete_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#rules_delete_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_delete_post" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the given routing rule</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_edit">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#rules_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the edit page for the given routing rule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_edit_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#rules_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the settings for the given routing rule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_test">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#rules_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_test" title="Permalink to this definition"></a></dt>
+<dd><p>Evalutes if a given routing rule is valid. The rule and testing dictionary have to be passed as form parameters.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.rules.rules_test_completionseries">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.rules.</span></span><span class="sig-name descname"><span class="pre">rules_test_completionseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/rules.html#rules_test_completionseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.rules.rules_test_completionseries" title="Permalink to this definition"></a></dt>
+<dd><p>Evalutes if a given value for the series list for study completion is valid.</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.services"></span><section id="services-py">
+<h2>services.py<a class="headerlink" href="#services-py" title="Permalink to this heading"></a></h2>
+<p>Helper functions for controlling the services from the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.services.read_services">
+<span class="sig-prename descclassname"><span class="pre">webinterface.services.</span></span><span class="sig-name descname"><span class="pre">read_services</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webinterface/services.html#read_services"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.services.read_services" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the list of configured services from the configuration file. This list normally does not have to be changed, but
+can be modified if multiple instances of individual services should be used to increase performance.</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.targets"></span><section id="targets-py">
+<h2>targets.py<a class="headerlink" href="#targets-py" title="Permalink to this heading"></a></h2>
+<p>Targets page for the graphical user interface of mercure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.add_target">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/targets.html#add_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.add_target" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new target.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.show_targets">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">show_targets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/targets.html#show_targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.show_targets" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all configured targets.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_delete_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_delete_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/targets.html#targets_delete_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_delete_post" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the given target.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_edit">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/targets.html#targets_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the edit page for the given target.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_edit_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">RedirectResponse</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">PlainTextResponse</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webinterface/targets.html#targets_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the given target using the form values posted with the request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.targets.targets_test_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.targets.</span></span><span class="sig-name descname"><span class="pre">targets_test_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/targets.html#targets_test_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.targets.targets_test_post" title="Permalink to this definition"></a></dt>
+<dd><p>Tests the connectivity of the given target by executing ping and c-echo requests.</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.users"></span><section id="users-py">
+<h2>users.py<a class="headerlink" href="#users-py" title="Permalink to this heading"></a></h2>
+<p>Users page and user support functions for the graphical user interface of mercure.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.users.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/users.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.User" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.change_password">
+<span class="sig-name descname"><span class="pre">change_password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'True'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'False'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.users.User.change_password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.email">
+<span class="sig-name descname"><span class="pre">email</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#webinterface.users.User.email" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.is_admin">
+<span class="sig-name descname"><span class="pre">is_admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'True'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'False'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.users.User.is_admin" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.password">
+<span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#webinterface.users.User.password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.users.User.permissions">
+<span class="sig-name descname"><span class="pre">permissions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#webinterface.users.User.permissions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.add_new_user">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">add_new_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#add_new_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.add_new_user" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new user and redirects to the user-edit page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.create_users">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">create_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#webinterface.users.User" title="webinterface.users.User"><span class="pre">User</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#create_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.create_users" title="Permalink to this definition"></a></dt>
+<dd><p>Create new users file and create seed admin account with name “admin” and password “router”.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.evaluate_password">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">evaluate_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#evaluate_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.evaluate_password" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given password for the given user is correct. Hashed passwords are stored with salt.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.hash_password">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">hash_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#hash_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.hash_password" title="Permalink to this definition"></a></dt>
+<dd><p>Hash the password using the passlib library.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.is_admin">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">is_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#is_admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.is_admin" title="Permalink to this definition"></a></dt>
+<dd><p>Check in the user list if the given user has admin rights.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.needs_change_password">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">needs_change_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#needs_change_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.needs_change_password" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given user has to change his password after login.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.read_users">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">read_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#webinterface.users.User" title="webinterface.users.User"><span class="pre">User</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#read_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.read_users" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the user list from the configuration file. The file will only be read if it has been updated since the last
+function call. If the file does not exist, create a new user file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.save_users">
+<span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">save_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#save_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.save_users" title="Permalink to this definition"></a></dt>
+<dd><p>Write the users list into a file on the disk.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.show_users">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">show_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#show_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.show_users" title="Permalink to this definition"></a></dt>
+<dd><p>Shows all available users.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.users_delete_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">users_delete_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#users_delete_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.users_delete_post" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the given users.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.users_edit">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">users_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#users_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.users_edit" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the settings for a given user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.users.users_edit_post">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.users.</span></span><span class="sig-name descname"><span class="pre">users_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/users.html#users_edit_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.users.users_edit_post" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the given user with settings passed as form parameters.</p>
+</dd></dl>
+
+</section>
+<section id="module-webinterface.dashboards.common">
+<span id="dashboards"></span><h2>Dashboards<a class="headerlink" href="#module-webinterface.dashboards.common" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h3>common.py<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.ClassBasedRQTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.common.</span></span><span class="sig-name descname"><span class="pre">ClassBasedRQTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'unknown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_job</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">rq.job.Job</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_queue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#ClassBasedRQTask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.ClassBasedRQTask" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.ClassBasedRQTask.create_job">
+<span class="sig-name descname"><span class="pre">create_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rq_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Job</span></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#ClassBasedRQTask.create_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.ClassBasedRQTask.create_job" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.ClassBasedRQTask.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#ClassBasedRQTask.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.ClassBasedRQTask.execute" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.ClassBasedRQTask.move_to_destination">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">move_to_destination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.DicomTarget" title="common.types.DicomTarget"><span class="pre">DicomTarget</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#ClassBasedRQTask.move_to_destination"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.ClassBasedRQTask.move_to_destination" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.ClassBasedRQTask.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#webinterface.dashboards.common.ClassBasedRQTask.parent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.ClassBasedRQTask.queue">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Queue</span></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#ClassBasedRQTask.queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.ClassBasedRQTask.queue" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.ClassBasedRQTask.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unknown'</span></em><a class="headerlink" href="#webinterface.dashboards.common.ClassBasedRQTask.type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.JSONErrorResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.common.</span></span><span class="sig-name descname"><span class="pre">JSONErrorResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#JSONErrorResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.JSONErrorResponse" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">JSONResponse</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.index">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.common.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.common.invoke_getdcmtags">
+<span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.common.</span></span><span class="sig-name descname"><span class="pre">invoke_getdcmtags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="common.html#common.types.DicomTarget" title="common.types.DicomTarget"><span class="pre">DicomTarget</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="common.html#common.types.DicomWebTarget" title="common.types.DicomWebTarget"><span class="pre">DicomWebTarget</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/common.html#invoke_getdcmtags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.common.invoke_getdcmtags" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.dashboards.dicomweb"></span><section id="dicomweb-py">
+<h3>dicomweb.py<a class="headerlink" href="#dicomweb-py" title="Permalink to this heading"></a></h3>
+<p>DICOMweb interface for handling DICOM uploads via STOW-RS protocol.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.MultipartData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.dicomweb.</span></span><span class="sig-name descname"><span class="pre">MultipartData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/dicomweb.html#MultipartData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.dicomweb.MultipartData" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.MultipartData.dicoms">
+<span class="sig-name descname"><span class="pre">dicoms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.dashboards.dicomweb.MultipartData.dicoms" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.MultipartData.form_data">
+<span class="sig-name descname"><span class="pre">form_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.dashboards.dicomweb.MultipartData.form_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.MultipartData.zips">
+<span class="sig-name descname"><span class="pre">zips</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#webinterface.dashboards.dicomweb.MultipartData.zips" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.dataset_operation">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.dicomweb.</span></span><span class="sig-name descname"><span class="pre">dataset_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/dicomweb.html#dataset_operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.dicomweb.dataset_operation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.extract_zip">
+<span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.dicomweb.</span></span><span class="sig-name descname"><span class="pre">extract_zip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ZipFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/dicomweb.html#extract_zip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.dicomweb.extract_zip" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.index">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.dicomweb.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/dicomweb.html#index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.dicomweb.index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.parse_multipart_data">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.dicomweb.</span></span><span class="sig-name descname"><span class="pre">parse_multipart_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#webinterface.dashboards.dicomweb.MultipartData" title="webinterface.dashboards.dicomweb.MultipartData"><span class="pre">MultipartData</span></a></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/dicomweb.html#parse_multipart_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.dicomweb.parse_multipart_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.stow_rs">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.dicomweb.</span></span><span class="sig-name descname"><span class="pre">stow_rs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/webinterface/dashboards/dicomweb.html#stow_rs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.dicomweb.stow_rs" title="Permalink to this definition"></a></dt>
+<dd><p>Handle STOW-RS requests for uploading DICOM instances</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.dicomweb.upload">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.dicomweb.</span></span><span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/dicomweb.html#upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.dicomweb.upload" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.dashboards.query_routes"></span><section id="query-routes-py">
+<h3>query_routes.py<a class="headerlink" href="#query-routes-py" title="Permalink to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.check_accessions">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">check_accessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#check_accessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.check_accessions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.get_job_info">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">get_job_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#get_job_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.get_job_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.post_pause_job">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">post_pause_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#post_pause_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.post_pause_job" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.post_resume_job">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">post_resume_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#post_resume_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.post_resume_job" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.post_retry_job">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">post_retry_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#post_retry_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.post_retry_job" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.query">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.query" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.query_jobs">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">query_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#query_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.query_jobs" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of all query jobs.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.query_routes.query_post_batch">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.query_routes.</span></span><span class="sig-name descname"><span class="pre">query_post_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/query_routes.html#query_post_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.query_routes.query_post_batch" title="Permalink to this definition"></a></dt>
+<dd><p>Starts a new query job for the given accession number and DICOM node.</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-webinterface.dashboards.simple"></span><section id="simple-py">
+<h3>simple.py<a class="headerlink" href="#simple-py" title="Permalink to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.simple.tasks">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.simple.</span></span><span class="sig-name descname"><span class="pre">tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/simple.html#tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.simple.tasks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.dashboards.simple.tests">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.dashboards.simple.</span></span><span class="sig-name descname"><span class="pre">tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/dashboards/simple.html#tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.dashboards.simple.tests" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="router.html" class="btn btn-neutral float-left" title="Service router" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

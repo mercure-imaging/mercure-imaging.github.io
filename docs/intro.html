@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What is mercure? &mdash; mercure Version 0.3.1-beta.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>What is mercure? &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.3.1-beta.1
+                Version 0.4.0-beta.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -60,7 +62,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboards.html">Dashboard Gallery</a></li>
@@ -83,8 +85,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/index.html">Code Documentation</a></li>
 </ul>
 
         </div>
@@ -113,7 +114,7 @@
   <section id="what-is-mercure">
 <h1>What is mercure?<a class="headerlink" href="#what-is-mercure" title="Permalink to this heading"></a></h1>
 <a class="reference internal image-reference" href="_images/scheme.png"><img alt="_images/scheme.png" class="align-center" src="_images/scheme.png" style="width: 550px;" /></a>
-<p>mercure is a flexible platform for orchestrating medical images in the standard DICOM format. Orchestration hereby refers to routing image series or complete patient studies to different destinations, or to process image series with different algorithms upon study reception. The action performed when a series or study is received (processing/routing/notification) is defined by rules that can be configured using mercure’s web-based user interface.</p>
+<p>mercure is a flexible platform for orchestrating medical images in the standard DICOM format. Orchestration hereby refers to routing image series (or complete patient studies) to different destinations, or to process image series with different algorithms or AI models upon study reception. The action performed when a series or study is received (processing/routing/notification) is defined by rules that can be configured using mercure’s web-based user interface.</p>
 <p>There are numerous use-cases for such a “DICOM orchestrator” or “DICOM router”:</p>
 <ul class="simple">
 <li><p>It is often necessary to send certain studies to special image-analysis software (e.g., all cardiac MR studies to dedicated CMR software). Setting up the corresponding DICOM nodes on every scanner and keeping settings up-to-date is time-consuming and prone to errors</p></li>
@@ -124,13 +125,15 @@
 <li><p>Processing algorithms, for example AI-based CAD algorithms, should be integrated into the routine clinical workflow</p></li>
 <li><p>Research studies should be tracked and notifications should be sent if specific exams have been performed</p></li>
 </ul>
-<p>mercure can automate all these tasks. While other commercial DICOM routing solutions exist (often with a hefty price tag), mercure provides unique features that make it attractive especially in research-focused environments:</p>
+<p>mercure can automate all these tasks. While other commercial DICOM routing solutions exist (often with a high price tag), mercure provides unique features that make it attractive especially in research-focused environments:</p>
 <ul class="simple">
 <li><p>Powerful, yet intuitive language for defining orchestration rules</p></li>
 <li><p>Easy-to-use interface with user accounts for managing rules, targets, and processing modules</p></li>
-<li><p>Simple interface for integrating (and sharing) custom processing algorithms</p></li>
+<li><p>Simple interface for integrating (and sharing) custom processing algorithms or AI models</p></li>
 <li><p>Modularized architecture for high availability, reliability, and scalability</p></li>
-<li><p>Extensive monitoring capabilities</p></li>
+<li><p>Extensive monitoring, auditing, and alerting capabilities</p></li>
+<li><p>Support for polling large study amounts from PACS systems and injecting them into the processing pipeline</p></li>
+<li><p>Database-backed collection of processing results with optional dashboard generation</p></li>
 <li><p>Completely free and customizable</p></li>
 </ul>
 <div class="admonition note">
@@ -154,7 +157,7 @@
 </aside>
 <aside class="topic">
 <p class="topic-title">Dispatcher</p>
-<p>The dispatcher service sends the prepared series to the desired target nodes (via DICOM or SFTP transfer). If a target node is temporarily unavailable or if the transfer fails, it repeats the transfer after a configurable waiting period. After a configurable number of unsuccessful retries, the affected DICOM images are moved to an error folder and an alert will be triggered. The transfer can later be restarted.</p>
+<p>The dispatcher service sends the prepared series to the desired target nodes (e.g., via DICOM or SFTP transfer). If a target node is temporarily unavailable or if the transfer fails, it repeats the transfer after a configurable waiting period. After a configurable number of unsuccessful retries, the affected DICOM images are moved to an error folder and an alert will be triggered. The transfer can later be restarted.</p>
 </aside>
 <aside class="topic">
 <p class="topic-title">Cleaner</p>
@@ -162,7 +165,7 @@
 </aside>
 <aside class="topic">
 <p class="topic-title">Bookkeeper</p>
-<p>The bookkeeper service acts as central monitoring instance for all system activity. It receives notifications from every mercure component and stores the data in a PostgreSQL database. This makes it possible to review the processing history of every image that passed through the router. The bookkeeper also stores extended information about received series (e.g., the used contrast agent), so that it can be used as source for data mining. Moreover, it records all errors or processing abnormalities. Automatic alerts can be triggered based on periodic database queries.</p>
+<p>The bookkeeper service acts as central monitoring instance for all system activity. It receives notifications from every mercure component and stores the data in a PostgreSQL database. This makes it possible to review the processing history of every image that passed through the router. The bookkeeper also stores extended information about received series (e.g., the used contrast agent), so that it can be used as source for data mining. Moreover, it records all errors or processing abnormalities, as well as processing results (e.g., findings of AI models). Automatic alerts can be triggered based on periodic database queries.</p>
 </aside>
 <aside class="topic">
 <p class="topic-title">Webgui</p>
@@ -182,7 +185,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2023 The &#34;mercure&#34; authors and contributors.</p>
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -200,18 +203,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(false);
       });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHLH5W4KQW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EHLH5W4KQW', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  </script> 
 
 </body>
 </html>

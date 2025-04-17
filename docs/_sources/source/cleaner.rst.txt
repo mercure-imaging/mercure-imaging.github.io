@@ -1,0 +1,4 @@
+Service cleaner
+===============
+
+.. automodule:: cleaner

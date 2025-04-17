@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service bookkeeper &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Service cleaner" href="cleaner.html" />
+    <link rel="prev" title="Code Documentation" href="index.html" />
+<a href="https://mercure-imaging.zulipchat.com" target="_none" class="chat-button" title="Open mercure online community">Open Chat</a>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                Version 0.4.0-beta.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/mercure-imaging/mercure">github.com/mercure-imaging/mercure</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">What is mercure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring.html">Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dashboards.html">Dashboard Gallery</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Module Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_list.html">Existing Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../anonymizer.html">Anonymizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dcmannotate.html">DCMAnnotate</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Discussion Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Information</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Service bookkeeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaner.html">Service cleaner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">Package common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatcher.html">Service dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processor.html">Service processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="router.html">Service router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Service webgui</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mercure</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code Documentation</a></li>
+      <li class="breadcrumb-item active">Service bookkeeper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bookkeeping.bookkeeper">
+<span id="service-bookkeeper"></span><h1>Service bookkeeper<a class="headerlink" href="#module-bookkeeping.bookkeeper" title="Permalink to this heading"></a></h1>
+<section id="bookkeeper-py">
+<h2>bookkeeper.py<a class="headerlink" href="#bookkeeper-py" title="Permalink to this heading"></a></h2>
+<p>The bookkeeper service of mercure, which receives notifications from all mercure services
+and stores the information in a database.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.TokenAuth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">TokenAuth</span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#TokenAuth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.TokenAuth" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenAuth</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.TokenAuth.verify">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#TokenAuth.verify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.TokenAuth.verify" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.app">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">app</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Starlette</span></em><a class="headerlink" href="#bookkeeping.bookkeeper.app" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.create_app">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">create_app</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Starlette</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#create_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.create_app" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.lifespan">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">lifespan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#lifespan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.lifespan" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.main">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['-b',</span> <span class="pre">'html',</span> <span class="pre">'-d',</span> <span class="pre">'_build/doctrees',</span> <span class="pre">'.',</span> <span class="pre">'_build/html']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.main" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.migrate_database">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">migrate_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#migrate_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.migrate_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.parse_and_submit_tags">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">parse_and_submit_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#parse_and_submit_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.parse_and_submit_tags" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function that reads series information from the request body.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.post_mercure_event">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_mercure_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#post_mercure_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.post_mercure_event" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for receiving mercure system events.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.post_task_event">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_task_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#post_task_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.post_task_event" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for logging all events related to one series.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.post_webgui_event">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">post_webgui_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#post_webgui_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.post_webgui_event" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for logging relevant events of the webgui.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.processor_logs">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">processor_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#processor_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.processor_logs" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for receiving mercure system events.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.register_dicom">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_dicom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#register_dicom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.register_dicom" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for registering newly received DICOM files. Called by the getdcmtags module.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.register_series">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#register_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.register_series" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint that is called by the router whenever a new series arrives.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.register_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">register_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#register_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.register_task" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.server_error">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">server_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#server_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.server_error" title="Permalink to this definition"></a></dt>
+<dd><p>Return an HTTP 500 page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.store_processor_output">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">store_processor_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#store_processor_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.store_processor_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.test_begin">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">test_begin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#test_begin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.test_begin" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.test_end">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">test_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#test_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.test_end" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.test_endpoint">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">test_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#test_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.test_endpoint" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for testing that the bookkeeper is active.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.bookkeeper.update_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.bookkeeper.</span></span><span class="sig-name descname"><span class="pre">update_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/bookkeeper.html#update_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.bookkeeper.update_task" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint that is called by the router whenever a new series arrives.</p>
+</dd></dl>
+
+</section>
+<span class="target" id="module-bookkeeping.config"></span><section id="config-py">
+<h2>config.py<a class="headerlink" href="#config-py" title="Permalink to this heading"></a></h2>
+<p>Handling of configuration setting for the bookkeeper service</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.config.API_KEY">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">API_KEY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bookkeeping.config.API_KEY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.config.BOOKKEEPER_HOST">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">BOOKKEEPER_HOST</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#bookkeeping.config.BOOKKEEPER_HOST" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.config.BOOKKEEPER_PORT">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">BOOKKEEPER_PORT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#bookkeeping.config.BOOKKEEPER_PORT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.config.DATABASE_SCHEMA">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">DATABASE_SCHEMA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bookkeeping.config.DATABASE_SCHEMA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.config.DATABASE_URL">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">DATABASE_URL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#bookkeeping.config.DATABASE_URL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.config.DEBUG_MODE">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">DEBUG_MODE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#bookkeeping.config.DEBUG_MODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.config.bookkeeper_config">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">bookkeeper_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Config</span></em><a class="headerlink" href="#bookkeeping.config.bookkeeper_config" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.config.read_bookkeeper_config">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">read_bookkeeper_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Config</span></span></span><a class="reference internal" href="../_modules/bookkeeping/config.html#read_bookkeeper_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.config.read_bookkeeper_config" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.config.set_api_key">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.config.</span></span><span class="sig-name descname"><span class="pre">set_api_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/bookkeeping/config.html#set_api_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.config.set_api_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-bookkeeping.database"></span><section id="database-py">
+<h2>database.py<a class="headerlink" href="#database-py" title="Permalink to this heading"></a></h2>
+<p>Database functions needed for the bookkeeper service.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.database">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">database</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Database</span></em><a class="headerlink" href="#bookkeeping.database.database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.dicom_files">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">dicom_files</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.dicom_files" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.dicom_series">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">dicom_series</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.dicom_series" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.dicom_series_map">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">dicom_series_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.dicom_series_map" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.file_events">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">file_events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.file_events" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.database.init_database">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">init_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Database</span></span></span><a class="reference internal" href="../_modules/bookkeeping/database.html#init_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.database.init_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.mercure_events">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">mercure_events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.mercure_events" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.metadata">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MetaData</span></em><a class="headerlink" href="#bookkeeping.database.metadata" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.processor_logs_table">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">processor_logs_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.processor_logs_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.processor_outputs_table">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">processor_outputs_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.processor_outputs_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.series_sequence_data">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">series_sequence_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.series_sequence_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.task_events">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">task_events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.task_events" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.tasks_table">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">tasks_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.tasks_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.tests_table">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">tests_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.tests_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bookkeeping.database.webgui_events">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.database.</span></span><span class="sig-name descname"><span class="pre">webgui_events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Table</span></em><a class="headerlink" href="#bookkeeping.database.webgui_events" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<span class="target" id="module-bookkeeping.helper"></span><section id="helper-py">
+<h2>helper.py<a class="headerlink" href="#helper-py" title="Permalink to this heading"></a></h2>
+<p>Helper functions for the bookkeeper service.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bookkeeping.helper.CustomJSONEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.helper.</span></span><span class="sig-name descname"><span class="pre">CustomJSONEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/helper.html#CustomJSONEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.helper.CustomJSONEncoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">JSONEncoder</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bookkeeping.helper.CustomJSONEncoder.default">
+<span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/helper.html#CustomJSONEncoder.default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.helper.CustomJSONEncoder.default" title="Permalink to this definition"></a></dt>
+<dd><p>Implement this method in a subclass such that it returns
+a serializable object for <code class="docutils literal notranslate"><span class="pre">o</span></code>, or calls the base implementation
+(to raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>).</p>
+<p>For example, to support arbitrary iterators, you could
+implement default like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">iterable</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="c1"># Let the base class default method raise the TypeError</span>
+    <span class="k">return</span> <span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bookkeeping.helper.CustomJSONResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.helper.</span></span><span class="sig-name descname"><span class="pre">CustomJSONResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">media_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">BackgroundTask</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/helper.html#CustomJSONResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.helper.CustomJSONResponse" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">JSONResponse</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bookkeeping.helper.CustomJSONResponse.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../_modules/bookkeeping/helper.html#CustomJSONResponse.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.helper.CustomJSONResponse.render" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-bookkeeping.query"></span><section id="query-py">
+<h2>query.py<a class="headerlink" href="#query-py" title="Permalink to this heading"></a></h2>
+<p>Entry functions of the bookkeeper for querying processing information.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.convert_key">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">convert_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/query.html#convert_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.convert_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.convert_to_serializable">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">convert_to_serializable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/query.html#convert_to_serializable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.convert_to_serializable" title="Permalink to this definition"></a></dt>
+<dd><p>Converts non-serializable objects to serializable types.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.dicom_to_readable_json">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">dicom_to_readable_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bookkeeping/query.html#dicom_to_readable_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.dicom_to_readable_json" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a DICOM file to a human-readable JSON format.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>file_path (str): Path to the DICOM file.
+output_file_path (str): Path to save the JSON output.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.find_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">find_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#find_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.find_task" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_dicom_files">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_dicom_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_dicom_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_dicom_files" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for getting all events related to one series.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_series">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_series" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for retrieving series in the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_task_events">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_task_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_task_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_task_events" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for getting all events related to one task.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_task_info">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_task_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_task_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_task_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_task_process_logs">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_task_process_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_task_process_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_task_process_logs" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for getting all processing logs related to one series.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_task_process_results">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_task_process_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_task_process_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_task_process_results" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for getting all processing results from a task.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_tasks">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_tasks" title="Permalink to this definition"></a></dt>
+<dd><p>Endpoint for retrieving tasks in the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.get_test_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">get_test_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JSONResponse</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#get_test_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.get_test_task" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookkeeping.query.set_timezone_conversion">
+<span class="sig-prename descclassname"><span class="pre">bookkeeping.query.</span></span><span class="sig-name descname"><span class="pre">set_timezone_conversion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/bookkeeping/query.html#set_timezone_conversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookkeeping.query.set_timezone_conversion" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Code Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cleaner.html" class="btn btn-neutral float-right" title="Service cleaner" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2024 The &#34;mercure&#34; authors and contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions">
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>
