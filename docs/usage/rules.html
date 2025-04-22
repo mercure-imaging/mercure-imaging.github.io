@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rules &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+  <title>Rules &mdash; mercure Version 0.4.0-beta.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
@@ -41,7 +41,7 @@
               <img src="../_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.4.0-beta.2
+                Version 0.4.0-beta.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -125,7 +125,7 @@
 <a class="border reference internal image-reference" href="../_images/rules.png"><img alt="../_images/rules.png" class="border align-center" src="../_images/rules.png" style="width: 550px;" /></a>
 <p>It is not necessary to stop mercure services while defining new rules. The mercure service modules will automatically reload the new configuration when a rule has been added or modified. Click the “Add” button to create a new rule, or click on any of the existing rules and select “Edit” to modify it.</p>
 <section id="filtering-tab">
-<h2>Filtering tab<a class="headerlink" href="#filtering-tab" title="Permalink to this heading"></a></h2>
+<h2>Filtering Tab<a class="headerlink" href="#filtering-tab" title="Permalink to this heading"></a></h2>
 <p>All rules are evaluated whenever a new DICOM series has been received. The rules can use a set of DICOM tags extracted from the incoming DICOM files. To see the full list of DICOM tags available for writing rules, click the “Available Tags” button.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -155,7 +155,7 @@
 </div>
 <section id="testing-rules">
 <h3>Testing Rules<a class="headerlink" href="#testing-rules" title="Permalink to this heading"></a></h3>
-<p>To test a selection rule before activating it, click the icon with the cog wheels on the left side of input box. If you see a red icon in the dialog, the rule notation is invalid (the dialog will tell you why). If the rule is valid, the dialog will test if the rule would trigger if a DICOM series with the values shown in the lower part of the dialog would be received. You can modify these values and test if the rule reacts as expected.</p>
+<p>To test a selection rule before activating it, click the icon with the cog wheels on the left side of input box. If you see a red icon in the dialog, the rule notation is invalid (the dialog will tell you why). If the rule is valid, the dialog will test if the rule would trigger if a DICOM series with the values shown in the lower part of the dialog would be received. You can modify these values and test if the rule reacts as expected. You can also test the filter rule by dragging an existing DICOM file from your computer into the drag-and-drop area. This will update the test values with the DICOM tags from the file and check if the filter rule would trigger.</p>
 <a class="border reference internal image-reference" href="../_images/test.png"><img alt="../_images/test.png" class="border align-center" src="../_images/test.png" style="width: 550px;" /></a>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
@@ -197,7 +197,7 @@
 <p>If <strong>Completed Series</strong> is selected, mercure executes the action when a DICOM series has been received for which the rule evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code>. If multiple series from a patient study are received, these series are evaluated separately, and may trigger the same, different, or no rules.</p>
 <p>If <strong>Completed Study</strong> is selected, all series for a given study are evaluated together. For example, an AI-based analysis algorithm might require multiple series with different contrast. On selection, an additional control <strong>Completion Criteria</strong> will appear, which allows selecting when the study should considered complete. Rules with this trigger are only evaluated when the study appears to be complete, and all the series will be routed or processed together.</p>
 <a class="border reference internal image-reference" href="../_images/edit_trigger.png"><img alt="../_images/edit_trigger.png" class="border align-center" src="../_images/edit_trigger.png" style="width: 550px;" /></a>
-<p>If <strong>List Series Received</strong> is selected, Mercure evaluates whether the study is complete based on whether specific series have been received using the <code class="docutils literal notranslate"><span class="pre">SeriesDescription</span></code> dicom tag. Here is an example expression that will consider the study complete if it receives a series with a <code class="docutils literal notranslate"><span class="pre">SeriesDescription</span></code> which contains “Axial T2” and another series that has either “SAG T1 GRE” or “Sag T1 TSE”:</p>
+<p>If <strong>List Series Received</strong> is selected, Mercure evaluates whether the study is complete based on whether specific series have been received using the <code class="docutils literal notranslate"><span class="pre">SeriesDescription</span></code> DICOM tag. Here is an example expression that will consider the study complete if it receives a series with a <code class="docutils literal notranslate"><span class="pre">SeriesDescription</span></code> which contains “Axial T2” and another series that has either “SAG T1 GRE” or “Sag T1 TSE”:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;Axial T2&#39; and (&#39;Sag T1 GRE&#39; or &#39;Sag T1 TSE&#39;)
 </pre></div>
 </div>
@@ -211,7 +211,7 @@
 </section>
 </section>
 <section id="processing-tab">
-<h2>Processing tab<a class="headerlink" href="#processing-tab" title="Permalink to this heading"></a></h2>
+<h2>Processing Tab<a class="headerlink" href="#processing-tab" title="Permalink to this heading"></a></h2>
 <p>For rules involving processing, the “Processing” tab can be used to select one or multiple processing modules. To add a module, select it in the dropdown box and press the “+” button to add it to the end of the module list. Each module will be executed in order, left to right. Generally, the output of each module will be used as the input for the next.</p>
 <p>The “Settings” input provides rule-specific module settings. These settings will be merged with the global module settings and will overwrite global settings if the same keys occur in both. The settings have to be specified in JSON format. It depends on the individual module which settings are available. This information should be looked up from the module documentation.</p>
 <p>If you are using multiple chained modules, this will be used for each of the modules.</p>
@@ -223,12 +223,12 @@
 </div>
 </section>
 <section id="routing-tab">
-<h2>Routing tab<a class="headerlink" href="#routing-tab" title="Permalink to this heading"></a></h2>
+<h2>Routing Tab<a class="headerlink" href="#routing-tab" title="Permalink to this heading"></a></h2>
 <p>For rules with dispatching, the “Routing” tab can be used to select the target(s) to which the DICOMs should be dispatched after finishing any processing modules.</p>
 <a class="border reference internal image-reference" href="../_images/edit_routing.png"><img alt="../_images/edit_routing.png" class="border align-center" src="../_images/edit_routing.png" style="width: 550px;" /></a>
 </section>
 <section id="notification-tab">
-<h2>Notification tab<a class="headerlink" href="#notification-tab" title="Permalink to this heading"></a></h2>
+<h2>Notification Tab<a class="headerlink" href="#notification-tab" title="Permalink to this heading"></a></h2>
 <p>The “Notification” tab allows configuring webhook calls and emails that can be triggered at various points after a study has been received.</p>
 <p>Webhook calls can be used to send notification messages into Slack, WebEx, Teams, or comparable messaging services. They can also be used for connecting other external services, for example, changing the color of a physical status light.</p>
 <a class="border reference internal image-reference" href="../_images/edit_notification.png"><img alt="../_images/edit_notification.png" class="border align-center" src="../_images/edit_notification.png" style="width: 550px;" /></a>
@@ -243,7 +243,7 @@
 <p>If either the email address or webhook url is blank, notifications will not be sent via that modality.</p>
 </section>
 <section id="information-tab">
-<h2>Information tab<a class="headerlink" href="#information-tab" title="Permalink to this heading"></a></h2>
+<h2>Information Tab<a class="headerlink" href="#information-tab" title="Permalink to this heading"></a></h2>
 <p>The “Information” tab can be used to document the rule. The purpose of the rule can be written as free-text into the Comment field, and an email address can be written into the Contact field, so that it can be looked up at a later time why the rule was defined and who requested it. It is also possible to add tag attributes to the rule. These tags are not yet used for anything else, but might be used in future versions of mercure for filtering purpose and access control.</p>
 <a class="border reference internal image-reference" href="../_images/edit_information.png"><img alt="../_images/edit_information.png" class="border align-center" src="../_images/edit_information.png" style="width: 550px;" /></a>
 </section>

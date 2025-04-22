@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Development Environment &mdash; mercure Version 0.4.0-beta.2 documentation</title>
+  <title>Development Environment &mdash; mercure Version 0.4.0-beta.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -41,7 +41,7 @@
               <img src="_static/mercure_logo_w.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                Version 0.4.0-beta.2
+                Version 0.4.0-beta.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -119,17 +119,17 @@
 </div>
 <section id="setting-up-vs-code">
 <h2>Setting up VS Code<a class="headerlink" href="#setting-up-vs-code" title="Permalink to this heading"></a></h2>
-<p>We highly recommend using Visual Studio Code (VS Code) as code editor. Depending on your individual setup, the code inside your mercure development environment can be edited from your host operating system using the Remote - SSH or Remote - WSL extensions for VS Code. In order to allow VS Code to connect to the VM, you need to add the public SSH key of the Vagrant account to the VM Linux user “mercure” (since mercure is running under the service account “mercure”). This can be done by going through the following steps (this description assumes that you are running the development environment on an Intel-based Windows host computer):</p>
+<p>We highly recommend using Visual Studio Code (VS Code) as code editor. Depending on your individual setup, the code inside your mercure development environment can be edited from your host operating system using the Remote - SSH or Remote - WSL extensions for VS Code. In order to allow VS Code to connect to the VM without entering a password each time, you need to add the public SSH key of the Vagrant account to the VS Code SSH configuration. This can be done by going through the following steps (this description assumes that you are running the development environment on an Intel-based Windows host computer):</p>
 <ul class="simple">
-<li><p>Install Visual Studio Code on your host computer ([<a class="reference external" href="https://code.visualstudio.com](https://code.visualstudio.com/">https://code.visualstudio.com](https://code.visualstudio.com/</a>))</p></li>
+<li><p>Install <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a> on your host computer</p></li>
 <li><p>Open Visual Studio Code and install the following VS Code extensions (via the tool bar on the left): “Remote - SSH”, “Remote - SSH: Editing Configuration Files”, “Remote Explorer”</p></li>
-<li><p>Other (optional) recommended extensions: “Python”, “Pylance”, “Git Graph”, “Code Spell Checker”, “Pretty_imports”, “GitHub copilot” or “Intellicode”</p></li>
-<li><p>When the VM is running, click on the bottom left icon in VS Code (“Open a Remote Window”) and select “Connect to Host”. Then click “Configure SSH Hosts…”. Add the following section to the configuration file (assuming the VM has been created in C:mercure) and save the configuration:</p></li>
+<li><p>Other (optional) recommended extensions: “Python”, “Pylance”, “Git Graph”, “Code Spell Checker”, “Pretty_imports”, “GitHub Copilot” or “Intellicode”</p></li>
+<li><p>When the VM is running (i.e., after calling “vagrant up”), click on the bottom-left blue icon in VS Code (“Open a Remote Window”) and select “Connect to Host”. Then click “Configure SSH Hosts…”. Add the following section to the configuration file (assuming the VM has been created in C:\mercure) and save the configuration file:</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">mercure</span>
    <span class="n">HostName</span> <span class="mf">127.0.0.1</span>
-   <span class="n">User</span> <span class="n">mercure</span>
    <span class="n">Port</span> <span class="mi">2222</span>
+   <span class="n">User</span> <span class="n">vagrant</span>
    <span class="n">UserKnownHostsFile</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
    <span class="n">StrictHostKeyChecking</span> <span class="n">no</span>
    <span class="n">PasswordAuthentication</span> <span class="n">no</span>
@@ -139,17 +139,15 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Open an SSH shell from the (Windows) command shell using the command “vagrant ssh”. Copy the content of the following file to the clipboard or Notepad editor: /home/vagrant/.ssh/authorized_keys</p></li>
-<li><p>Make yourself the user “mercure” by typing “sudo su mercure”. Create the file /home/mercure/.ssh/authorized_keys and insert the previously copied content (i.e., the public key copied from user vagrant). Change the username at the end of the line from vagrant to mercure. Close the terminal shell by typing exit twice.</p></li>
-<li><p>Now, restart VS Code, click on “Connect to Host”, and select mercure from the list. During the first run, select “Linux” as Operating system. VS Code will now install the server application inside the VM. Afterwards, click on “Open Folder”. The mercure installation folder is at “/opt/mercure/app”.</p></li>
-<li><p>Open a Terminal within VS Code and verify that the Unix user of the terminal is “mercure”.</p></li>
-<li><p>The development environment is now ready.</p></li>
+<li><p>Click the bottom-left icon again, select “Connect to Host”, and select the entry “mercure” from the list. During the first run, select “Linux” as Operating System. VS Code will now install its server application inside the VM. Afterwards, click on “Open Folder” and select “~/mercure”</p></li>
+<li><p>Background: mercure is typically installed in the folder /opt/mercure, with the application code located in the subfolder /opt/mercure/app. When installing the development environment as described above, the GitHub repository is cloned into the home folder of the user “vagrant” under ~/mercure and a symbolic link is created to map the subfolder ~/mercure/app into /opt/mercure/app. This enables editing the code of the running mercure instance with VS Code from the folder ~/mercure and committing the code changes to GitHub using VS Code’s built-in Git support</p></li>
+<li><p>The development environment is now ready</p></li>
 </ul>
 </section>
 <section id="building-getdcmtags">
 <h2>Building getdcmtags<a class="headerlink" href="#building-getdcmtags" title="Permalink to this heading"></a></h2>
 <p>For building the getdcmtags C++ module, we recommend using the qmake tool from the Qt SDK. A project file for qmake is included in the repository (getdcmtags.pro). Make sure to copy the compiled binary (i.e., the Release build) into the subfolder for the correct Ubuntu version inside the /bin folder.</p>
-<p>getdcmtags depends on the development version of DCMTK, which can be installed with</p>
+<p>getdcmtags depends on the development version of DCMTK, which can be installed with (e.g., via a terminal window inside VS Code):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libdcmtk</span><span class="o">-</span><span class="n">dev</span>
 </pre></div>
 </div>
